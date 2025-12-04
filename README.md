@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SEOToolSuite
+
+SEOToolSuite provides free and open source SEO tools for everyone. Keyword research and more, powered by DataForSEO.
+
+## SEO Tools
+
+### Keyword Research
+
+![Keyword Research](src/assets/images/keyword-research-screenshot.png)
+
+Find thousands of keyword suggestions with multiple metrics like search volume, trend, search intent, seo difficulty, and more. Uses DataForSEO APIs.
+
+## Prerequisites
+
+- DataForSEO API
+- Node.js (for localhost/server deployment)
 
 ## Getting Started
 
-First, run the development server:
+You can use the cloud version of SEOToolSuite for free or run it on your localhost/server as well.
+
+### Using the cloud version
+
+Simply head to [https://seotoolsuite.nitishkgupta.com](https://seotoolsuite.nitishkgupta.com), add required API credentials (DataForSEO), and use the tools right-away!
+
+### Running on localhost/server
+
+#### 1. Clone the repo.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/nitishkgupta/seotoolsuite.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### 2. Install dependencies.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### 3. Build the app.
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### 4. Start the app.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Getting Updates
 
-## Deploy on Vercel
+The cloud version is updated automatically. For the local version, follow the below steps:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. Pull the latest changes from the repo.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+git pull
+```
+
+### 2. Rebuild the app.
+
+```bash
+npm run build
+```
+
+### 3. Start the app.
+
+```bash
+npm run start
+```
+
+## Changelog
+
+The changelog is available [here](CHANGELOG.md).

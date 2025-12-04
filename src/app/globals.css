@@ -1,26 +1,64 @@
+/* Tailwind CSS */
 @import "tailwindcss";
 
+/* HeroUI */
+@plugin "../heroui.ts";
+@source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
+@custom-variant dark (&:is(.dark *));
+
+/* Root */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  interpolate-size: allow-keywords;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Body */
+body {
+  margin: 0;
+  font-family: "Poppins";
+  @apply min-h-screen;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body:has(.seotoolsuite-tool),
+body:has(.seotoolsuite-account) {
+  @apply bg-slate-50;
+}
+
+/* DataGrid styles */
+.datagrid-cell-p0 {
+  padding: 0 !important;
+}
+
+/* SEO Difficulty Animation */
+.seo-diff-anim {
+  transform-origin: left;
+  animation: seodifficultyanimation 0.3s ease;
+}
+
+@keyframes seodifficultyanimation {
+  0% {
+    transform: scaleX(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* HeroUI Tooltip */
+div[role="tooltip"] > div {
+  border-radius: 6px !important;
+}
+
+/* DataGrid */
+.tool-results-table-container .MuiDataGrid-toolbarContainer {
+  padding: 8px;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+}
+
+.tool-results-table-container .MuiDataGrid-row {
+  cursor: pointer;
+}
+
+.tool-results-table-container .MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+  outline: none !important;
+}
+
+.tool-results-table-container .Mui-selected .search-intent-badge {
+  background-color: #fff;
 }
