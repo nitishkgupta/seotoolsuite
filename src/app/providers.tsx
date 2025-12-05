@@ -5,6 +5,7 @@ import {
   ThemeProvider as MUIThemeProvider,
 } from "@mui/material/styles";
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
+import RefreshDFSBalance from "@/components/RefreshDFSBalance";
 
 const muiTheme = createTheme({
   typography: {
@@ -18,6 +19,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <HeroUIProvider>
         <ToastProvider />
         {children}
+        <RefreshDFSBalance />
       </HeroUIProvider>
     </MUIThemeProvider>
   );

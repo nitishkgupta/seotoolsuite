@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logoImage from "@/assets/images/logo.png";
+import DFSBalanceBox from "@/components/DFSBalanceBox";
 
 export default function Header() {
   const pathName = usePathname();
@@ -45,6 +46,7 @@ export default function Header() {
               </Link>
             </Tooltip>
           </div>
+          <DFSBalanceBox />
           <div className="my-1 w-0.5 bg-slate-200"></div>
           <Tooltip content="Settings">
             <Link

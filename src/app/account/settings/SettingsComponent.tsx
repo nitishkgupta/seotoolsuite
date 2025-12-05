@@ -6,8 +6,11 @@ import { useState } from "react";
 import DataForSEO from "@/services/DataForSEO";
 import { LockIcon } from "lucide-react";
 import Link from "next/link";
+import useDFSBalance from "@/hooks/useDFSBalance";
 
 export default function SettingsComponent() {
+  const { refreshDFSBalance } = useDFSBalance(false);
+
   const [isDFSCredentialsFormLoading, setIsDFSCredentialsFormLoading] =
     useState<boolean>(false);
 
@@ -36,6 +39,10 @@ export default function SettingsComponent() {
         description: `Available account balance: $${Number(availableBalance).toFixed(2)}`,
         color: "success",
       });
+
+      window.setTimeout(() => {
+        refreshDFSBalance();
+      }, 500);
     } catch (error: any) {
       addToast({
         title: "DataForSEO API Error",

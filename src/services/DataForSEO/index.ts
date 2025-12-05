@@ -70,7 +70,7 @@ class DataForSEO {
         },
       );
 
-      return apiResponse.data?.tasks[0]?.result[0]?.money?.balance ?? null;
+      return apiResponse.data?.tasks[0]?.result?.[0]?.money?.balance ?? null;
     } catch (error) {
       throw error;
     }

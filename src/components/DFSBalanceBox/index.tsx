@@ -1,0 +1,26 @@
+"use client";
+
+import dfsBalanceAtom from "@/atoms/dfsBalanceAtom";
+import { Tooltip } from "@heroui/react";
+import { useAtomValue } from "jotai";
+import { WalletIcon } from "lucide-react";
+
+export default function DFSBalanceBox() {
+  const currentBalance = useAtomValue(dfsBalanceAtom);
+
+  if (typeof currentBalance !== "number") return null;
+
+  return (
+    <>
+      <div className="my-1 w-0.5 bg-slate-200"></div>
+      <Tooltip content="DataForSEO Balance">
+        <div className="flex items-center rounded-md border-2 border-slate-200">
+          <div className="flex h-full items-center border-slate-200 px-2">
+            <WalletIcon size={22} />
+          </div>
+          <div className="flex h-full items-center pr-2">${currentBalance}</div>
+        </div>
+      </Tooltip>
+    </>
+  );
+}

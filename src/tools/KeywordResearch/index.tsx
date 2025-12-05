@@ -37,6 +37,7 @@ import { getLocalStorageItem } from "@/utils/localStorage";
 import Link from "next/link";
 import DataForSEO from "@/services/DataForSEO";
 import { trackUmamiEvent } from "@/utils/umami";
+import useDFSBalance from "@/hooks/useDFSBalance";
 
 type KeywordSuggestionItem = {
   id: number;
@@ -72,6 +73,8 @@ type KeywordSuggestionItem = {
 type KeywordSuggestionData = KeywordSuggestionItem[];
 
 const KeywordResearchTool = () => {
+  const { refreshDFSBalance } = useDFSBalance(false);
+
   const limit: number = 250;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<KeywordSuggestionData>([]);
@@ -430,12 +433,14 @@ const KeywordResearchTool = () => {
               ?.classList.add("Mui-selected");
           }, 100);
         }
+
+        refreshDFSBalance();
       } catch (error: any) {
         setIsLoading(false);
         setFormError(error.message);
       }
     },
-    [dfsUsername, dfsPassword],
+    [dfsUsername, dfsPassword, refreshDFSBalance],
   );
 
   const handleFormSubmit = useCallback(
