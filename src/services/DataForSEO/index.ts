@@ -113,6 +113,41 @@ class DataForSEO {
       throw error;
     }
   }
+
+  /**
+   * Get keywords overview.
+   */
+  async getKeywordsOverview(
+    keywords: string[],
+    location_code: number,
+    language_code: string = "en",
+    includeClickstreamData: boolean = false,
+  ) {
+    try {
+      const apiResponse = await axios.post(
+        `${this.API_BASE_URL}/dataforseo_labs/google/keyword_overview/live`,
+        [
+          {
+            keywords,
+            location_code,
+            language_code,
+            include_clickstream_data: includeClickstreamData,
+          },
+        ],
+        {
+          headers: {
+            Authorization: `Basic ${Buffer.from(
+              `${this.USERNAME}:${this.PASSWORD}`,
+            ).toString("base64")}`,
+          },
+        },
+      );
+
+      return apiResponse.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default DataForSEO;

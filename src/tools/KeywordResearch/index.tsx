@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { getDifficultyColor, getDifficultyText } from "@/utils/difficulty";
 import KeywordResearchLoader from "./loader";
@@ -8,9 +8,13 @@ import {
   ArrowLeftIcon,
   BadgeDollarSignIcon,
   BinocularsIcon,
+  BookOpenTextIcon,
   FileClockIcon,
   InfoIcon,
+  LanguagesIcon,
+  MapPinIcon,
   NavigationIcon,
+  SearchIcon,
   TelescopeIcon,
   TextSearchIcon,
 } from "lucide-react";
@@ -38,6 +42,7 @@ import Link from "next/link";
 import DataForSEO from "@/services/DataForSEO";
 import { trackUmamiEvent } from "@/utils/umami";
 import useDFSBalance from "@/hooks/useDFSBalance";
+import KeywordOverview from "./components/KeywordOverview";
 
 type KeywordSuggestionItem = {
   id: number;
@@ -94,6 +99,11 @@ const KeywordResearchTool = () => {
     location_code?: string;
     language_code?: string;
   }>({});
+  const [keywordOverviewInput, setKeywordOverviewInput] = useState<{
+    keyword?: string;
+    location_code?: string;
+    language_code?: string;
+  }>({});
 
   const dfsUsername = getLocalStorageItem("DATAFORSEO_USERNAME");
   const dfsPassword = getLocalStorageItem("DATAFORSEO_PASSWORD");
@@ -110,6 +120,31 @@ const KeywordResearchTool = () => {
       },
     };
   }, []);
+
+  const handleKWOverviewClick = useCallback(
+    (
+      event: React.MouseEvent<HTMLButtonElement>,
+      keyword: string,
+      location_code: number,
+      language_code: string,
+    ) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      setKeywordOverviewInput({
+        keyword,
+        location_code: location_code.toString(),
+        language_code,
+      });
+
+      window.setTimeout(() => {
+        document.getElementById("keyword-overview")?.scrollIntoView({
+          behavior: "instant",
+        });
+      }, 50);
+    },
+    [],
+  );
 
   const tableColumns: GridColDef[] = useMemo(
     () => [
@@ -131,7 +166,27 @@ const KeywordResearchTool = () => {
         flex: 1,
         align: "left",
         headerAlign: "left",
-        cellClassName: "min-h-12",
+        cellClassName: "min-h-12 relative group",
+        renderCell: (params) => (
+          <>
+            {params.value}
+            <Tooltip content="Check Keyword Overview">
+              <button
+                onClick={(e) =>
+                  handleKWOverviewClick(
+                    e,
+                    params.value,
+                    params.row.location_code,
+                    params.row.language_code,
+                  )
+                }
+                className="absolute top-0 right-2 bottom-0 z-90 my-auto h-fit cursor-pointer rounded-md border border-slate-200 bg-white p-2 text-black opacity-0 shadow-xs transition duration-300 group-hover:opacity-100 hover:border-slate-400 focus-visible:opacity-100"
+              >
+                <BookOpenTextIcon size={16} />
+              </button>
+            </Tooltip>
+          </>
+        ),
       },
       {
         field: "searchIntent",
@@ -329,7 +384,7 @@ const KeywordResearchTool = () => {
         ),
       },
     ],
-    [],
+    [handleKWOverviewClick],
   );
 
   const getKeywordSuggestions = useCallback(
@@ -383,10 +438,20 @@ const KeywordResearchTool = () => {
           offset,
         );
 
-        const data = apiResponse.tasks[0].result[0];
+        const taskStatusCode = apiResponse?.tasks[0]?.status_code;
+        const taskStatusMessage =
+          apiResponse?.tasks[0]?.status_message ?? "Unknown error.";
+
+        if (taskStatusCode !== 20000) {
+          setIsLoading(false);
+          setFormError(`DataForSEO API error: ${taskStatusMessage}`);
+          return;
+        }
+
+        const data = apiResponse?.tasks[0]?.result[0] ?? null;
         setIsLoading(false);
 
-        if (data) {
+        if (data && data.items && data.items.length > 0) {
           const totalCount = data.total_count;
           setTotalResults(totalCount);
           const tableData: KeywordSuggestionData = [];
@@ -444,8 +509,15 @@ const KeywordResearchTool = () => {
 
         if (!dfsSandboxEnabled) refreshDFSBalance();
       } catch (error: any) {
+        console.error(error);
         setIsLoading(false);
-        setFormError(error.message);
+        if (error.response.data.tasks[0].status_message) {
+          setFormError(
+            `DataForSEO API error: ${error.response.data.tasks[0].status_message}`,
+          );
+        } else {
+          setFormError(error.message);
+        }
       }
     },
     [dfsUsername, dfsPassword, refreshDFSBalance],
@@ -468,6 +540,11 @@ const KeywordResearchTool = () => {
 
       setCurrentPage(1);
       setFormInputData({
+        keyword,
+        location_code,
+        language_code,
+      });
+      setKeywordOverviewInput({
         keyword,
         location_code,
         language_code,
@@ -652,25 +729,26 @@ const KeywordResearchTool = () => {
                 </div>
                 <span>Keyword Research</span>
               </div>
-              <div className="flex h-full min-h-auto flex-col flex-wrap gap-2 gap-y-0 border-slate-200 px-4 md:min-h-16 md:flex-row md:items-center">
-                <span>Keyword: {formInputData.keyword}</span>
-                <span className="hidden md:block">|</span>
-                <span>
-                  Location:{" "}
+              <div className="flex h-full min-h-auto flex-row flex-wrap gap-2 gap-y-0 border-slate-200 px-4 md:min-h-16 md:items-center">
+                <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1">
+                  <SearchIcon size={14} />
+                  {formInputData.keyword}
+                </div>
+                <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1">
+                  <MapPinIcon size={14} />
                   {
                     getDataForSEOLocationFromCode(
                       Number(formInputData.location_code!),
                     )?.location_name
                   }
-                </span>
-                <span className="hidden md:block">|</span>
-                <span>
-                  Language:{" "}
+                </div>
+                <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1">
+                  <LanguagesIcon size={14} />
                   {
                     getDataForSEOLanguageFromCode(formInputData.language_code!)
                       ?.language_name
                   }
-                </span>
+                </div>
               </div>
             </div>
             <div className="flex h-full min-h-auto items-center gap-2 border-l-0 border-slate-200 px-4 md:min-h-16 md:border-l-2">
@@ -685,9 +763,22 @@ const KeywordResearchTool = () => {
               </Button>
             </div>
           </div>
+          {keywordOverviewInput &&
+            keywordOverviewInput.language_code !== "any" && (
+              <div
+                className="keyword-overview-container mt-8 w-full scroll-m-8 px-4 md:px-8"
+                id="keyword-overview"
+              >
+                <KeywordOverview
+                  keyword={keywordOverviewInput.keyword!}
+                  locationCode={Number(keywordOverviewInput.location_code!)}
+                  languageCode={keywordOverviewInput.language_code!}
+                />
+              </div>
+            )}
           <div className="tool-results-container flex w-full flex-col gap-8 p-4 md:gap-4 md:p-8 lg:flex-row">
             <div
-              className="tool-results-table-container h-fit w-full scroll-m-8 rounded-md border-2 border-slate-200 bg-white"
+              className="tool-results-table-container h-fit w-full scroll-m-8 overflow-auto rounded-md border-2 border-slate-200 bg-white"
               id="keywords-table"
             >
               <div className="header flex w-full items-center gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
@@ -728,7 +819,7 @@ const KeywordResearchTool = () => {
               </div>
             </div>
             <div
-              className="w-full shrink-0 scroll-m-8 lg:w-1/2 lg:max-w-[550px]"
+              className="w-full shrink-0 scroll-m-8 lg:w-[550px] lg:max-w-1/3 xl:max-w-1/2"
               id="keyword-details"
             >
               <KeywordDetails keywordData={activeKeywordData} />
@@ -740,4 +831,4 @@ const KeywordResearchTool = () => {
   );
 };
 
-export default KeywordResearchTool;
+export default memo(KeywordResearchTool);
