@@ -1,5 +1,11 @@
 # SEOToolSuite Changelog
 
+## v0.4.0
+
+- Added a "Keyword Overview" section that provides data for the seed/selected keyword, including clickstream insights.
+- Many UI fixes and changes.
+- Performance optimisations.
+
 ## v0.3.1
 
 - Update packages.
