@@ -2,14 +2,15 @@
 
 import { APP_VERSION } from "@/env";
 import { Tooltip } from "@heroui/react";
-import { SettingsIcon, TelescopeIcon } from "lucide-react";
+import { SettingsIcon, SmilePlusIcon, TelescopeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logoImage from "@/assets/images/logo.png";
 import DFSBalanceBox from "@/components/DFSBalanceBox";
+import { memo } from "react";
 
-export default function Header() {
+function Header() {
   const pathName = usePathname();
 
   const isToolActive = (slug: string) => {
@@ -35,17 +36,17 @@ export default function Header() {
             href="https://github.com/nitishkgupta/seotoolsuite/blob/main/CHANGELOG.md"
             target="_blank"
             rel="nofollow"
-            className="block rounded-md border border-slate-200 px-2 py-1 text-sm font-medium text-black/60"
+            className="block rounded-md border border-slate-200 px-2 py-1 text-sm font-medium text-black/60 transition duration-300 hover:bg-slate-100"
           >
             v{APP_VERSION}
           </Link>
         </div>
-        <div className="header-right flex h-fit items-stretch gap-2">
+        <div className="header-right flex h-fit flex-wrap items-stretch gap-2">
           <div className="flex items-center overflow-hidden rounded-md border-2 border-slate-200">
             <Tooltip content="Keyword Research">
               <Link
                 href="/tool/keyword-research"
-                className={`flex items-center gap-1 px-2 py-2 text-sky-950 ${isToolActive("keyword-research") ? "bg-sky-950/10" : ""}`}
+                className={`flex items-center gap-1 px-2 py-2 text-sky-950 transition duration-300 hover:bg-slate-100 ${isToolActive("keyword-research") ? "bg-sky-950/10!" : ""}`}
               >
                 <TelescopeIcon size={24} />
               </Link>
@@ -56,9 +57,20 @@ export default function Header() {
           <Tooltip content="Settings">
             <Link
               href="/account/settings"
-              className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 ${isSettingsPageActive() ? "bg-sky-950/10" : ""}`}
+              className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition duration-300 hover:bg-slate-100 ${isSettingsPageActive() ? "bg-sky-950/10!" : ""}`}
             >
               <SettingsIcon size={24} />
+            </Link>
+          </Tooltip>
+          <div className="my-1 w-0.5 bg-slate-200"></div>
+          <Tooltip content="Feedback">
+            <Link
+              href="https://github.com/nitishkgupta/seotoolsuite/issues/new/choose"
+              rel="nofollow"
+              target="_blank"
+              className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition duration-300 hover:bg-slate-100`}
+            >
+              <SmilePlusIcon size={24} />
             </Link>
           </Tooltip>
         </div>
@@ -66,3 +78,5 @@ export default function Header() {
     </div>
   );
 }
+
+export default memo(Header);

@@ -1,7 +1,7 @@
 import useDFSBalance from "@/hooks/useDFSBalance";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 
-export default function RefreshDFSBalance() {
+function RefreshDFSBalance() {
   const { refreshDFSBalance } = useDFSBalance(false);
 
   useEffect(() => {
@@ -10,3 +10,5 @@ export default function RefreshDFSBalance() {
 
   return null;
 }
+
+export default memo(RefreshDFSBalance);

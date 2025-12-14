@@ -13,13 +13,13 @@ import {
   Input,
   Tooltip,
 } from "@heroui/react";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import DataForSEO from "@/services/DataForSEO";
 import { BoxIcon, LockIcon } from "lucide-react";
 import Link from "next/link";
 import useDFSBalance from "@/hooks/useDFSBalance";
 
-export default function SettingsComponent() {
+function SettingsComponent() {
   const { refreshDFSBalance } = useDFSBalance(false);
   const [dfsSandboxEnabled, setDFSSandboxEnabled] = useState<boolean>(false);
 
@@ -56,6 +56,7 @@ export default function SettingsComponent() {
         refreshDFSBalance();
       }, 500);
     } catch (error: any) {
+      console.error(error);
       addToast({
         title: "DataForSEO API Error",
         description: error?.response?.data?.status_message
@@ -173,3 +174,5 @@ export default function SettingsComponent() {
     </div>
   );
 }
+
+export default memo(SettingsComponent);

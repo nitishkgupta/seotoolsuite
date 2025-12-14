@@ -4,8 +4,9 @@ import dfsBalanceAtom from "@/atoms/dfsBalanceAtom";
 import { Tooltip } from "@heroui/react";
 import { useAtomValue } from "jotai";
 import { WalletIcon } from "lucide-react";
+import { memo } from "react";
 
-export default function DFSBalanceBox() {
+function DFSBalanceBox() {
   const currentBalance = useAtomValue(dfsBalanceAtom);
 
   if (typeof currentBalance !== "number") return null;
@@ -26,3 +27,5 @@ export default function DFSBalanceBox() {
     </>
   );
 }
+
+export default memo(DFSBalanceBox);

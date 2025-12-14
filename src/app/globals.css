@@ -28,18 +28,6 @@ body:has(.seotoolsuite-account) {
   padding: 0 !important;
 }
 
-/* SEO Difficulty Animation */
-.seo-diff-anim {
-  transform-origin: left;
-  animation: seodifficultyanimation 0.3s ease;
-}
-
-@keyframes seodifficultyanimation {
-  0% {
-    transform: scaleX(0);
-  }
-}
-
 /* HeroUI Tooltip */
 div[role="tooltip"] > div {
   border-radius: 6px !important;
@@ -61,4 +49,20 @@ div[role="tooltip"] > div {
 
 .tool-results-table-container .Mui-selected .search-intent-badge {
   background-color: #fff;
+}
+
+.tool-results-table-container .MuiDataGrid-row:hover .search-intent-badge {
+  background-color: #fff;
+}
+
+/* Width Animation */
+.scale-x-anim {
+  transform-origin: left;
+  animation: scalexanim 0.5s ease;
+}
+
+@keyframes scalexanim {
+  0% {
+    transform: scaleX(0);
+  }
 }

@@ -1,9 +1,9 @@
 import {
   BadgeDollarSign,
+  BadgeDollarSignIcon,
   BadgeQuestionMark,
   Binoculars,
   ChartNoAxesCombined,
-  DollarSign,
   Gauge,
   Info,
   Languages,
@@ -25,6 +25,7 @@ import {
   Tooltip as RechartsTooltip,
 } from "recharts";
 import { getDataForSEOLanguageFromCode } from "@/utils/dataforseo";
+import { memo } from "react";
 
 type KeywordSuggestionItem = {
   id: number;
@@ -119,7 +120,7 @@ const KeywordDetails = ({
                 }}
               >
                 <div
-                  className="seo-diff-anim absolute top-0 left-0 h-full rounded-tl-md transition-all duration-300 ease-[ease]"
+                  className="scale-x-anim absolute top-0 left-0 h-full rounded-tl-md transition-all duration-500 ease-[ease]"
                   style={{
                     width: `${keywordData.keywordDifficulty}%`,
                     backgroundColor: `color-mix(in oklch, ${getDifficultyColor(keywordData.keywordDifficulty)}, white 60%)`,
@@ -152,13 +153,13 @@ const KeywordDetails = ({
           )}
         </div>
       </div>
-      <div className="flex w-full flex-col items-stretch gap-4 md:flex-row">
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
         <div className="w-full rounded-md border-2 border-slate-200 bg-white">
           <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
             <TrendingUp size={20} />
             <span className="text-base">Volume</span>
           </div>
-          <div className="flex items-center gap-2 p-4">
+          <div className="flex items-center gap-2 overflow-auto p-4">
             {typeof keywordData.searchVolume === "number" ? (
               <span>
                 {keywordData.searchVolume.toLocaleString(navigator.language)}
@@ -188,7 +189,7 @@ const KeywordDetails = ({
             <BadgeQuestionMark size={20} />
             <span className="text-base">Intent</span>
           </div>
-          <div className="flex items-center gap-1 p-4">
+          <div className="flex items-center gap-1 overflow-auto p-4">
             {typeof keywordData.searchIntent !== "string" && <span>N/A</span>}
             {keywordData.searchIntent === "informational" && (
               <>
@@ -260,13 +261,13 @@ const KeywordDetails = ({
           </div>
         </div>
       </div>
-      <div className="flex w-full flex-col items-stretch gap-4 md:flex-row">
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
         <div className="w-full rounded-md border-2 border-slate-200 bg-white">
           <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
-            <DollarSign size={20} />
+            <BadgeDollarSignIcon size={20} />
             <span className="text-base">CPC</span>
           </div>
-          <div className="p-4">
+          <div className="overflow-auto p-4">
             {typeof keywordData.cpc === "number"
               ? `$${keywordData.cpc}`
               : "N/A"}
@@ -277,7 +278,7 @@ const KeywordDetails = ({
             <Target size={20} />
             <span className="text-base">PPC</span>
           </div>
-          <div className="p-4">
+          <div className="overflow-auto p-4">
             {typeof keywordData.ppc === "number"
               ? Math.round(keywordData.ppc * 100)
               : "N/A"}
@@ -345,7 +346,7 @@ const KeywordDetails = ({
               />
               <Bar
                 dataKey="search_volume"
-                fill="#0284c7"
+                fill="#052f4a"
                 name="Search Volume"
                 style={{
                   fontSize: "12px",
@@ -421,4 +422,4 @@ const KeywordDetails = ({
   ) : null;
 };
 
-export default KeywordDetails;
+export default memo(KeywordDetails);

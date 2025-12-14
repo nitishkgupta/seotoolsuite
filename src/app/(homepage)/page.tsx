@@ -1,4 +1,5 @@
 import {
+  BookOpenTextIcon,
   DatabaseIcon,
   FilterIcon,
   PackageIcon,
@@ -40,7 +41,7 @@ export default function HomePage() {
           <div className="header-right h-fit">
             <Link
               href="/tool/keyword-research"
-              className="block rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
+              className="block rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition duration-300 hover:scale-105 active:scale-95 lg:text-lg"
             >
               Get Started
             </Link>
@@ -63,14 +64,14 @@ export default function HomePage() {
         <div className="mt-5 flex items-center justify-center gap-3">
           <Link
             href="/tool/keyword-research"
-            className="flex items-center gap-1 rounded-md border-2 border-sky-950 bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-base"
+            className="flex items-center gap-1 rounded-md border-2 border-sky-950 bg-sky-950 px-4 py-2 text-sm font-medium text-white transition duration-300 hover:scale-105 active:scale-95 lg:text-base"
           >
             Get Started
           </Link>
           <Link
             href="https://github.com/nitishkgupta/seotoolsuite"
             target="_blank"
-            className="flex items-center gap-1 rounded-md border-2 border-sky-950 px-4 py-2 text-sm font-medium text-sky-950 transition hover:scale-105 active:scale-95 lg:text-base"
+            className="flex items-center gap-1 rounded-md border-2 border-sky-950 px-4 py-2 text-sm font-medium text-sky-950 transition duration-300 hover:scale-105 active:scale-95 lg:text-base"
           >
             <Image src={githubIcon} alt="GitHub" className="w-5" />
             GitHub
@@ -222,6 +223,12 @@ export default function HomePage() {
                   </span>
                 </div>
                 <div className="flex w-fit items-center gap-2 p-2">
+                  <BookOpenTextIcon size={24} className="shrink-0" />
+                  <span className="text-base font-semibold lg:text-lg">
+                    Keyword overview with clickstream data.
+                  </span>
+                </div>
+                <div className="flex w-fit items-center gap-2 p-2">
                   <DatabaseIcon size={24} className="shrink-0" />
                   <span className="text-base font-semibold lg:text-lg">
                     Regularly updated by DataForSEO.
@@ -231,17 +238,17 @@ export default function HomePage() {
               <div className="mt-6 p-2">
                 <Link
                   href="/tool/keyword-research"
-                  className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
+                  className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition duration-300 hover:scale-105 active:scale-95 lg:text-lg"
                 >
                   Access Tool
                 </Link>
               </div>
             </div>
-            <div className="relative mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:max-h-[400px]">
+            <div className="group relative mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:max-h-[400px]">
               <Image
                 src={keywordResearchScreenshot}
                 alt="Keyword Research"
-                className="w-full rounded-md"
+                className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)]"
               />
             </div>
           </div>
