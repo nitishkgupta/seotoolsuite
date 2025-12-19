@@ -83,6 +83,7 @@ class DataForSEO {
     keyword: string,
     location_code: number,
     language_code: string = "any",
+    filters: Array<any> = [],
     limit: number = 50,
     offset: number = 0,
   ) {
@@ -94,6 +95,7 @@ class DataForSEO {
             keyword,
             location_code,
             ...(language_code !== "any" ? { language_code } : {}),
+            ...(filters && filters.length > 0 ? { filters } : {}),
             limit,
             offset,
             order_by: ["keyword_info.search_volume,desc"],

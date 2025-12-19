@@ -12,6 +12,25 @@ export type DataForSEOLanguage = {
   language_code: string;
 };
 
+export type DataForSEOKeywordFilters = {
+  minSearchVolume?: number;
+  maxSearchVolume?: number;
+  minCPC?: number;
+  maxCPC?: number;
+  minPPC?: number;
+  maxPPC?: number;
+  minKD?: number;
+  maxKD?: number;
+  includeKeyword?: string;
+  excludeKeyword?: string;
+  searchIntent?:
+    | "informational"
+    | "navigational"
+    | "commercial"
+    | "transactional"
+    | null;
+};
+
 /**
  * Get DataForSEO locations.
  */
@@ -78,4 +97,76 @@ export function getDataForSEOLanguageFromCode(
     languages.find((language) => language.language_code === language_code) ??
     null
   );
+}
+
+/**
+ * Build DataForSEO keyword filters input.
+ */
+export function buildDataForSEOKeywordFilters(
+  filters: DataForSEOKeywordFilters,
+): Array<any> {
+  if (Object.keys(filters).length > 0) {
+    const dfsFilters = [];
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (key === "minSearchVolume" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_info.search_volume", ">=", value]);
+      }
+
+      if (key === "maxSearchVolume" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_info.search_volume", "<=", value]);
+      }
+
+      if (key === "minCPC" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_info.cpc", ">=", value]);
+      }
+
+      if (key === "maxCPC" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_info.cpc", "<=", value]);
+      }
+
+      if (key === "minPPC" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_info.competition", ">=", value / 100]);
+      }
+
+      if (key === "maxPPC" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_info.competition", "<=", value / 100]);
+      }
+
+      if (key === "minKD" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_properties.keyword_difficulty", ">=", value]);
+      }
+
+      if (key === "maxKD" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_properties.keyword_difficulty", "<=", value]);
+      }
+
+      if (key === "includeKeyword" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword", "match", value]);
+      }
+
+      if (key === "excludeKeyword" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword", "not_match", value]);
+      }
+
+      if (key === "searchIntent" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["search_intent_info.main_intent", "=", value]);
+      }
+    }
+
+    return dfsFilters;
+  }
+
+  return [];
 }

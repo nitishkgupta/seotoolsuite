@@ -10,6 +10,7 @@ import {
   BinocularsIcon,
   BookOpenTextIcon,
   FileClockIcon,
+  FunnelIcon,
   InfoIcon,
   LanguagesIcon,
   MapPinIcon,
@@ -35,6 +36,7 @@ import {
   getDataForSEOLanguages,
   getDataForSEOLocationFromCode,
   getDataForSEOLanguageFromCode,
+  buildDataForSEOKeywordFilters,
 } from "@/utils/dataforseo";
 import Image from "next/image";
 import { getLocalStorageItem } from "@/utils/localStorage";
@@ -43,6 +45,9 @@ import DataForSEO from "@/services/DataForSEO";
 import { trackUmamiEvent } from "@/utils/umami";
 import useDFSBalance from "@/hooks/useDFSBalance";
 import KeywordOverview from "./components/KeywordOverview";
+import KeywordFilters, {
+  type KeywordFiltersInitialValues,
+} from "./components/KeywordFilters";
 
 type KeywordSuggestionItem = {
   id: number;
@@ -104,6 +109,12 @@ const KeywordResearchTool = () => {
     location_code?: string;
     language_code?: string;
   }>({});
+  const [activeKeywordFilters, setActiveKeywordFilters] =
+    useState<KeywordFiltersInitialValues>();
+  const hasActiveKeywordFilters: boolean =
+    activeKeywordFilters && Object.keys(activeKeywordFilters).length > 0
+      ? true
+      : false;
 
   const dfsUsername = getLocalStorageItem("DATAFORSEO_USERNAME");
   const dfsPassword = getLocalStorageItem("DATAFORSEO_PASSWORD");
@@ -168,7 +179,7 @@ const KeywordResearchTool = () => {
         headerAlign: "left",
         cellClassName: "min-h-12 relative group",
         renderCell: (params) => (
-          <>
+          <div className="py-2">
             {params.value}
             <Tooltip content="Check Keyword Overview">
               <button
@@ -180,12 +191,12 @@ const KeywordResearchTool = () => {
                     params.row.language_code,
                   )
                 }
-                className="absolute top-0 right-2 bottom-0 z-90 my-auto h-fit cursor-pointer rounded-md border border-slate-200 bg-white p-2 text-black opacity-0 shadow-xs transition duration-300 group-hover:opacity-100 hover:border-slate-400 focus-visible:opacity-100"
+                className="absolute top-0 right-2 bottom-0 z-90 my-auto h-fit cursor-pointer rounded-md border border-slate-200 bg-white p-2 text-black shadow-xs transition duration-300 group-hover:opacity-100 hover:border-slate-400 focus-visible:opacity-100 lg:opacity-0"
               >
                 <BookOpenTextIcon size={16} />
               </button>
             </Tooltip>
-          </>
+          </div>
         ),
       },
       {
@@ -392,6 +403,7 @@ const KeywordResearchTool = () => {
       keyword: string,
       location_code: string,
       language_code: string,
+      keywordFilters: KeywordFiltersInitialValues | undefined,
       limit: number,
       offset: number,
     ) => {
@@ -425,6 +437,9 @@ const KeywordResearchTool = () => {
       }
 
       try {
+        const dfsKeywordFilters = keywordFilters
+          ? buildDataForSEOKeywordFilters(keywordFilters)
+          : [];
         const DataForSEOService = new DataForSEO(
           dfsUsername,
           dfsPassword,
@@ -434,6 +449,7 @@ const KeywordResearchTool = () => {
           keyword,
           Number(location_code),
           language_code,
+          dfsKeywordFilters,
           limit,
           offset,
         );
@@ -539,15 +555,56 @@ const KeywordResearchTool = () => {
       }
 
       setCurrentPage(1);
+
       setFormInputData({
         keyword,
         location_code,
         language_code,
       });
+
       setKeywordOverviewInput({
         keyword,
         location_code,
         language_code,
+      });
+
+      setActiveKeywordFilters({
+        ...(formData.get("searchVolume-min") !== "" && {
+          minSearchVolume: Number(formData.get("searchVolume-min") as any),
+        }),
+        ...(formData.get("searchVolume-max") !== "" && {
+          maxSearchVolume: Number(formData.get("searchVolume-max") as any),
+        }),
+        ...(formData.get("cpc-min") !== "" && {
+          minCPC: Number(formData.get("cpc-min") as any),
+        }),
+        ...(formData.get("cpc-max") !== "" && {
+          maxCPC: Number(formData.get("cpc-max") as any),
+        }),
+        ...(formData.get("ppc-min") !== "" && {
+          minPPC: Number(formData.get("ppc-min") as any),
+        }),
+        ...(formData.get("ppc-max") !== "" && {
+          maxPPC: Number(formData.get("ppc-max") as any),
+        }),
+        ...(formData.get("kd-min") !== "" && {
+          minKD: Number(formData.get("kd-min") as any),
+        }),
+        ...(formData.get("kd-max") !== "" && {
+          maxKD: Number(formData.get("kd-max") as any),
+        }),
+        ...(formData.get("includeKeyword") !== "" &&
+          formData.get("includeKeyword") !== null && {
+            includeKeyword: formData.get("includeKeyword") as any,
+          }),
+        ...(formData.get("excludeKeyword") !== "" &&
+          formData.get("excludeKeyword") !== null && {
+            excludeKeyword: formData.get("excludeKeyword") as any,
+          }),
+        ...(formData.get("searchIntent") !== "" &&
+          formData.get("searchIntent") !== null && {
+            searchIntent: formData.get("searchIntent") as any,
+          }),
       });
     },
     [selectedLocationKey, selectedLanguageKey],
@@ -563,11 +620,18 @@ const KeywordResearchTool = () => {
         formInputData.keyword,
         formInputData.location_code,
         formInputData.language_code,
+        activeKeywordFilters,
         limit,
         offset,
       );
     }
-  }, [formInputData, getKeywordSuggestions, limit, offset]);
+  }, [
+    formInputData,
+    activeKeywordFilters,
+    getKeywordSuggestions,
+    limit,
+    offset,
+  ]);
 
   const handleRowClick = useCallback((params: any) => {
     setActiveKeywordData(params.row);
@@ -619,7 +683,7 @@ const KeywordResearchTool = () => {
               Generate keyword suggestions with multiple metrics.
             </div>
             {!dfsUsername || !dfsPassword ? (
-              <div className="mt-4 w-full rounded-md border-2 border-slate-200 bg-white p-2 md:w-1/2">
+              <div className="mt-4 w-full rounded-md border-2 border-slate-200 bg-white p-2 lg:w-1/2">
                 <Alert
                   color="warning"
                   variant="flat"
@@ -638,7 +702,7 @@ const KeywordResearchTool = () => {
               <div className="tool-input-form-container mt-8 w-full">
                 <Form
                   onSubmit={handleFormSubmit}
-                  className="tool-input-form mx-auto flex w-full flex-col items-center justify-start rounded-md border-2 border-slate-200 bg-white p-5 md:w-1/2"
+                  className="tool-input-form mx-auto flex w-full flex-col items-center justify-start rounded-md border-2 border-slate-200 bg-white p-5 lg:w-1/2 lg:min-w-[800px]"
                 >
                   {formError && (
                     <Alert
@@ -654,6 +718,7 @@ const KeywordResearchTool = () => {
                       variant="flat"
                       type="text"
                       label="Keyword"
+                      defaultValue={formInputData.keyword}
                       autoFocus
                       isRequired
                     />
@@ -702,13 +767,19 @@ const KeywordResearchTool = () => {
                       ))}
                     </Autocomplete>
                   </div>
+                  <div className="keyword-filters-container mt-3 w-full">
+                    <KeywordFilters
+                      defaultOpen={hasActiveKeywordFilters}
+                      initialValues={activeKeywordFilters}
+                    />
+                  </div>
                   <Button
                     color="primary"
                     variant="flat"
                     type="submit"
                     size="lg"
                     isLoading={isLoading}
-                    className="mt-2 w-full shrink-0"
+                    className="mt-3 w-full shrink-0"
                   >
                     Submit
                   </Button>
@@ -729,7 +800,7 @@ const KeywordResearchTool = () => {
                 </div>
                 <span>Keyword Research</span>
               </div>
-              <div className="flex h-full min-h-auto flex-row flex-wrap gap-2 gap-y-0 border-slate-200 px-4 md:min-h-16 md:items-center">
+              <div className="flex h-full min-h-auto flex-row flex-wrap gap-2 border-slate-200 px-4 md:min-h-16 md:items-center">
                 <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1">
                   <SearchIcon size={14} />
                   {formInputData.keyword}
@@ -749,6 +820,15 @@ const KeywordResearchTool = () => {
                       ?.language_name
                   }
                 </div>
+                {hasActiveKeywordFilters && (
+                  <Tooltip content="Filters Applied">
+                    <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1">
+                      <FunnelIcon size={14} />
+                      {activeKeywordFilters &&
+                        Object.keys(activeKeywordFilters).length}
+                    </div>
+                  </Tooltip>
+                )}
               </div>
             </div>
             <div className="flex h-full min-h-auto items-center gap-2 border-l-0 border-slate-200 px-4 md:min-h-16 md:border-l-2">
@@ -822,7 +902,10 @@ const KeywordResearchTool = () => {
               className="w-full shrink-0 scroll-m-8 lg:w-[550px] lg:max-w-1/3 xl:max-w-1/2"
               id="keyword-details"
             >
-              <KeywordDetails keywordData={activeKeywordData} />
+              <KeywordDetails
+                keywordData={activeKeywordData}
+                hideLanguage={formInputData.language_code !== "any"}
+              />
             </div>
           </div>
         </>
