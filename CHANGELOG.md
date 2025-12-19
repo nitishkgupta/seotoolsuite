@@ -1,5 +1,11 @@
 # SEOToolSuite Changelog
 
+## v0.5.0
+
+- Added "filters" to the keyword research tool, allowing users to refine keyword suggestions using selected criteria.
+- Many UI fixes and changes.
+- Update packages.
+
 ## v0.4.0
 
 - Added a "Keyword Overview" section that provides data for the seed/selected keyword, including clickstream insights.
