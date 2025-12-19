@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BadgeDollarSignIcon,
   BadgeQuestionMarkIcon,
@@ -97,8 +99,8 @@ const KeywordOverview = ({
 }) => {
   const { refreshDFSBalance } = useDFSBalance(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState<KeywordOverviewItem | null>();
-  const [error, setError] = useState<string | null>();
+  const [data, setData] = useState<KeywordOverviewItem | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const dfsUsername = getLocalStorageItem("DATAFORSEO_USERNAME");
   const dfsPassword = getLocalStorageItem("DATAFORSEO_PASSWORD");
@@ -262,7 +264,7 @@ const KeywordOverview = ({
               <BookOpenTextIcon size={20} />
               <span className="text-base lg:text-lg">Keyword Overview</span>
             </div>
-            <div className="flex items-stretch gap-2">
+            <div className="flex flex-wrap items-stretch gap-2">
               <div className="flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1">
                 <SearchIcon size={14} />
                 {data.keyword}
@@ -441,7 +443,7 @@ const KeywordOverview = ({
                   >
                     <RechartsTooltip
                       formatter={(value) => [
-                        `${value.toLocaleString(navigator.language)}`,
+                        `${value?.toLocaleString(navigator.language)}`,
                       ]}
                       labelFormatter={(_label: any, payload: any) =>
                         `${monthNames[payload[0].payload.month - 1]}, ${payload[0].payload.year}`
@@ -478,46 +480,70 @@ const KeywordOverview = ({
               {data.genderDistribution &&
               (data.genderDistribution.male !== null ||
                 data.genderDistribution.female !== null) ? (
-                <Tooltip
-                  className="p-0"
-                  content={
-                    <div className="flex min-w-52 items-stretch">
-                      <div className="flex min-w-10 flex-col gap-1 border-r-2 border-slate-200 px-3 py-2">
-                        <div className="font-medium">Male</div>
-                        <div className="max-w-60 text-sm">
-                          {Math.round(
-                            data.searchVolume *
-                              (data.genderDistribution.male / 100),
-                          ).toLocaleString(navigator.language)}{" "}
-                          ({data.genderDistribution.male ?? 0}%)
+                <>
+                  <Tooltip
+                    className="p-0"
+                    content={
+                      <div className="flex min-w-52 items-stretch">
+                        <div className="flex min-w-10 flex-col gap-1 border-r-2 border-slate-200 px-3 py-2">
+                          <div className="font-medium">Male</div>
+                          <div className="max-w-60 text-sm">
+                            {Math.round(
+                              data.searchVolume *
+                                (data.genderDistribution.male / 100),
+                            ).toLocaleString(navigator.language)}{" "}
+                            ({data.genderDistribution.male ?? 0}%)
+                          </div>
+                        </div>
+                        <div className="flex min-w-10 flex-col gap-1 px-3 py-2">
+                          <div className="font-medium">Female</div>
+                          <div className="max-w-60 text-sm">
+                            {Math.round(
+                              data.searchVolume *
+                                (data.genderDistribution.female / 100),
+                            ).toLocaleString(navigator.language)}{" "}
+                            ({data.genderDistribution.female ?? 0}%)
+                          </div>
                         </div>
                       </div>
-                      <div className="flex min-w-10 flex-col gap-1 px-3 py-2">
-                        <div className="font-medium">Female</div>
-                        <div className="max-w-60 text-sm">
-                          {Math.round(
-                            data.searchVolume *
-                              (data.genderDistribution.female / 100),
-                          ).toLocaleString(navigator.language)}{" "}
-                          ({data.genderDistribution.female ?? 0}%)
-                        </div>
+                    }
+                  >
+                    <div className="mt-4 flex items-center justify-between">
+                      <Image src={manIcon} alt="Male" className="w-10" />
+                      <div className="relative h-2 w-full shrink overflow-hidden rounded-full bg-pink-400">
+                        <div
+                          className={`scale-x-anim h-full border-white bg-blue-400 transition-all duration-500 ${data.genderDistribution.male > 0 && data.genderDistribution.male < 100 ? "border-r-2" : ""}`}
+                          style={{
+                            width: `${data.genderDistribution.male ?? 0}%`,
+                          }}
+                        ></div>
+                      </div>
+                      <Image src={womanIcon} alt="Female" className="w-10" />
+                    </div>
+                  </Tooltip>
+                  <div className="mt-2 grid grid-cols-2 items-stretch lg:hidden">
+                    <div className="flex flex-col items-start gap-1">
+                      <div className="font-medium">Male</div>
+                      <div className="max-w-60 text-sm">
+                        {Math.round(
+                          data.searchVolume *
+                            (data.genderDistribution.male / 100),
+                        ).toLocaleString(navigator.language)}{" "}
+                        ({data.genderDistribution.male ?? 0}%)
                       </div>
                     </div>
-                  }
-                >
-                  <div className="mt-4 flex items-center justify-between">
-                    <Image src={manIcon} alt="Male" className="w-10" />
-                    <div className="relative h-2 w-full shrink overflow-hidden rounded-full bg-pink-400">
-                      <div
-                        className={`scale-x-anim h-full border-white bg-blue-400 transition-all duration-500 ${data.genderDistribution.male > 0 && data.genderDistribution.male < 100 ? "border-r-2" : ""}`}
-                        style={{
-                          width: `${data.genderDistribution.male ?? 0}%`,
-                        }}
-                      ></div>
+                    <div className="flex flex-col items-end gap-1">
+                      <div className="font-medium">Female</div>
+                      <div className="max-w-60 text-right text-sm">
+                        {Math.round(
+                          data.searchVolume *
+                            (data.genderDistribution.female / 100),
+                        ).toLocaleString(navigator.language)}{" "}
+                        ({data.genderDistribution.female ?? 0}%)
+                      </div>
                     </div>
-                    <Image src={womanIcon} alt="Female" className="w-10" />
                   </div>
-                </Tooltip>
+                </>
               ) : (
                 <div className="mt-4 text-xl lg:text-3xl">N/A</div>
               )}

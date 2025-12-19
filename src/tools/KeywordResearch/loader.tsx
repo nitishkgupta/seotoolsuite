@@ -1,3 +1,5 @@
+"use client";
+
 import { Skeleton } from "@heroui/react";
 import { memo } from "react";
 

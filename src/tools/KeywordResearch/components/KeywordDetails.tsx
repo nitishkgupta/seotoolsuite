@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BadgeDollarSign,
   BadgeDollarSignIcon,
@@ -75,8 +77,10 @@ const monthNames = [
 
 const KeywordDetails = ({
   keywordData,
+  hideLanguage = false,
 }: {
   keywordData: KeywordSuggestionItem | null;
+  hideLanguage?: boolean;
 }) => {
   const monthlySearches = [...(keywordData?.monthlySearches || [])].reverse();
   return keywordData ? (
@@ -87,7 +91,7 @@ const KeywordDetails = ({
             <Search size={20} />
             <span className="text-base md:text-lg">Keyword</span>
           </div>
-          {typeof keywordData.language_code === "string" && (
+          {typeof keywordData.language_code === "string" && !hideLanguage && (
             <div className="flex flex-row items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-4 py-2">
               <Languages size={16} />
               <span className="text-sm">
@@ -327,7 +331,7 @@ const KeywordDetails = ({
               />
               <RechartsTooltip
                 formatter={(value) => [
-                  `${value.toLocaleString(navigator.language)}`,
+                  `${value?.toLocaleString(navigator.language)}`,
                 ]}
                 labelFormatter={(_label: any, payload: any) =>
                   `${monthNames[payload[0].payload.month - 1]}, ${payload[0].payload.year}`
