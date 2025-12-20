@@ -1,5 +1,12 @@
 # SEOToolSuite Changelog
 
+## v0.5.2
+
+- Homepage responsive design fixes.
+- Update search intent filter to checkbox from radio.
+- Update include/exclude keyword filter to like/not_like.
+- Minor UI fixes and changes.
+
 ## v0.5.0
 
 - Added "filters" to the keyword research tool, allowing users to refine keyword suggestions using selected criteria.
