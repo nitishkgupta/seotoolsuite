@@ -28,7 +28,7 @@ export default function HomePage() {
   return (
     <div className="homepage relative flex w-full flex-col">
       <div className="header-container sticky top-0 z-50 border-b border-slate-200 bg-white/10 backdrop-blur-lg">
-        <header className="header mx-auto flex w-full max-w-[1400px] flex-row items-center justify-between px-4 py-4 lg:px-0">
+        <header className="header mx-auto flex w-full max-w-[1432px] flex-row items-center justify-between px-4 py-4">
           <div className="header-left flex items-center">
             <Link href="/">
               <Image
@@ -77,7 +77,7 @@ export default function HomePage() {
             GitHub
           </Link>
         </div>
-        <div className="relative mt-8 max-h-[300px] overflow-hidden px-2 lg:max-h-[700px]">
+        <div className="relative mt-8 max-h-[300px] overflow-hidden px-4 lg:max-h-[700px]">
           <Image
             src={keywordResearchScreenshot}
             alt="SEOToolSuite"
@@ -86,8 +86,8 @@ export default function HomePage() {
           <div className="absolute right-0 bottom-0 left-0 z-10 mx-auto h-14 max-w-[1200px] bg-linear-to-b from-white/5 to-white"></div>
         </div>
       </section>
-      <section className="w-full border-b-2 border-slate-200 bg-white px-4 py-8 lg:px-0">
-        <div className="mx-auto flex w-full max-w-[1400px] flex-col items-start">
+      <section className="w-full border-b-2 border-slate-200 bg-white py-8">
+        <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
           <h2 className="text-3xl font-semibold text-sky-950 lg:text-4xl">
             Powered by DataForSEO
           </h2>
@@ -132,8 +132,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="w-full border-b-2 border-slate-200 bg-white px-4 py-8 lg:px-0">
-        <div className="mx-auto flex w-full max-w-[1400px] flex-col items-start">
+      <section className="w-full border-b-2 border-slate-200 bg-white py-8">
+        <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
           <h2 className="text-3xl font-semibold text-sky-950 lg:text-4xl">
             Free & Open Source
           </h2>
@@ -188,8 +188,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="w-full border-b-2 border-slate-200 bg-white px-4 py-10 lg:px-0">
-        <div className="mx-auto flex w-full max-w-[1400px] flex-col items-start">
+      <section className="w-full border-b-2 border-slate-200 bg-white py-10">
+        <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
           <div className="flex w-full flex-col items-start justify-between gap-4 lg:flex-row lg:gap-0">
             <div className="lg:pt-8">
               <h2 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-4xl">
