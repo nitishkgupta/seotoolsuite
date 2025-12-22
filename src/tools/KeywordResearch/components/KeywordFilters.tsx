@@ -69,7 +69,7 @@ const KeywordFilters = ({
         >
           <ChevronDownIcon
             size={16}
-            className={`transition-all duration-300 ${filtersVisible ? "rotate-180" : ""}`}
+            className={`transition-all ${filtersVisible ? "rotate-180" : ""}`}
           />
         </Button>
       </div>

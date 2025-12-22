@@ -9,6 +9,7 @@
 /* Root */
 :root {
   interpolate-size: allow-keywords;
+  --default-transition-duration: 0.3s;
 }
 
 /* Body */

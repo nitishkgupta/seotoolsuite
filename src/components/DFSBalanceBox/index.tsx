@@ -13,7 +13,7 @@ function DFSBalanceBox() {
 
   return (
     <>
-      <div className="my-1 w-0.5 bg-slate-200"></div>
+      <div className="my-1 hidden w-0.5 bg-slate-200 lg:block"></div>
       <Tooltip content="DataForSEO Balance">
         <div className="flex items-center rounded-md border-2 border-slate-200">
           <div className="flex h-full items-center border-slate-200 px-2">

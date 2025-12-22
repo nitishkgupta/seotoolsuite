@@ -1,5 +1,13 @@
 # SEOToolSuite Changelog
 
+## v1.0.0
+
+- Added **data caching** support powered by Upstash Redis, allowing users to cache DataForSEO results and reduce unnecessary API costs. Caching is available for keyword suggestions and keyword overview data.
+- Update homepage for minor changes.
+- Update settings page for UI changes and improvements.
+- Update keyword research tool to show status of 'Sandbox Mode' and 'Caching' in UI.
+- Other minor UI fixes and changes.
+
 ## v0.5.2
 
 - Homepage responsive design fixes.

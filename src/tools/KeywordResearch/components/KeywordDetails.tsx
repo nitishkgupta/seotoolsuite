@@ -165,7 +165,7 @@ const KeywordDetails = ({
           </div>
           <div className="flex items-center gap-2 overflow-auto p-4">
             {typeof keywordData.searchVolume === "number" ? (
-              <span>
+              <span className="min-h-[26px]">
                 {keywordData.searchVolume.toLocaleString(navigator.language)}
               </span>
             ) : (

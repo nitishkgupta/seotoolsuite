@@ -117,11 +117,14 @@ const KeywordOverview = ({
 
       if (sessionCacheData) {
         setData(JSON.parse(sessionCacheData));
+        setIsLoading(false);
+        setError(null);
         return;
       }
 
       const dfsSandboxEnabled =
         getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
+      const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
       setIsLoading(true);
       setError(null);
 
@@ -150,6 +153,7 @@ const KeywordOverview = ({
           dfsUsername,
           dfsPassword,
           dfsSandboxEnabled,
+          cachingEnabled,
         );
         const apiResponse = await DataForSEOService.getKeywordsOverview(
           [keyword],
@@ -233,7 +237,7 @@ const KeywordOverview = ({
         console.error(error);
         setIsLoading(false);
 
-        if (error.response.data.tasks[0].status_message) {
+        if (error?.response?.data?.tasks[0]?.status_message) {
           setError(
             `DataForSEO API error: ${error.response.data.tasks[0].status_message}`,
           );
@@ -257,7 +261,7 @@ const KeywordOverview = ({
       {error && (
         <Alert color="danger" variant="flat" title={error} className="mb-2" />
       )}
-      {!isLoading && data && (
+      {!isLoading && !error && data && (
         <div className="keyword-overview w-full rounded-md border-2 border-slate-200 bg-white">
           <div className="flex flex-col items-stretch justify-between gap-3 border-b-2 border-slate-200 px-4 py-3 lg:flex-row">
             <div className="flex items-center gap-2">

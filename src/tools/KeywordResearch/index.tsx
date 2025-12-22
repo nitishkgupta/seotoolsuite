@@ -9,6 +9,8 @@ import {
   BadgeDollarSignIcon,
   BinocularsIcon,
   BookOpenTextIcon,
+  BoxIcon,
+  DatabaseZapIcon,
   FileClockIcon,
   FunnelIcon,
   InfoIcon,
@@ -86,6 +88,8 @@ const KeywordResearchTool = () => {
   const { refreshDFSBalance } = useDFSBalance(false);
 
   const limit: number = 250;
+  const [dfsSandboxEnabled, setDFSSandboxEnabled] = useState<boolean>(false);
+  const [cachingEnabled, setCachingEnabled] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<KeywordSuggestionData>([]);
   const [isDataPageActive, setIsDataPageActive] = useState<boolean>(false);
@@ -191,7 +195,7 @@ const KeywordResearchTool = () => {
                     params.row.language_code,
                   )
                 }
-                className="absolute top-0 right-2 bottom-0 z-90 my-auto h-fit cursor-pointer rounded-md border border-slate-200 bg-white p-2 text-black shadow-xs transition duration-300 group-hover:opacity-100 hover:border-slate-400 focus-visible:opacity-100 lg:opacity-0"
+                className="absolute top-0 right-2 bottom-0 z-90 my-auto h-fit cursor-pointer rounded-md border border-slate-200 bg-white p-2 text-black shadow-xs transition group-hover:opacity-100 hover:border-slate-400 focus-visible:opacity-100 lg:opacity-0"
               >
                 <BookOpenTextIcon size={16} />
               </button>
@@ -296,12 +300,12 @@ const KeywordResearchTool = () => {
             {typeof params.value !== "number" ? (
               <div>N/A</div>
             ) : (
-              <div className="flex flex-row items-center gap-1">
+              <div className="flex flex-row flex-wrap items-center gap-1 py-2">
                 {params.value.toLocaleString(navigator.language)}
                 {params.row.searchVolumeTrend.yearly ? (
                   <Tooltip content="Search Volume Trend (Yearly)">
                     <span
-                      className={`ml-1 text-xs ${params.row.searchVolumeTrend.yearly > 0 ? "text-green-500" : "text-red-500"}`}
+                      className={`text-xs ${params.row.searchVolumeTrend.yearly > 0 ? "text-green-500" : "text-red-500"}`}
                     >
                       {params.row.searchVolumeTrend.yearly > 0 ? "+" : ""}
                       {params.row.searchVolumeTrend.yearly.toLocaleString(
@@ -409,6 +413,7 @@ const KeywordResearchTool = () => {
     ) => {
       const dfsSandboxEnabled =
         getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
+      const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
       setIsDataPageActive(false);
       setIsLoading(true);
 
@@ -444,6 +449,7 @@ const KeywordResearchTool = () => {
           dfsUsername,
           dfsPassword,
           dfsSandboxEnabled,
+          cachingEnabled,
         );
         const apiResponse = await DataForSEOService.getKeywordSuggestions(
           keyword,
@@ -527,7 +533,7 @@ const KeywordResearchTool = () => {
       } catch (error: any) {
         console.error(error);
         setIsLoading(false);
-        if (error.response.data.tasks[0].status_message) {
+        if (error?.response?.data?.tasks[0]?.status_message) {
           setFormError(
             `DataForSEO API error: ${error.response.data.tasks[0].status_message}`,
           );
@@ -646,13 +652,36 @@ const KeywordResearchTool = () => {
       ?.classList.add("Mui-selected");
   }, []);
 
+  useEffect(() => {
+    setDFSSandboxEnabled(getLocalStorageItem("DATAFORSEO_SANDBOX") === "true");
+    setCachingEnabled(getLocalStorageItem("CACHING_ENABLED") === "true");
+  }, []);
+
   return (
     <div className="keyword-research-tool w-full">
       {!isDataPageActive && !isLoading && (
         <>
           {data && data.length > 0 && (
             <div className="flex h-16 w-full flex-row items-center justify-between border-b-2 border-slate-200 bg-white">
-              <div></div>
+              <div className="flex items-center gap-2 px-4">
+                {dfsSandboxEnabled && (
+                  <Tooltip
+                    content="Sandbox Mode Enabled"
+                    placement="bottom-end"
+                  >
+                    <div className="flex w-fit items-center gap-1 rounded-md border-2 border-slate-200 bg-white px-2 py-2">
+                      <BoxIcon size={18} />
+                    </div>
+                  </Tooltip>
+                )}
+                {cachingEnabled && (
+                  <Tooltip content="Caching Enabled" placement="bottom-end">
+                    <div className="flex w-fit items-center gap-1 rounded-md border-2 border-slate-200 bg-white px-2 py-2">
+                      <DatabaseZapIcon size={18} />
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
               <div className="flex h-full items-center gap-2 border-l-2 border-slate-200 px-4">
                 <Button
                   color="default"
@@ -666,6 +695,28 @@ const KeywordResearchTool = () => {
               </div>
             </div>
           )}
+          {(dfsSandboxEnabled || cachingEnabled) &&
+            (!data || data.length === 0) && (
+              <div className="flex items-center gap-2 px-4 py-4">
+                {dfsSandboxEnabled && (
+                  <Tooltip
+                    content="Sandbox Mode Enabled"
+                    placement="bottom-end"
+                  >
+                    <div className="flex w-fit items-center gap-1 rounded-md border-2 border-slate-200 bg-white px-2 py-2">
+                      <BoxIcon size={18} />
+                    </div>
+                  </Tooltip>
+                )}
+                {cachingEnabled && (
+                  <Tooltip content="Caching Enabled" placement="bottom-end">
+                    <div className="flex w-fit items-center gap-1 rounded-md border-2 border-slate-200 bg-white px-2 py-2">
+                      <DatabaseZapIcon size={18} />
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
+            )}
           <div className="tool-form-container relative flex w-full flex-col items-center justify-center px-4 py-8 md:px-8 md:py-16">
             <div
               className={
@@ -793,14 +844,14 @@ const KeywordResearchTool = () => {
       {isDataPageActive && (
         <>
           <div className="flex w-full flex-col justify-between gap-4 border-b-2 border-slate-200 bg-white py-4 md:flex-row md:gap-0 md:py-0">
-            <div className="flex h-full min-h-16 flex-col items-stretch gap-4 md:flex-row md:gap-2">
-              <div className="flex h-full min-h-auto items-center gap-2 border-r-0 border-slate-200 px-4 md:min-h-16 md:border-r-2">
+            <div className="flex h-full min-h-16 w-full flex-col items-stretch gap-4 md:flex-row md:gap-2">
+              <div className="flex h-full min-h-auto shrink-0 items-center gap-2 border-r-0 border-slate-200 px-4 md:min-h-16 md:border-r-2">
                 <div className="relative rounded-full bg-sky-950 p-2">
                   <TelescopeIcon size={20} className="text-white" />
                 </div>
                 <span>Keyword Research</span>
               </div>
-              <div className="flex h-full min-h-auto flex-row flex-wrap gap-2 border-slate-200 px-4 md:min-h-16 md:items-center">
+              <div className="flex h-full min-h-auto w-full flex-row flex-wrap gap-2 border-slate-200 px-4 md:min-h-16 md:items-center">
                 <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1">
                   <SearchIcon size={14} />
                   {formInputData.keyword}
@@ -829,6 +880,22 @@ const KeywordResearchTool = () => {
                     </div>
                   </Tooltip>
                 )}
+                <div className="flex items-center gap-2 md:ml-auto">
+                  {dfsSandboxEnabled && (
+                    <Tooltip content="Sandbox Mode Enabled">
+                      <div className="flex w-fit items-center gap-1 rounded-md border-2 border-slate-200 bg-white px-2 py-2">
+                        <BoxIcon size={18} />
+                      </div>
+                    </Tooltip>
+                  )}
+                  {cachingEnabled && (
+                    <Tooltip content="Caching Enabled">
+                      <div className="flex w-fit items-center gap-1 rounded-md border-2 border-slate-200 bg-white px-2 py-2">
+                        <DatabaseZapIcon size={18} />
+                      </div>
+                    </Tooltip>
+                  )}
+                </div>
               </div>
             </div>
             <div className="flex h-full min-h-auto items-center gap-2 border-l-0 border-slate-200 px-4 md:min-h-16 md:border-l-2">

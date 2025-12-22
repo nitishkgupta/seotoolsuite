@@ -1,6 +1,7 @@
 import {
   BookOpenTextIcon,
-  DatabaseIcon,
+  CalendarSyncIcon,
+  DatabaseZapIcon,
   FilterIcon,
   PackageIcon,
   ScaleIcon,
@@ -41,7 +42,7 @@ export default function HomePage() {
           <div className="header-right h-fit">
             <Link
               href="/tool/keyword-research"
-              className="block rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition duration-300 hover:scale-105 active:scale-95 lg:text-lg"
+              className="block rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
             >
               Get Started
             </Link>
@@ -64,14 +65,14 @@ export default function HomePage() {
         <div className="mt-5 flex items-center justify-center gap-3">
           <Link
             href="/tool/keyword-research"
-            className="flex items-center gap-1 rounded-md border-2 border-sky-950 bg-sky-950 px-4 py-2 text-sm font-medium text-white transition duration-300 hover:scale-105 active:scale-95 lg:text-base"
+            className="flex items-center gap-1 rounded-md border-2 border-sky-950 bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-base"
           >
             Get Started
           </Link>
           <Link
             href="https://github.com/nitishkgupta/seotoolsuite"
             target="_blank"
-            className="flex items-center gap-1 rounded-md border-2 border-sky-950 px-4 py-2 text-sm font-medium text-sky-950 transition duration-300 hover:scale-105 active:scale-95 lg:text-base"
+            className="flex items-center gap-1 rounded-md border-2 border-sky-950 px-4 py-2 text-sm font-medium text-sky-950 transition hover:scale-105 active:scale-95 lg:text-base"
           >
             <Image src={githubIcon} alt="GitHub" className="w-5" />
             GitHub
@@ -207,7 +208,7 @@ export default function HomePage() {
                 <div className="flex w-fit items-center gap-2 p-2">
                   <TextSearchIcon size={24} className="shrink-0" />
                   <span className="text-base font-semibold lg:text-lg">
-                    Access thousands of keywords, no limit.
+                    Access billions of keywords, no limit.
                   </span>
                 </div>
                 <div className="flex w-fit items-center gap-2 p-2">
@@ -229,16 +230,22 @@ export default function HomePage() {
                   </span>
                 </div>
                 <div className="flex w-fit items-center gap-2 p-2">
-                  <DatabaseIcon size={24} className="shrink-0" />
+                  <CalendarSyncIcon size={24} className="shrink-0" />
                   <span className="text-base font-semibold lg:text-lg">
-                    Regularly updated by DataForSEO.
+                    Data updated regularly.
+                  </span>
+                </div>
+                <div className="flex w-fit items-center gap-2 p-2">
+                  <DatabaseZapIcon size={24} className="shrink-0" />
+                  <span className="text-base font-semibold lg:text-lg">
+                    Caching support (Upstash Redis)
                   </span>
                 </div>
               </div>
               <div className="mt-6 p-2">
                 <Link
                   href="/tool/keyword-research"
-                  className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition duration-300 hover:scale-105 active:scale-95 lg:text-lg"
+                  className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
                 >
                   Access Tool
                 </Link>
