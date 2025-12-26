@@ -298,7 +298,7 @@ const KeywordDetails = ({
                 <Tooltip
                   content={
                     <div className="flex flex-col gap-1 p-1">
-                      <div className="font-medium">High of Top Page Bid</div>
+                      <div className="font-medium">High Top of Page Bid</div>
                       <div className="max-w-70 text-sm">
                         Maximum bid for the ad to be displayed at the top of the
                         first page.
