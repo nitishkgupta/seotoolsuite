@@ -390,6 +390,7 @@ const KeywordResearchTool = () => {
         display: "flex",
         flex: 1,
         minWidth: 80,
+        maxWidth: 80,
         align: "left",
         headerAlign: "left",
         valueFormatter: (value: number) =>
@@ -564,7 +565,6 @@ const KeywordResearchTool = () => {
           });
 
           setData(tableData);
-          setIsDataPageActive(true);
           setActiveKeywordData(tableData[0]);
           window.setTimeout(() => {
             document
@@ -573,6 +573,7 @@ const KeywordResearchTool = () => {
           }, 100);
         }
 
+        setIsDataPageActive(true);
         if (!dfsSandboxEnabled) refreshDFSBalance();
       } catch (error: any) {
         console.error(error);
