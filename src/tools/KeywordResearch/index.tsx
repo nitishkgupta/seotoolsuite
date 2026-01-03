@@ -702,6 +702,12 @@ const KeywordResearchTool = () => {
     setCachingEnabled(getLocalStorageItem("CACHING_ENABLED") === "true");
   }, []);
 
+  const onDataGridPaginationModelChange = useCallback(() => {
+    document.getElementById("keywords-table")?.scrollIntoView({
+      behavior: "instant",
+    });
+  }, []);
+
   return (
     <div className="keyword-research-tool w-full">
       {!isDataPageActive && !isLoading && (
@@ -991,6 +997,7 @@ const KeywordResearchTool = () => {
                   showToolbar
                   disableRowSelectionOnClick
                   getRowHeight={getMUIRowHeight}
+                  onPaginationModelChange={onDataGridPaginationModelChange}
                 />
                 <div className="mt-4 w-full text-center text-base text-black/70">
                   Showing {offset + 1}-{offset + data.length} results of{" "}
