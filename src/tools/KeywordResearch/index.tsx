@@ -410,10 +410,9 @@ const KeywordResearchTool = () => {
         headerName: "KD",
         description: "SEO Difficulty",
         type: "number",
-        align: "left",
+        align: "center",
         headerAlign: "left",
         display: "flex",
-        cellClassName: "datagrid-cell-p0",
         flex: 1,
         minWidth: 64,
         maxWidth: 80,
@@ -425,11 +424,11 @@ const KeywordResearchTool = () => {
             ) : (
               <Tooltip content={getDifficultyText(params.value)}>
                 <div
-                  className="relative flex h-full w-full items-center justify-center py-4 text-center font-medium"
+                  className="relative flex h-8 w-12 items-center justify-center rounded-md border text-center font-medium"
                   style={{
                     backgroundColor: `color-mix(in oklch, ${getDifficultyColor(params.value)}, white 90%)`,
                     color: getDifficultyColor(params.value),
-                    borderColor: getDifficultyColor(params.value),
+                    borderColor: `color-mix(in oklch, ${getDifficultyColor(params.value)}, white 50%)`,
                   }}
                 >
                   <span className="relative z-20">{params.value}</span>
