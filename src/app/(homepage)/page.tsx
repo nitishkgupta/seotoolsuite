@@ -280,7 +280,7 @@ export default function HomePage() {
         </div>
       </section>
       <footer className="flex flex-col items-center bg-slate-50 pt-4 text-base lg:text-lg">
-        <span>© 2025 SEOToolSuite.</span>
+        <span>© 2026 SEOToolSuite.</span>
         <div className="mt-1 text-center">
           Made with ❤️ in{" "}
           <Image
