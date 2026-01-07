@@ -1,5 +1,10 @@
 # SEOToolSuite Changelog
 
+## v1.0.5
+
+- Update year in homepage footer.
+- Remove year from license.
+
 ## v1.0.4
 
 - Minor UI improvements and fixes.
