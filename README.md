@@ -13,9 +13,15 @@ SEOToolSuite provides **free and open source SEO tools for everyone**. Keyword r
 
 Find thousands of keyword suggestions with multiple metrics like search volume, trend, search intent, seo difficulty, and more. Uses DataForSEO APIs.
 
+### Keyword Complete
+
+![Keyword Complete](docs/assets/keyword-complete-screenshot.png)
+
+Generate hundreds (or even thousands!) of long-tail keywords for free using Google autocomplete. No API needed!
+
 ## 📋 Prerequisites
 
-- [DataForSEO API](https://dataforseo.com/?aff=44560)
+- [DataForSEO API](https://dataforseo.com/?aff=44560) (for tools using DataForSEO APIs)
 - Node.js (for localhost/server deployment)
 
 ## 🚀 Getting Started
@@ -24,7 +30,7 @@ You can use the cloud version of SEOToolSuite for free or run it on your localho
 
 ### Using The Cloud Version
 
-Simply head to [https://seotoolsuite.nitishkgupta.com](https://seotoolsuite.nitishkgupta.com), add required API credentials (DataForSEO API), and use the tools right-away!
+Simply head to [https://seotoolsuite.nitishkgupta.com](https://seotoolsuite.nitishkgupta.com), and use the tools right-away!
 
 ### Running On Localhost/Server
 

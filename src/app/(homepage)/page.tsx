@@ -3,12 +3,15 @@ import {
   CalendarSyncIcon,
   DatabaseZapIcon,
   FilterIcon,
+  GiftIcon,
+  LightbulbIcon,
   PackageIcon,
   ScaleIcon,
   SmilePlusIcon,
   SparklesIcon,
   TelescopeIcon,
   TextSearchIcon,
+  TypeOutlineIcon,
   WalletIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -16,6 +19,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import logoImage from "@/assets/images/logo.png";
 import keywordResearchScreenshot from "@/assets/images/keyword-research-screenshot.png";
+import keywordCompleteScreenshot from "@/assets/images/keyword-complete-screenshot.png";
 import dfsLogoImage from "@/assets/images/dataforseo-logo.png";
 import githubIcon from "@/assets/images/github-icon.svg";
 
@@ -255,6 +259,85 @@ export default function HomePage() {
               <Image
                 src={keywordResearchScreenshot}
                 alt="Keyword Research"
+                className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+              />
+              <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
+                <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-chevron-down-icon lucide-chevron-down"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="w-full border-b-2 border-slate-200 bg-white py-10">
+        <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
+          <div className="flex w-full flex-col items-start justify-between gap-8 lg:flex-row lg:gap-0">
+            <div className="order-2 lg:order-1 lg:pt-8">
+              <h2 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-4xl">
+                <LightbulbIcon
+                  size={52}
+                  className="rounded-md bg-sky-950 p-3 text-white"
+                />
+                Keyword Complete
+              </h2>
+              <p className="mt-4 block max-w-[500px] p-2 text-lg text-black/80">
+                Generate hundreds (or even thousands!) of long-tail keywords for
+                free using Google autocomplete. No API needed!
+              </p>
+              <div className="mt-4 flex flex-col">
+                <div className="flex w-fit items-center gap-2 p-2">
+                  <TextSearchIcon size={24} className="shrink-0" />
+                  <span className="text-base font-semibold lg:text-lg">
+                    Relevant long-tail keywords.
+                  </span>
+                </div>
+
+                <div className="flex w-fit items-center gap-2 p-2">
+                  <GiftIcon size={24} className="shrink-0" />
+                  <span className="text-base font-semibold lg:text-lg">
+                    Completely free to use, no limits.
+                  </span>
+                </div>
+                <div className="flex w-fit items-center gap-2 p-2">
+                  <FilterIcon size={24} className="shrink-0" />
+                  <span className="text-base font-semibold lg:text-lg">
+                    Filter & sort data.
+                  </span>
+                </div>
+                <div className="flex w-fit items-center gap-2 p-2">
+                  <TypeOutlineIcon size={24} className="shrink-0" />
+                  <span className="text-base font-semibold lg:text-lg">
+                    Uses multiple prefixes and suffixes.
+                  </span>
+                </div>
+              </div>
+              <div className="mt-6 p-2">
+                <Link
+                  href="/tool/keyword-complete"
+                  className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
+                >
+                  Access Tool
+                </Link>
+              </div>
+            </div>
+            <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
+              <Image
+                src={keywordCompleteScreenshot}
+                alt="Keyword Complete"
                 className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">

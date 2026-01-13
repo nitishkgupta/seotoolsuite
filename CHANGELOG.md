@@ -1,5 +1,12 @@
 # SEOToolSuite Changelog
 
+## v2.0.0
+
+- Added **Keyword Complete** tool. Generate long-tail keywords for free using Google autocomplete.
+- Added more columns in **Keyword Research** tool's DataGrid for filter and export.
+- Minor UI improvements and changes.
+- Update packages.
+
 ## v1.0.5
 
 - Update year in homepage footer.
