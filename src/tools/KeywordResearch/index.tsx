@@ -135,6 +135,13 @@ const KeywordResearchTool = () => {
       pagination: {
         paginationModel: { page: 0, pageSize: 25 },
       },
+      columns: {
+        columnVisibilityModel: {
+          searchVolumeTrendYearly: false,
+          lowTopPageBid: false,
+          highTopPageBid: false,
+        },
+      },
     };
   }, []);
 
@@ -162,6 +169,17 @@ const KeywordResearchTool = () => {
     },
     [],
   );
+
+  const getTogglableColumns = useCallback((columns: GridColDef[]) => {
+    const hiddenColumns = [
+      "searchVolumeTrendYearly",
+      "lowTopPageBid",
+      "highTopPageBid",
+    ];
+    return columns
+      .filter((column) => !hiddenColumns.includes(column.field))
+      .map((column) => column.field);
+  }, []);
 
   const tableColumns: GridColDef[] = useMemo(
     () => [
@@ -327,6 +345,12 @@ const KeywordResearchTool = () => {
         ),
       },
       {
+        field: "searchVolumeTrendYearly",
+        headerName: "Search Volume Trend (Yearly)",
+        type: "number",
+        valueGetter: (_value, row) => row.searchVolumeTrend.yearly,
+      },
+      {
         field: "cpc",
         headerName: "CPC",
         description: "Avg. Cost Per Click",
@@ -381,6 +405,16 @@ const KeywordResearchTool = () => {
             )}
           </>
         ),
+      },
+      {
+        field: "lowTopPageBid",
+        headerName: "Low Top of Page Bid",
+        type: "number",
+      },
+      {
+        field: "highTopPageBid",
+        headerName: "High Top of Page Bid",
+        type: "number",
       },
       {
         field: "ppc",
@@ -997,6 +1031,18 @@ const KeywordResearchTool = () => {
                   disableRowSelectionOnClick
                   getRowHeight={getMUIRowHeight}
                   onPaginationModelChange={onDataGridPaginationModelChange}
+                  slotProps={{
+                    toolbar: {
+                      csvOptions: {
+                        allColumns: true,
+                        fileName: `SEOToolSuite-keyword-suggestions-${formInputData.keyword}-${formInputData.location_code}-${formInputData.language_code}-${currentPage}`,
+                        escapeFormulas: false,
+                      },
+                    },
+                    columnsManagement: {
+                      getTogglableColumns,
+                    },
+                  }}
                 />
                 <div className="mt-4 w-full text-center text-base text-black/70">
                   Showing {offset + 1}-{offset + data.length} results of{" "}
