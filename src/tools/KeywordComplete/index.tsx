@@ -211,9 +211,7 @@ const KeywordCompleteTool = () => {
 
       try {
         trackUmamiEvent("keyword-complete", {
-          location:
-            getDataForSEOLocationFromCode(Number(locationCode))
-              ?.location_name ?? "N/A",
+          location: locationCode,
         });
       } catch (error) {
         console.error(error);
