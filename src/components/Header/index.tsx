@@ -2,7 +2,12 @@
 
 import { APP_VERSION } from "@/env";
 import { Tooltip } from "@heroui/react";
-import { SettingsIcon, SmilePlusIcon, TelescopeIcon } from "lucide-react";
+import {
+  SettingsIcon,
+  SmilePlusIcon,
+  TelescopeIcon,
+  LightbulbIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -41,14 +46,22 @@ function Header() {
             v{APP_VERSION}
           </Link>
         </div>
-        <div className="header-right flex h-fit flex-wrap items-stretch gap-2">
-          <div className="flex items-center overflow-hidden rounded-md border-2 border-slate-200">
+        <div className="header-right flex h-fit flex-wrap items-stretch justify-center gap-2">
+          <div className="flex w-full items-center gap-1 overflow-hidden rounded-md border-2 border-slate-200 p-1 md:w-fit">
             <Tooltip content="Keyword Research">
               <Link
                 href="/tool/keyword-research"
-                className={`flex items-center gap-1 px-2 py-2 text-sky-950 transition hover:bg-slate-100 ${isToolActive("keyword-research") ? "bg-sky-950/10!" : ""}`}
+                className={`flex w-full items-center justify-center gap-1 rounded-md px-2 py-2 text-black transition hover:bg-slate-100 md:w-fit ${isToolActive("keyword-research") ? "bg-sky-950/10!" : ""}`}
               >
                 <TelescopeIcon size={24} />
+              </Link>
+            </Tooltip>
+            <Tooltip content="Keyword Complete">
+              <Link
+                href="/tool/keyword-complete"
+                className={`flex w-full items-center justify-center gap-1 rounded-md px-2 py-2 text-black transition hover:bg-slate-100 md:w-fit ${isToolActive("keyword-complete") ? "bg-sky-950/10!" : ""}`}
+              >
+                <LightbulbIcon size={24} />
               </Link>
             </Tooltip>
           </div>
