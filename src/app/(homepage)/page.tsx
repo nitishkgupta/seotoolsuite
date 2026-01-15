@@ -45,7 +45,7 @@ export default function HomePage() {
           </div>
           <div className="header-right h-fit">
             <Link
-              href="/tool/keyword-research"
+              href="/tools"
               className="block rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
             >
               Get Started
@@ -68,7 +68,7 @@ export default function HomePage() {
         </div>
         <div className="mt-5 flex items-center justify-center gap-3">
           <Link
-            href="/tool/keyword-research"
+            href="/tools"
             className="flex items-center gap-1 rounded-md border-2 border-sky-950 bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-base"
           >
             Get Started
