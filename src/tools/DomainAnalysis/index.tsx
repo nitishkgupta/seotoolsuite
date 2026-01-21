@@ -3,13 +3,7 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import DomainAnalysisLoader from "./loader";
-import {
-  BoxIcon,
-  DatabaseZapIcon,
-  GlobeIcon,
-  MapPinIcon,
-  LanguagesIcon,
-} from "lucide-react";
+import { BoxIcon, DatabaseZapIcon, GlobeIcon } from "lucide-react";
 import {
   Alert,
   Autocomplete,

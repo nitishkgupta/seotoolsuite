@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import dfsCredentialsAtom, {
   type DFSCredentials,
 } from "@/atoms/dfsCredentialsAtom";
@@ -11,6 +11,7 @@ export default function useDFSCredentials() {
   const [credentials, setCredentials] = useAtom(dfsCredentialsAtom);
   const [isLoading, setIsLoading] = useState(!credentials);
   const [error, setError] = useState<string | null>(null);
+  const fetchInitiatedRef = useRef<boolean | null>(null);
 
   const fetchCredentials = useCallback(async () => {
     setIsLoading(true);
@@ -46,11 +47,12 @@ export default function useDFSCredentials() {
     return null;
   }, [setCredentials]);
 
-  useEffect(() => {
+  if (fetchInitiatedRef.current === null) {
+    fetchInitiatedRef.current = true;
     if (!credentials) {
       fetchCredentials();
     }
-  }, [credentials, fetchCredentials]);
+  }
 
   return {
     credentials,

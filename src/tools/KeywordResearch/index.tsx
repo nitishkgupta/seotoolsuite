@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { getDifficultyColor, getDifficultyText } from "@/utils/difficulty";
 import KeywordResearchLoader from "./loader";
@@ -93,8 +93,20 @@ const KeywordResearchTool = () => {
     useDFSCredentials();
 
   const limit: number = 250;
-  const [dfsSandboxEnabled, setDFSSandboxEnabled] = useState<boolean>(false);
-  const [cachingEnabled, setCachingEnabled] = useState<boolean>(false);
+  const dfsSandboxEnabled = useMemo(
+    () =>
+      typeof window !== "undefined"
+        ? getLocalStorageItem("DATAFORSEO_SANDBOX") === "true"
+        : false,
+    [],
+  );
+  const cachingEnabled = useMemo(
+    () =>
+      typeof window !== "undefined"
+        ? getLocalStorageItem("CACHING_ENABLED") === "true"
+        : false,
+    [],
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<KeywordSuggestionData>([]);
   const [isDataPageActive, setIsDataPageActive] = useState<boolean>(false);
@@ -608,7 +620,7 @@ const KeywordResearchTool = () => {
         language_code,
       });
 
-      setActiveKeywordFilters({
+      const filters: KeywordFiltersInitialValues = {
         ...(formData.get("searchVolume-min") !== "" && {
           minSearchVolume: Number(formData.get("searchVolume-min") as any),
         }),
@@ -645,33 +657,21 @@ const KeywordResearchTool = () => {
           formData.getAll("searchIntents[]").length > 0 && {
           searchIntents: formData.getAll("searchIntents[]") as any,
         }),
-      });
-    },
-    [selectedLocationKey, selectedLanguageKey],
-  );
+      };
 
-  useEffect(() => {
-    if (
-      formInputData.keyword &&
-      formInputData.location_code &&
-      formInputData.language_code
-    ) {
+      setActiveKeywordFilters(filters);
+
       getKeywordSuggestions(
-        formInputData.keyword,
-        formInputData.location_code,
-        formInputData.language_code,
-        activeKeywordFilters,
+        keyword,
+        location_code,
+        language_code,
+        filters,
         limit,
         offset,
       );
-    }
-  }, [
-    formInputData,
-    activeKeywordFilters,
-    getKeywordSuggestions,
-    limit,
-    offset,
-  ]);
+    },
+    [selectedLocationKey, selectedLanguageKey, getKeywordSuggestions, limit, offset],
+  );
 
   const handleRowClick = useCallback((params: any) => {
     setActiveKeywordData(params.row);
@@ -684,11 +684,6 @@ const KeywordResearchTool = () => {
     document
       .querySelector(`.MuiDataGrid-row[data-id="${params.row.id}"]`)
       ?.classList.add("Mui-selected");
-  }, []);
-
-  useEffect(() => {
-    setDFSSandboxEnabled(getLocalStorageItem("DATAFORSEO_SANDBOX") === "true");
-    setCachingEnabled(getLocalStorageItem("CACHING_ENABLED") === "true");
   }, []);
 
   const onDataGridPaginationModelChange = useCallback(() => {
