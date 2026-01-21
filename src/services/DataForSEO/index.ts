@@ -1,6 +1,15 @@
 import axios from "axios";
 import UpstashRedis from "@/services/UpstashRedis";
 import { getLocalStorageItem } from "@/utils/localStorage";
+import {
+  transformKeywordSuggestions,
+  transformKeywordOverview,
+  transformDomainKeywords,
+  type TransformResult,
+  type TransformedKeywordSuggestion,
+  type TransformedKeywordOverview,
+  type TransformedDomainKeyword,
+} from "./transformers";
 
 /**
  * DataForSEO service.
@@ -84,6 +93,11 @@ class DataForSEO {
         },
       );
 
+      console.log("[DataForSEO] getUserData response:", {
+        status: apiResponse.status,
+        tasks_count: apiResponse.data?.tasks?.length ?? 0,
+      });
+
       return apiResponse.data;
     } catch (error) {
       throw error;
@@ -106,7 +120,13 @@ class DataForSEO {
         },
       );
 
-      return apiResponse.data?.tasks[0]?.result?.[0]?.money?.balance ?? null;
+      const balance = apiResponse.data?.tasks[0]?.result?.[0]?.money?.balance ?? null;
+      console.log("[DataForSEO] getAccountBalance response:", {
+        status: apiResponse.status,
+        balance,
+      });
+
+      return balance;
     } catch (error) {
       throw error;
     }
@@ -114,6 +134,7 @@ class DataForSEO {
 
   /**
    * Get keyword suggestions.
+   * Returns transformed data with only the fields needed by the UI.
    */
   async getKeywordSuggestions(
     keyword: string,
@@ -122,15 +143,15 @@ class DataForSEO {
     filters: Array<any> = [],
     limit: number = 50,
     offset: number = 0,
-  ) {
+  ): Promise<TransformResult<TransformedKeywordSuggestion[]>> {
+    const cacheKey = btoa(
+      `keyword-suggestions-v2-${keyword}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
+    );
+
     if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
       let cachedData;
       try {
-        cachedData = await this.upstashRedis.getData(
-          btoa(
-            `keyword-suggestions-${keyword}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
-          ),
-        );
+        cachedData = await this.upstashRedis.getData(cacheKey);
       } catch (error) {
         console.error(error);
       }
@@ -158,23 +179,29 @@ class DataForSEO {
               `${this.USERNAME}:${this.PASSWORD}`,
             ).toString("base64")}`,
           },
+          timeout: 60000,
         },
       );
 
-      const taskStatusCode = apiResponse?.data?.tasks[0]?.status_code ?? null;
+      const transformed = transformKeywordSuggestions(apiResponse.data);
+
+      console.log("[DataForSEO] getKeywordSuggestions response:", {
+        status: apiResponse.status,
+        task_status_code: transformed.statusCode,
+        result_count: transformed.data.length,
+        total_results: transformed.totalResults,
+      });
 
       if (
         !this.sandboxEnabled &&
         this.enableCaching &&
         this.upstashRedis &&
-        taskStatusCode === 20000
+        transformed.statusCode === 20000
       ) {
         try {
           this.upstashRedis.setData(
-            btoa(
-              `keyword-suggestions-${keyword}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
-            ),
-            JSON.stringify(apiResponse.data),
+            cacheKey,
+            JSON.stringify(transformed),
             60 * 60 * 24 * this.cachingDuration,
           );
         } catch (error) {
@@ -182,7 +209,7 @@ class DataForSEO {
         }
       }
 
-      return apiResponse.data;
+      return transformed;
     } catch (error) {
       throw error;
     }
@@ -190,21 +217,22 @@ class DataForSEO {
 
   /**
    * Get keywords overview.
+   * Returns transformed data with only the fields needed by the UI.
    */
   async getKeywordsOverview(
     keywords: string[],
     location_code: number,
     language_code: string = "en",
     includeClickstreamData: boolean = false,
-  ) {
+  ): Promise<TransformResult<TransformedKeywordOverview[]>> {
+    const cacheKey = btoa(
+      `keywords-overview-v2-${JSON.stringify(keywords)}-${location_code}-${language_code}-${includeClickstreamData}`,
+    );
+
     if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
       let cachedData;
       try {
-        cachedData = await this.upstashRedis.getData(
-          btoa(
-            `keywords-overview-${JSON.stringify(keywords)}-${location_code}-${language_code}-${includeClickstreamData}`,
-          ),
-        );
+        cachedData = await this.upstashRedis.getData(cacheKey);
       } catch (error) {
         console.error(error);
       }
@@ -229,23 +257,28 @@ class DataForSEO {
               `${this.USERNAME}:${this.PASSWORD}`,
             ).toString("base64")}`,
           },
+          timeout: 60000,
         },
       );
 
-      const taskStatusCode = apiResponse?.data?.tasks[0]?.status_code ?? null;
+      const transformed = transformKeywordOverview(apiResponse.data);
+
+      console.log("[DataForSEO] getKeywordsOverview response:", {
+        status: apiResponse.status,
+        task_status_code: transformed.statusCode,
+        result_count: transformed.data.length,
+      });
 
       if (
         !this.sandboxEnabled &&
         this.enableCaching &&
         this.upstashRedis &&
-        taskStatusCode === 20000
+        transformed.statusCode === 20000
       ) {
         try {
           this.upstashRedis.setData(
-            btoa(
-              `keywords-overview-${JSON.stringify(keywords)}-${location_code}-${language_code}-${includeClickstreamData}`,
-            ),
-            JSON.stringify(apiResponse.data),
+            cacheKey,
+            JSON.stringify(transformed),
             60 * 60 * 24 * this.cachingDuration,
           );
         } catch (error) {
@@ -253,7 +286,7 @@ class DataForSEO {
         }
       }
 
-      return apiResponse.data;
+      return transformed;
     } catch (error) {
       throw error;
     }
@@ -261,6 +294,7 @@ class DataForSEO {
 
   /**
    * Get keywords for a domain (ranked keywords).
+   * Returns transformed data with only the fields needed by the UI.
    */
   async getKeywordsForDomain(
     target: string,
@@ -268,15 +302,15 @@ class DataForSEO {
     language_code: string = "en",
     limit: number = 20,
     offset: number = 0,
-  ) {
+  ): Promise<TransformResult<TransformedDomainKeyword[]>> {
+    const cacheKey = btoa(
+      `keywords-for-domain-v2-${target}-${location_code}-${language_code}-${limit}-${offset}`,
+    );
+
     if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
       let cachedData;
       try {
-        cachedData = await this.upstashRedis.getData(
-          btoa(
-            `keywords-for-domain-${target}-${location_code}-${language_code}-${limit}-${offset}`,
-          ),
-        );
+        cachedData = await this.upstashRedis.getData(cacheKey);
       } catch (error) {
         console.error(error);
       }
@@ -301,7 +335,6 @@ class DataForSEO {
       ];
 
       console.log("[DataForSEO] Request URL:", `${this.API_BASE_URL}/keywords_data/google_ads/keywords_for_site/live`);
-      console.log("[DataForSEO] Request payload:", JSON.stringify(requestPayload, null, 2));
 
       const apiResponse = await axios.post(
         `${this.API_BASE_URL}/keywords_data/google_ads/keywords_for_site/live`,
@@ -317,28 +350,25 @@ class DataForSEO {
         },
       );
 
-      console.log("[DataForSEO] Response status:", apiResponse.status);
-      console.log("[DataForSEO] Response tasks:", JSON.stringify(apiResponse.data?.tasks?.[0] ? {
-        status_code: apiResponse.data.tasks[0].status_code,
-        status_message: apiResponse.data.tasks[0].status_message,
-        result_count: apiResponse.data.tasks[0].result_count,
-        time: apiResponse.data.tasks[0].time,
-      } : "No tasks", null, 2));
+      const transformed = transformDomainKeywords(apiResponse.data);
 
-      const taskStatusCode = apiResponse?.data?.tasks[0]?.status_code ?? null;
+      console.log("[DataForSEO] getKeywordsForDomain response:", {
+        status: apiResponse.status,
+        task_status_code: transformed.statusCode,
+        result_count: transformed.data.length,
+        total_results: transformed.totalResults,
+      });
 
       if (
         !this.sandboxEnabled &&
         this.enableCaching &&
         this.upstashRedis &&
-        taskStatusCode === 20000
+        transformed.statusCode === 20000
       ) {
         try {
           this.upstashRedis.setData(
-            btoa(
-              `keywords-for-domain-${target}-${location_code}-${language_code}-${limit}-${offset}`,
-            ),
-            JSON.stringify(apiResponse.data),
+            cacheKey,
+            JSON.stringify(transformed),
             60 * 60 * 24 * this.cachingDuration,
           );
         } catch (error) {
@@ -346,11 +376,12 @@ class DataForSEO {
         }
       }
 
-      return apiResponse.data;
-    } catch (error: any) {
-      console.error("[DataForSEO] API Error:", error.message);
-      console.error("[DataForSEO] Error code:", error.code);
-      console.error("[DataForSEO] Response data:", error.response?.data);
+      return transformed;
+    } catch (error: unknown) {
+      const err = error as { message?: string; code?: string; response?: { data?: unknown } };
+      console.error("[DataForSEO] API Error:", err.message);
+      console.error("[DataForSEO] Error code:", err.code);
+      console.error("[DataForSEO] Response data:", err.response?.data);
       throw error;
     }
   }

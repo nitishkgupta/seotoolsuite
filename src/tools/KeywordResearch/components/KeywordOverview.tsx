@@ -157,77 +157,23 @@ const KeywordOverview = ({
           dfsSandboxEnabled,
           cachingEnabled,
         );
-        const apiResponse = await DataForSEOService.getKeywordsOverview(
+        const result = await DataForSEOService.getKeywordsOverview(
           [keyword],
           location_code,
           language_code,
           true,
         );
 
-        const taskStatusCode = apiResponse?.tasks[0]?.status_code;
-        const taskStatusMessage =
-          apiResponse?.tasks[0]?.status_message ?? "Unknown error.";
-
-        if (taskStatusCode !== 20000) {
+        if (result.statusCode !== 20000) {
           setIsLoading(false);
-          setError(`DataForSEO API error: ${taskStatusMessage}`);
+          setError(`DataForSEO API error: Status code ${result.statusCode}`);
           return;
         }
 
-        const apiData = apiResponse?.tasks[0]?.result[0] ?? null;
-        const keywordOverviewItem =
-          apiData && apiData.items && apiData.items.length > 0
-            ? apiData?.items[0]
-            : null;
         setIsLoading(false);
 
-        if (keywordOverviewItem) {
-          const keywordOverviewData: KeywordOverviewItem = {
-            keyword: keywordOverviewItem.keyword,
-            location_code: keywordOverviewItem.location_code,
-            language_code: keywordOverviewItem.language_code,
-            searchVolume: keywordOverviewItem.keyword_info.search_volume,
-            ppc: keywordOverviewItem.keyword_info.competition,
-            ppcLevel: keywordOverviewItem.keyword_info.competition_level,
-            cpc: keywordOverviewItem.keyword_info.cpc,
-            lowTopPageBid:
-              keywordOverviewItem.keyword_info.low_top_of_page_bid ?? null,
-            highTopPageBid:
-              keywordOverviewItem.keyword_info.high_top_of_page_bid ?? null,
-            monthlySearches: keywordOverviewItem.keyword_info.monthly_searches,
-            searchVolumeTrend:
-              keywordOverviewItem.keyword_info?.search_volume_trend ?? null,
-            searchIntent:
-              keywordOverviewItem.search_intent_info?.main_intent ?? null,
-            keywordDifficulty:
-              keywordOverviewItem.keyword_properties?.keyword_difficulty ??
-              null,
-            avgBacklinksData: keywordOverviewItem.avg_backlinks_info
-              ? {
-                  backlinks:
-                    keywordOverviewItem.avg_backlinks_info.backlinks ?? null,
-                  dofollowBacklinks:
-                    keywordOverviewItem.avg_backlinks_info.dofollow ?? null,
-                  referringPages:
-                    keywordOverviewItem.avg_backlinks_info.referring_pages ??
-                    null,
-                  referringDomains:
-                    keywordOverviewItem.avg_backlinks_info.referring_domains ??
-                    null,
-                  pageRank:
-                    keywordOverviewItem.avg_backlinks_info.rank ?? null,
-                  domainRank:
-                    keywordOverviewItem.avg_backlinks_info.main_domain_rank ??
-                    null,
-                }
-              : undefined,
-            genderDistribution:
-              keywordOverviewItem?.clickstream_keyword_info
-                ?.gender_distribution ?? null,
-            ageDistribution:
-              keywordOverviewItem?.clickstream_keyword_info?.age_distribution ??
-              null,
-          };
+        if (result.data && result.data.length > 0) {
+          const keywordOverviewData: KeywordOverviewItem = result.data[0];
 
           setData(keywordOverviewData);
           if (!dfsSandboxEnabled) {
@@ -243,16 +189,17 @@ const KeywordOverview = ({
         }
 
         if (!dfsSandboxEnabled) refreshDFSBalance();
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(error);
         setIsLoading(false);
+        const err = error as { message?: string; response?: { data?: { tasks?: Array<{ status_message?: string }> } } };
 
-        if (error?.response?.data?.tasks[0]?.status_message) {
+        if (err?.response?.data?.tasks?.[0]?.status_message) {
           setError(
-            `DataForSEO API error: ${error.response.data.tasks[0].status_message}`,
+            `DataForSEO API error: ${err.response.data.tasks[0].status_message}`,
           );
         } else {
-          setError(error.message);
+          setError(err.message ?? "An error occurred");
         }
       }
     };

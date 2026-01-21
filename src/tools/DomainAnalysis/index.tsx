@@ -202,7 +202,7 @@ const DomainAnalysisTool = () => {
           dfsSandboxEnabled,
           cachingEnabled,
         );
-        const apiResponse = await DataForSEOService.getKeywordsForDomain(
+        const result = await DataForSEOService.getKeywordsForDomain(
           domain,
           Number(location_code),
           language_code,
@@ -210,37 +210,22 @@ const DomainAnalysisTool = () => {
           0,
         );
 
-        const taskStatusCode = apiResponse?.tasks[0]?.status_code;
-        const taskStatusMessage =
-          apiResponse?.tasks[0]?.status_message ?? "Unknown error.";
-
-        if (taskStatusCode !== 20000) {
+        if (result.statusCode !== 20000) {
           setIsLoading(false);
-          setFormError(`DataForSEO API error: ${taskStatusMessage}`);
+          setFormError(`DataForSEO API error: Status code ${result.statusCode}`);
           return;
         }
 
-        const resultItems = apiResponse?.tasks[0]?.result ?? [];
-        console.log("[DomainAnalysis] Full API response:", JSON.stringify(apiResponse, null, 2));
-        console.log("[DomainAnalysis] Result items count:", resultItems.length);
         setIsLoading(false);
 
-        if (resultItems && resultItems.length > 0) {
-          const tableData: DomainKeywordData = [];
-          let rowId = 1;
-
-          resultItems.slice(0, 20).forEach((item: any) => {
-            tableData.push({
-              id: rowId,
-              keyword: item.keyword,
-              searchVolume: item.search_volume ?? null,
-              competition: typeof item.competition_index === "number" 
-                ? item.competition_index / 100 
-                : null,
-              cpc: item.cpc ?? null,
-            });
-            rowId++;
-          });
+        if (result.data && result.data.length > 0) {
+          const tableData: DomainKeywordData = result.data.slice(0, 20).map((item, index) => ({
+            id: index + 1,
+            keyword: item.keyword,
+            searchVolume: item.searchVolume ?? null,
+            competition: item.competition ?? null,
+            cpc: item.cpc ?? null,
+          }));
 
           setData(tableData);
           setAnalyzedDomain(domain);
@@ -251,12 +236,13 @@ const DomainAnalysisTool = () => {
 
         setIsDataPageActive(true);
         if (!dfsSandboxEnabled) refreshDFSBalance();
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(error);
         setIsLoading(false);
-        if (error?.response?.data?.tasks[0]?.status_message) {
+        const err = error as { message?: string; response?: { data?: { tasks?: Array<{ status_message?: string }> } } };
+        if (err?.response?.data?.tasks?.[0]?.status_message) {
           setFormError(
-            `DataForSEO API error: ${error.response.data.tasks[0].status_message}`,
+            `DataForSEO API error: ${err.response.data.tasks[0].status_message}`,
           );
         } else {
           setFormError(

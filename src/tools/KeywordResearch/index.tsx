@@ -528,7 +528,7 @@ const KeywordResearchTool = () => {
           dfsSandboxEnabled,
           cachingEnabled,
         );
-        const apiResponse = await DataForSEOService.getKeywordSuggestions(
+        const result = await DataForSEOService.getKeywordSuggestions(
           keyword,
           Number(location_code),
           language_code,
@@ -537,71 +537,20 @@ const KeywordResearchTool = () => {
           offset,
         );
 
-        const taskStatusCode = apiResponse?.tasks[0]?.status_code;
-        const taskStatusMessage =
-          apiResponse?.tasks[0]?.status_message ?? "Unknown error.";
-
-        if (taskStatusCode !== 20000) {
+        if (result.statusCode !== 20000) {
           setIsLoading(false);
-          setFormError(`DataForSEO API error: ${taskStatusMessage}`);
+          setFormError(`DataForSEO API error: Status code ${result.statusCode}`);
           return;
         }
 
-        const data = apiResponse?.tasks[0]?.result[0] ?? null;
         setIsLoading(false);
 
-        if (data && data.items && data.items.length > 0) {
-          const totalCount = data.total_count;
-          setTotalResults(totalCount);
-          const tableData: KeywordSuggestionData = [];
-          let rowId = 1 + offset;
-
-          data.items.forEach((keywordSuggestionItem: any) => {
-            tableData.push({
-              id: rowId,
-              keyword: keywordSuggestionItem.keyword,
-              location_code: keywordSuggestionItem.location_code,
-              language_code: keywordSuggestionItem.language_code,
-              searchVolume: keywordSuggestionItem.keyword_info.search_volume,
-              ppc: keywordSuggestionItem.keyword_info.competition,
-              ppcLevel: keywordSuggestionItem.keyword_info.competition_level,
-              cpc: keywordSuggestionItem.keyword_info.cpc,
-              lowTopPageBid:
-                keywordSuggestionItem.keyword_info.low_top_of_page_bid ?? null,
-              highTopPageBid:
-                keywordSuggestionItem.keyword_info.high_top_of_page_bid ?? null,
-              monthlySearches:
-                keywordSuggestionItem.keyword_info.monthly_searches,
-              searchVolumeTrend:
-                keywordSuggestionItem.keyword_info?.search_volume_trend ?? null,
-              searchIntent:
-                keywordSuggestionItem.search_intent_info?.main_intent ?? null,
-              keywordDifficulty:
-                keywordSuggestionItem.keyword_properties?.keyword_difficulty ??
-                null,
-              avgBacklinksData: keywordSuggestionItem.avg_backlinks_info
-                ? {
-                    backlinks:
-                      keywordSuggestionItem.avg_backlinks_info.backlinks ??
-                      null,
-                    dofollowBacklinks:
-                      keywordSuggestionItem.avg_backlinks_info.dofollow ?? null,
-                    referringPages:
-                      keywordSuggestionItem.avg_backlinks_info.referring_pages ??
-                      null,
-                    referringDomains:
-                      keywordSuggestionItem.avg_backlinks_info
-                        .referring_domains ?? null,
-                    pageRank:
-                      keywordSuggestionItem.avg_backlinks_info.rank ?? null,
-                    domainRank:
-                      keywordSuggestionItem.avg_backlinks_info
-                        .main_domain_rank ?? null,
-                  }
-                : undefined,
-            });
-            rowId++;
-          });
+        if (result.data && result.data.length > 0) {
+          setTotalResults(result.totalResults);
+          const tableData: KeywordSuggestionData = result.data.map((item, index) => ({
+            ...item,
+            id: index + 1 + offset,
+          }));
 
           setData(tableData);
           setActiveKeywordData(tableData[0]);
@@ -614,15 +563,16 @@ const KeywordResearchTool = () => {
 
         setIsDataPageActive(true);
         if (!dfsSandboxEnabled) refreshDFSBalance();
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(error);
         setIsLoading(false);
-        if (error?.response?.data?.tasks[0]?.status_message) {
+        const err = error as { message?: string; response?: { data?: { tasks?: Array<{ status_message?: string }> } } };
+        if (err?.response?.data?.tasks?.[0]?.status_message) {
           setFormError(
-            `DataForSEO API error: ${error.response.data.tasks[0].status_message}`,
+            `DataForSEO API error: ${err.response.data.tasks[0].status_message}`,
           );
         } else {
-          setFormError(error.message);
+          setFormError(err.message ?? "An error occurred");
         }
       }
     },
