@@ -106,7 +106,7 @@ const KeywordResearchTool = () => {
   const offset = (currentPage - 1) * limit;
   const totalPages = Math.ceil(totalResults / limit);
   const [selectedLocationKey, setSelectedLocationKey] =
-    useState<string>("2356");
+    useState<string>("2036");
   const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>("en");
   const [formInputData, setFormInputData] = useState<{
     keyword?: string;
@@ -579,23 +579,26 @@ const KeywordResearchTool = () => {
               keywordDifficulty:
                 keywordSuggestionItem.keyword_properties?.keyword_difficulty ??
                 null,
-              avgBacklinksData: {
-                backlinks:
-                  keywordSuggestionItem.avg_backlinks_info?.backlinks ?? null,
-                dofollowBacklinks:
-                  keywordSuggestionItem.avg_backlinks_info?.dofollow ?? null,
-                referringPages:
-                  keywordSuggestionItem.avg_backlinks_info?.referring_pages ??
-                  null,
-                referringDomains:
-                  keywordSuggestionItem.avg_backlinks_info?.referring_domains ??
-                  null,
-                pageRank:
-                  keywordSuggestionItem.avg_backlinks_info?.rank ?? null,
-                domainRank:
-                  keywordSuggestionItem.avg_backlinks_info?.main_domain_rank ??
-                  null,
-              },
+              avgBacklinksData: keywordSuggestionItem.avg_backlinks_info
+                ? {
+                    backlinks:
+                      keywordSuggestionItem.avg_backlinks_info.backlinks ??
+                      null,
+                    dofollowBacklinks:
+                      keywordSuggestionItem.avg_backlinks_info.dofollow ?? null,
+                    referringPages:
+                      keywordSuggestionItem.avg_backlinks_info.referring_pages ??
+                      null,
+                    referringDomains:
+                      keywordSuggestionItem.avg_backlinks_info
+                        .referring_domains ?? null,
+                    pageRank:
+                      keywordSuggestionItem.avg_backlinks_info.rank ?? null,
+                    domainRank:
+                      keywordSuggestionItem.avg_backlinks_info
+                        .main_domain_rank ?? null,
+                  }
+                : undefined,
             });
             rowId++;
           });

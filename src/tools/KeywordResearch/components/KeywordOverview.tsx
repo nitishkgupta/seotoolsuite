@@ -202,21 +202,25 @@ const KeywordOverview = ({
             keywordDifficulty:
               keywordOverviewItem.keyword_properties?.keyword_difficulty ??
               null,
-            avgBacklinksData: {
-              backlinks:
-                keywordOverviewItem.avg_backlinks_info?.backlinks ?? null,
-              dofollowBacklinks:
-                keywordOverviewItem.avg_backlinks_info?.dofollow ?? null,
-              referringPages:
-                keywordOverviewItem.avg_backlinks_info?.referring_pages ?? null,
-              referringDomains:
-                keywordOverviewItem.avg_backlinks_info?.referring_domains ??
-                null,
-              pageRank: keywordOverviewItem.avg_backlinks_info?.rank ?? null,
-              domainRank:
-                keywordOverviewItem.avg_backlinks_info?.main_domain_rank ??
-                null,
-            },
+            avgBacklinksData: keywordOverviewItem.avg_backlinks_info
+              ? {
+                  backlinks:
+                    keywordOverviewItem.avg_backlinks_info.backlinks ?? null,
+                  dofollowBacklinks:
+                    keywordOverviewItem.avg_backlinks_info.dofollow ?? null,
+                  referringPages:
+                    keywordOverviewItem.avg_backlinks_info.referring_pages ??
+                    null,
+                  referringDomains:
+                    keywordOverviewItem.avg_backlinks_info.referring_domains ??
+                    null,
+                  pageRank:
+                    keywordOverviewItem.avg_backlinks_info.rank ?? null,
+                  domainRank:
+                    keywordOverviewItem.avg_backlinks_info.main_domain_rank ??
+                    null,
+                }
+              : undefined,
             genderDistribution:
               keywordOverviewItem?.clickstream_keyword_info
                 ?.gender_distribution ?? null,
