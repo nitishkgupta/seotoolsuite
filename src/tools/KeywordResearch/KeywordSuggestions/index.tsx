@@ -474,6 +474,7 @@ const KeywordSuggestionsTool = ({
                 </Tooltip>
                 <Tooltip content="Keyword Overview">
                   <Link
+                    prefetch={false}
                     href={`/tool/keyword-research/overview?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
                     target="_blank"
                     className="keyword-action border-r-1 border-slate-200 p-2 text-black/80 transition"
@@ -483,6 +484,7 @@ const KeywordSuggestionsTool = ({
                 </Tooltip>
                 <Tooltip content="Autocomplete Suggestions">
                   <Link
+                    prefetch={false}
                     href={`/tool/keyword-research/autocomplete?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
                     target="_blank"
                     className="keyword-action rounded-r-md p-2 text-black transition"
