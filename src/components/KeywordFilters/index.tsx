@@ -40,9 +40,11 @@ export type KeywordFiltersInitialValues = {
 const KeywordFilters = ({
   defaultOpen = false,
   initialValues = {},
+  activeFiltersCount,
 }: {
   defaultOpen?: boolean;
   initialValues?: KeywordFiltersInitialValues;
+  activeFiltersCount?: number;
 }) => {
   const [filtersVisible, setFiltersVisible] = useState<boolean>(defaultOpen);
   const [initialValuesState, setInitialValuesState] =
@@ -60,6 +62,11 @@ const KeywordFilters = ({
         >
           <FunnelIcon size={16} />
           <span>Filters</span>
+          {typeof activeFiltersCount === "number" && activeFiltersCount > 0 && (
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-xs font-medium">
+              {activeFiltersCount}
+            </div>
+          )}
         </button>
         <Button
           isIconOnly

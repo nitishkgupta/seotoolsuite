@@ -1,7 +1,7 @@
 {
   "name": "seotoolsuite",
   "type": "module",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -23,7 +23,8 @@
     "postcss": "^8.5.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "recharts": "^3.5.1"
+    "recharts": "^3.5.1",
+    "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",

@@ -41,7 +41,7 @@ function SettingsComponent() {
     useState<boolean>(false);
 
   const handleDFSCredentialsFormSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
+    event: React.SyntheticEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

@@ -1,5 +1,6 @@
 import DataForSEOLocationsData from "@/data/dataforseo-locations-data.json";
 import DataForSEOLanguagesData from "@/data/dataforseo-languages-data.json";
+import { MONTH_NAMES } from "@/constants";
 
 export type DataForSEOLocation = {
   location_name: string;
@@ -64,14 +65,18 @@ export function getDataForSEOLocationFromCode(
 /**
  * Get DataForSEO languages.
  */
-export function getDataForSEOLanguages(): DataForSEOLanguage[] {
-  const languages: DataForSEOLanguage[] = [
-    {
+export function getDataForSEOLanguages(
+  includeAnyLanguage: boolean = false,
+): DataForSEOLanguage[] {
+  const languages: DataForSEOLanguage[] = [];
+  const languagesData = DataForSEOLanguagesData.tasks[0].result;
+
+  if (includeAnyLanguage) {
+    languages.push({
       language_name: "Any Language",
       language_code: "any",
-    },
-  ];
-  const languagesData = DataForSEOLanguagesData.tasks[0].result;
+    });
+  }
 
   languagesData.forEach((language: any) => {
     languages.push({
@@ -163,6 +168,34 @@ export function buildDataForSEOKeywordFilters(
     }
 
     return dfsFilters;
+  }
+
+  return [];
+}
+
+/**
+ * Format monthly searches.
+ */
+export function formatMonthlySearches(
+  monthlySearches: {
+    year: number;
+    month: number;
+    search_volume: number;
+  }[],
+): {
+  year: number;
+  month: number;
+  search_volume: number;
+  monthLabel: string;
+  monthWithYearLabel: string;
+}[] {
+  if (monthlySearches.length > 0) {
+    const reversedMonthlySearches = [...monthlySearches].reverse();
+    return reversedMonthlySearches.map((item) => ({
+      ...item,
+      monthLabel: MONTH_NAMES[item.month - 1],
+      monthWithYearLabel: `${MONTH_NAMES[item.month - 1]} '${item.year % 100}`,
+    }));
   }
 
   return [];

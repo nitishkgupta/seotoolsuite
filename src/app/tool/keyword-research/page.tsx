@@ -1,14 +1,5 @@
-import { Metadata } from "next";
-import KeywordResearchTool from "@/tools/KeywordResearch";
-
-export const metadata: Metadata = {
-  title: "Keyword Research | SEOToolSuite",
-};
+import { redirect } from "next/navigation";
 
 export default function KeywordResearchPage() {
-  return (
-    <div className="keyword-research-tool">
-      <KeywordResearchTool />
-    </div>
-  );
+  redirect("/tool/keyword-research/overview");
 }

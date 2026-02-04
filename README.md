@@ -9,15 +9,23 @@ SEOToolSuite provides **free and open source SEO tools for everyone**. Keyword r
 
 ### Keyword Research
 
-![Keyword Research](docs/assets/keyword-research-screenshot.png)
+#### Keyword Overview
 
-Find thousands of keyword suggestions with multiple metrics like search volume, trend, search intent, seo difficulty, and more. Uses DataForSEO APIs.
+![Keyword Overview Tool](docs/assets/keyword-overview-screenshot.png)
 
-### Keyword Complete
+The Keyword Overview tool gives a quick snapshot of a keyword’s performance, including search volume, intent, CPC, competition, trends, and audience insights - helping you evaluate keyword potential and plan your SEO strategy faster.
 
-![Keyword Complete](docs/assets/keyword-complete-screenshot.png)
+#### Keyword Suggestions
 
-Generate hundreds (or even thousands!) of long-tail keywords for free using Google autocomplete. No API needed!
+![Keyword Suggestions Tool](docs/assets/keyword-suggestions-screenshot.png)
+
+The Keyword Suggestions tool generates a large list of relevant keyword ideas based on your seed keyword. It provides key metrics like search volume, intent, CPC, competition, and difficulty, helping you discover new keyword opportunities and expand your SEO strategy.
+
+#### Keyword Autocomplete
+
+![Keyword Autocomplete Tool](docs/assets/keyword-autocomplete-screenshot.png)
+
+The Keyword Autocomplete tool generates long-tail keyword ideas using Google autocomplete data. It helps you discover real search queries, identify content opportunities, and expand your keyword research quickly.
 
 ## 📋 Prerequisites
 

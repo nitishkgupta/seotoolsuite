@@ -25,6 +25,12 @@ body:has(.seotoolsuite-tools) {
   @apply bg-slate-50;
 }
 
+/* Scrollbar */
+body,
+body * {
+  scrollbar-color: #052f4a transparent;
+}
+
 /* DataGrid styles */
 .datagrid-cell-p0 {
   padding: 0 !important;
@@ -39,10 +45,6 @@ div[role="tooltip"] > div {
 .tool-results-table-container .MuiDataGrid-toolbarContainer {
   padding: 8px;
   border-bottom: 1px solid rgba(224, 224, 224, 1);
-}
-
-.tool-results-table-container .MuiDataGrid-row {
-  cursor: pointer;
 }
 
 .tool-results-table-container .MuiDataGrid-root .MuiDataGrid-cell:focus-within {

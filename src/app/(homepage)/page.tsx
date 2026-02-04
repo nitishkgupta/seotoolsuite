@@ -1,25 +1,22 @@
 import {
   BookOpenTextIcon,
-  CalendarSyncIcon,
   DatabaseZapIcon,
-  FilterIcon,
-  GiftIcon,
-  LightbulbIcon,
+  LoaderPinwheelIcon,
   PackageIcon,
   ScaleIcon,
   SmilePlusIcon,
   SparklesIcon,
   TelescopeIcon,
   TextSearchIcon,
-  TypeOutlineIcon,
   WalletIcon,
 } from "lucide-react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import Image from "next/image";
 import logoImage from "@/assets/images/logo.png";
-import keywordResearchScreenshot from "@/assets/images/keyword-research-screenshot.png";
-import keywordCompleteScreenshot from "@/assets/images/keyword-complete-screenshot.png";
+import keywordOverviewScreenshot from "@/assets/images/keyword-overview-screenshot.png";
+import keywordSuggestionsScreenshot from "@/assets/images/keyword-suggestions-screenshot.png";
+import keywordAutocompleteScreenshot from "@/assets/images/keyword-autocomplete-screenshot.png";
 import dfsLogoImage from "@/assets/images/dataforseo-logo.png";
 import githubIcon from "@/assets/images/github-icon.svg";
 
@@ -84,8 +81,8 @@ export default function HomePage() {
         </div>
         <div className="relative mt-8 max-h-[300px] overflow-hidden px-4 lg:max-h-[700px]">
           <Image
-            src={keywordResearchScreenshot}
-            alt="SEOToolSuite"
+            src={keywordOverviewScreenshot}
+            alt="Keyword Overview Tool"
             className="mx-auto w-full max-w-[1200px] rounded-t-md border-t-2 border-r-2 border-l-2 border-slate-200 shadow-lg"
           />
           <div className="absolute right-0 bottom-0 left-0 z-10 mx-auto h-14 max-w-[1200px] bg-linear-to-b from-white/5 to-white"></div>
@@ -190,65 +187,45 @@ export default function HomePage() {
                 AI Ready
               </span>
             </div>
+            <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
+              <DatabaseZapIcon
+                size={32}
+                className="shrink-0 scale-80 lg:scale-100"
+              />
+              <span className="text-base font-semibold lg:text-xl">
+                Caching Support
+              </span>
+            </div>
           </div>
         </div>
       </section>
       <section className="w-full border-b-2 border-slate-200 bg-white py-10">
         <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
-          <div className="flex w-full flex-col items-start justify-between gap-8 lg:flex-row lg:gap-0">
-            <div className="order-2 lg:order-1 lg:pt-8">
-              <h2 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-4xl">
-                <TelescopeIcon
-                  size={52}
+          <h2 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-4xl">
+            <TelescopeIcon
+              size={52}
+              className="rounded-md bg-sky-950 p-3 text-white"
+            />
+            Keyword Research Tools
+          </h2>
+          <div className="mt-12 flex w-full flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:gap-0">
+            <div className="order-2 lg:order-1 lg:pt-12">
+              <h3 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-3xl">
+                <BookOpenTextIcon
+                  size={48}
                   className="rounded-md bg-sky-950 p-3 text-white"
                 />
-                Keyword Research
-              </h2>
-              <p className="mt-4 block max-w-[500px] p-2 text-lg text-black/80">
-                Find thousands of keyword suggestions with multiple metrics like
-                search volume, trend, search intent, seo difficulty, and more.
+                Keyword Overview
+              </h3>
+              <p className="mt-4 block max-w-[500px] p-2 text-base text-black/80 lg:text-lg">
+                The Keyword Overview tool gives a quick snapshot of a keyword’s
+                performance, including search volume, intent, CPC, competition,
+                trends, and audience insights - helping you evaluate keyword
+                potential and plan your SEO strategy faster.
               </p>
-              <div className="mt-4 flex flex-col">
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <TextSearchIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Access billions of keywords, no limit.
-                  </span>
-                </div>
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <FilterIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Filter & sort data.
-                  </span>
-                </div>
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <WalletIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Pay only for what you use.
-                  </span>
-                </div>
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <BookOpenTextIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Keyword overview with clickstream data.
-                  </span>
-                </div>
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <CalendarSyncIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Data updated regularly.
-                  </span>
-                </div>
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <DatabaseZapIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Caching support (Upstash Redis)
-                  </span>
-                </div>
-              </div>
-              <div className="mt-6 p-2">
+              <div className="mt-0 p-2">
                 <Link
-                  href="/tool/keyword-research"
+                  href="/tool/keyword-research/overview"
                   className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
                 >
                   Access Tool
@@ -257,8 +234,8 @@ export default function HomePage() {
             </div>
             <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
               <Image
-                src={keywordResearchScreenshot}
-                alt="Keyword Research"
+                src={keywordOverviewScreenshot}
+                alt="Keyword Overview Tool"
                 className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
@@ -281,53 +258,26 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      <section className="w-full border-b-2 border-slate-200 bg-white py-10">
-        <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
-          <div className="flex w-full flex-col items-start justify-between gap-8 lg:flex-row lg:gap-0">
-            <div className="order-2 lg:order-1 lg:pt-8">
-              <h2 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-4xl">
-                <LightbulbIcon
-                  size={52}
+          <div className="mx-auto mt-12 h-0.5 w-3/4 rounded-md bg-slate-200"></div>
+          <div className="mt-12 flex w-full flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:gap-0">
+            <div className="order-2 lg:order-1 lg:pt-12">
+              <h3 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-3xl">
+                <TextSearchIcon
+                  size={48}
                   className="rounded-md bg-sky-950 p-3 text-white"
                 />
-                Keyword Complete
-              </h2>
-              <p className="mt-4 block max-w-[500px] p-2 text-lg text-black/80">
-                Generate hundreds (or even thousands!) of long-tail keywords for
-                free using Google autocomplete. No API needed!
+                Keyword Suggestions
+              </h3>
+              <p className="mt-4 block max-w-[500px] p-2 text-base text-black/80 lg:text-lg">
+                The Keyword Suggestions tool generates a large list of relevant
+                keyword ideas based on your seed keyword. It provides key
+                metrics like search volume, intent, CPC, competition, and
+                difficulty, helping you discover new keyword opportunities and
+                expand your SEO strategy.
               </p>
-              <div className="mt-4 flex flex-col">
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <TextSearchIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Relevant long-tail keywords.
-                  </span>
-                </div>
-
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <GiftIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Completely free to use, no limits.
-                  </span>
-                </div>
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <FilterIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Filter & sort data.
-                  </span>
-                </div>
-                <div className="flex w-fit items-center gap-2 p-2">
-                  <TypeOutlineIcon size={24} className="shrink-0" />
-                  <span className="text-base font-semibold lg:text-lg">
-                    Uses multiple prefixes and suffixes.
-                  </span>
-                </div>
-              </div>
-              <div className="mt-6 p-2">
+              <div className="mt-0 p-2">
                 <Link
-                  href="/tool/keyword-complete"
+                  href="/tool/keyword-research/suggestions"
                   className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
                 >
                   Access Tool
@@ -336,8 +286,59 @@ export default function HomePage() {
             </div>
             <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
               <Image
-                src={keywordCompleteScreenshot}
-                alt="Keyword Complete"
+                src={keywordSuggestionsScreenshot}
+                alt="Keyword Suggestions Tool"
+                className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+              />
+              <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
+                <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-chevron-down-icon lucide-chevron-down"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="mx-auto mt-12 h-0.5 w-3/4 rounded-md bg-slate-200"></div>
+          <div className="mt-12 flex w-full flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:gap-0">
+            <div className="order-2 lg:order-1 lg:pt-12">
+              <h3 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-3xl">
+                <LoaderPinwheelIcon
+                  size={48}
+                  className="rounded-md bg-sky-950 p-3 text-white"
+                />
+                Keyword Autocomplete
+              </h3>
+              <p className="mt-4 block max-w-[500px] p-2 text-base text-black/80 lg:text-lg">
+                The Keyword Autocomplete tool generates long-tail keyword ideas
+                using Google autocomplete data. It helps you discover real
+                search queries, identify content opportunities, and expand your
+                keyword research quickly.
+              </p>
+              <div className="mt-0 p-2">
+                <Link
+                  href="/tool/keyword-research/autocomplete"
+                  className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
+                >
+                  Access Tool
+                </Link>
+              </div>
+            </div>
+            <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
+              <Image
+                src={keywordAutocompleteScreenshot}
+                alt="Keyword Autocomplete Tool"
                 className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">

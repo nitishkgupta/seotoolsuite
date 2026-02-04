@@ -1,5 +1,15 @@
 # SEOToolSuite Changelog
 
+## v3.0.0
+
+- Restructured into separate tools: Keyword Overview, Keyword Suggestions, and Keyword Autocomplete.
+- Major UI improvements and changes.
+- Major code refactoring and optimization.
+- Added support for auto-submitting tools when URL parameters are present.
+- Minor bug fixes.
+- Update homepage.
+- Update packages.
+
 ## v2.1.1
 
 - Update packages.

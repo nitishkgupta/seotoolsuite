@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
-import { LightbulbIcon, TelescopeIcon } from "lucide-react";
+import {
+  BookOpenTextIcon,
+  LoaderPinwheelIcon,
+  TelescopeIcon,
+  TextSearchIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -19,47 +24,81 @@ export default function ToolsPage() {
           <div className="mt-0.5 text-base text-black/80 md:text-lg">
             Find the tools you need to take your SEO game to the next level.
           </div>
-          <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 flex items-center gap-2 text-xl font-medium md:text-2xl">
+            <div className="flex items-center gap-2 rounded-md border bg-sky-950 p-2 text-white md:p-3">
+              <TelescopeIcon size={24} />
+            </div>
+            <span>Keyword Research</span>
+          </div>
+          <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
             <Link
-              href="/tool/keyword-research"
+              href="/tool/keyword-research/overview"
               className={`group flex h-full flex-row items-center rounded-md border-2 border-slate-200 text-lg font-medium transition hover:bg-slate-50`}
             >
               <div
                 className={`flex h-full items-center justify-center px-4 md:px-5`}
               >
-                <TelescopeIcon size={32} className="text-black/80 md:hidden" />
-                <TelescopeIcon
-                  size={52}
+                <BookOpenTextIcon
+                  size={24}
+                  className="text-black/80 md:hidden"
+                />
+                <BookOpenTextIcon
+                  size={46}
                   className="hidden text-black/80 md:block"
                 />
               </div>
               <div className="flex flex-col py-4 pr-4">
-                <span className="text-xl text-black/80 md:text-2xl">
-                  Keyword Research
+                <span className="text-lg text-black/80 md:text-xl">
+                  Keyword Overview
                 </span>
-                <span className="mt-2 text-sm leading-tight text-pretty text-black/60 md:text-base">
-                  Generate keyword suggestions with multiple metrics.
+                <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
+                  Analyze keyword metrics with clickstream data.
                 </span>
               </div>
             </Link>
             <Link
-              href="/tool/keyword-complete"
+              href="/tool/keyword-research/suggestions"
               className={`group flex h-full flex-row items-center rounded-md border-2 border-slate-200 text-lg font-medium transition hover:bg-slate-50`}
             >
               <div
                 className={`flex h-full items-center justify-center px-4 md:px-5`}
               >
-                <LightbulbIcon size={32} className="text-black/80 md:hidden" />
-                <LightbulbIcon
-                  size={52}
+                <TextSearchIcon size={24} className="text-black/80 md:hidden" />
+                <TextSearchIcon
+                  size={46}
                   className="hidden text-black/80 md:block"
                 />
               </div>
               <div className="flex flex-col py-4 pr-4">
-                <span className="text-xl text-black/80 md:text-2xl">
-                  Keyword Complete
+                <span className="text-lg text-black/80 md:text-xl">
+                  Keyword Suggestions
                 </span>
-                <span className="mt-2 text-sm leading-tight text-pretty text-black/60 md:text-base">
+                <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
+                  Get keyword suggestions that include the seed keyword.
+                </span>
+              </div>
+            </Link>
+            <Link
+              href="/tool/keyword-research/autocomplete"
+              className={`group flex h-full flex-row items-center rounded-md border-2 border-slate-200 text-lg font-medium transition hover:bg-slate-50`}
+            >
+              <div
+                className={`flex h-full items-center justify-center px-4 md:px-5`}
+              >
+                <LoaderPinwheelIcon
+                  size={24}
+                  className="text-black/80 md:hidden"
+                />
+                <LoaderPinwheelIcon
+                  size={46}
+                  className="hidden text-black/80 md:block"
+                />
+              </div>
+              <div className="flex flex-col py-4 pr-4">
+                <span className="text-lg text-black/80 md:text-xl">
+                  Keyword Autocomplete
+                </span>
+                <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
                   Generate long-tail keywords using Google autocomplete.
                 </span>
               </div>
