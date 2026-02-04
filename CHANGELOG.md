@@ -1,5 +1,9 @@
 # SEOToolSuite Changelog
 
+## v3.0.1
+
+- Disable prefetch for keyword action links.
+
 ## v3.0.0
 
 - Restructured into separate tools: Keyword Overview, Keyword Suggestions, and Keyword Autocomplete.
