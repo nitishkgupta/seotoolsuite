@@ -1,5 +1,9 @@
 # SEOToolSuite Changelog
 
+## v3.0.2
+
+- Update packages.
+
 ## v3.0.1
 
 - Disable prefetch for keyword action links.
