@@ -8,8 +8,6 @@ import {
   getDataForSEOLocations,
 } from "@/utils/dataforseo";
 import demographyIcon from "@/assets/icons/demography.svg";
-import manIcon from "@/assets/icons/man.svg";
-import womanIcon from "@/assets/icons/woman.svg";
 import { getDifficultyColor, getDifficultyText } from "@/utils/difficulty";
 import { getFlagImageUrl } from "@/utils/flags";
 import { getLocalStorageItem } from "@/utils/localStorage";
@@ -48,7 +46,9 @@ import {
   getSessionStorageItem,
   setSessionStorageItem,
 } from "@/utils/sessionStorage";
-import SearchVolumeChart from "@/components/SearchVolumeChart";
+import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
+import GenderDistributionChart from "@/components/charts/GenderDistributionChart";
+import AgeDistributionChart from "@/components/charts/AgeDistributionChart";
 
 type KeywordOverviewData = {
   keyword: string;
@@ -432,9 +432,9 @@ const KeywordOverviewTool = ({
                   label="Location"
                   isDisabled={isLoading}
                   isRequired
-                  selectedKey={selectedLocationKey}
-                  onSelectionChange={(key) =>
-                    setSelectedLocationKey(key as string)
+                  value={selectedLocationKey}
+                  onChange={(key: any) =>
+                    setSelectedLocationKey(key.target.value)
                   }
                 >
                   {locations.map((location) => (
@@ -461,9 +461,9 @@ const KeywordOverviewTool = ({
                   label="Language"
                   isDisabled={isLoading}
                   isRequired
-                  selectedKey={selectedLanguageKey}
-                  onSelectionChange={(key) =>
-                    setSelectedLanguageKey(key as string)
+                  value={selectedLanguageKey}
+                  onChange={(key: any) =>
+                    setSelectedLanguageKey(key.target.value)
                   }
                 >
                   {languages.map((language) => (
@@ -691,66 +691,17 @@ const KeywordOverviewTool = ({
               </div>
               <div className="mt-4 w-full">
                 {data.monthlySearches && (
-                  <SearchVolumeChart
+                  <SearchVolumeTrendChart
                     data={data?.monthlySearches}
                     xAxisLabelType="monthWithYear"
                     chartType="area"
-                    chartHeight={200}
+                    chartHeight={300}
+                    yAxisTickCount={10}
                   />
                 )}
               </div>
             </div>
-            <div className="flex flex-col justify-between border-slate-200 p-4">
-              <div className="flex items-center gap-2">
-                <Image src={demographyIcon} alt="Demography" className="w-5" />
-                Gender Distribution
-              </div>
-              {data.genderDistribution &&
-              (data.genderDistribution.male !== null ||
-                data.genderDistribution.female !== null) ? (
-                <>
-                  <div className="mt-4 flex items-center justify-between">
-                    <Image src={manIcon} alt="Male" className="w-10" />
-                    <div className="relative h-2 w-full shrink overflow-hidden rounded-full bg-pink-400">
-                      <div
-                        className={`scale-x-anim h-full border-white bg-blue-400 transition-all duration-500 ${data.genderDistribution.male > 0 && data.genderDistribution.male < 100 ? "border-r-2" : ""}`}
-                        style={{
-                          width: `${data.genderDistribution.male ?? 0}%`,
-                        }}
-                      ></div>
-                    </div>
-                    <Image src={womanIcon} alt="Female" className="w-10" />
-                  </div>
-                  <div className="mt-2 grid grid-cols-2 items-stretch">
-                    <div className="flex flex-col items-start gap-1">
-                      <div className="font-medium">Male</div>
-                      <div className="max-w-60 text-sm">
-                        {Math.round(
-                          data.searchVolume *
-                            (data.genderDistribution.male / 100),
-                        ).toLocaleString(navigator.language)}{" "}
-                        ({data.genderDistribution.male ?? 0}%)
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <div className="font-medium">Female</div>
-                      <div className="max-w-60 text-right text-sm">
-                        {Math.round(
-                          data.searchVolume *
-                            (data.genderDistribution.female / 100),
-                        ).toLocaleString(navigator.language)}{" "}
-                        ({data.genderDistribution.female ?? 0}%)
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="mt-4 text-xl lg:text-3xl">N/A</div>
-              )}
-            </div>
-          </div>
-          <div className="grid grid-cols-1 items-stretch border-t-2 border-slate-200 lg:grid-cols-2">
-            <div className="flex flex-col border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+            <div className="flex flex-col border-slate-200 p-4">
               <div className="flex items-center gap-2">
                 <LinkIcon size={18} />
                 SERP Backlinks Data
@@ -815,28 +766,27 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
+          </div>
+          <div className="grid grid-cols-1 items-stretch border-t-2 border-slate-200 lg:grid-cols-2">
+            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+              <div className="flex items-center gap-2">
+                <Image src={demographyIcon} alt="Demography" className="w-5" />
+                Gender Distribution
+              </div>
+              {data.genderDistribution && (
+                <div className="mt-4">
+                  <GenderDistributionChart data={data.genderDistribution} />
+                </div>
+              )}
+            </div>
             <div className="border-slate-200 p-4">
               <div className="flex items-center gap-2">
                 <UsersIcon size={18} />
                 Age Distribution
               </div>
               {data.ageDistribution ? (
-                <div className="mt-4 flex flex-col gap-1.5">
-                  {Object.entries(data.ageDistribution).map(([key, value]) => (
-                    <div className="flex flex-row items-center gap-2" key={key}>
-                      <div className="min-w-14 shrink-0 text-lg">{key}</div>
-                      <div className="shrink-0">|</div>
-                      {value > 0 && (
-                        <div
-                          className="scale-x-anim relative h-3 shrink overflow-hidden rounded-full bg-sky-950 transition-all duration-500"
-                          style={{ width: `${value ?? 0}%` }}
-                        ></div>
-                      )}
-                      <div className="shrink-0 text-base text-sky-950">
-                        {value ?? 0}%
-                      </div>
-                    </div>
-                  ))}
+                <div className="mt-4">
+                  <AgeDistributionChart data={data.ageDistribution} />
                 </div>
               ) : (
                 <div className="mt-4 text-xl lg:text-3xl">N/A</div>

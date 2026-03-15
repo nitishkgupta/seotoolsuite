@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import {
+  BinocularsIcon,
   BookOpenTextIcon,
   LoaderPinwheelIcon,
   TelescopeIcon,
@@ -100,6 +101,39 @@ export default function ToolsPage() {
                 </span>
                 <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
                   Generate long-tail keywords using Google autocomplete.
+                </span>
+              </div>
+            </Link>
+          </div>
+          <div className="mt-8 flex items-center gap-2 text-xl font-medium md:text-2xl">
+            <div className="flex items-center gap-2 rounded-md border bg-sky-950 p-2 text-white md:p-3">
+              <BinocularsIcon size={24} />
+            </div>
+            <span>Competitive Research</span>
+          </div>
+          <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+            <Link
+              href="/tool/competitive-research/overview"
+              className={`group flex h-full flex-row items-center rounded-md border-2 border-slate-200 text-lg font-medium transition hover:bg-slate-50`}
+            >
+              <div
+                className={`flex h-full items-center justify-center px-4 md:px-5`}
+              >
+                <BookOpenTextIcon
+                  size={24}
+                  className="text-black/80 md:hidden"
+                />
+                <BookOpenTextIcon
+                  size={46}
+                  className="hidden text-black/80 md:block"
+                />
+              </div>
+              <div className="flex flex-col py-4 pr-4">
+                <span className="text-lg text-black/80 md:text-xl">
+                  Traffic Overview
+                </span>
+                <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
+                  Analyze website traffic metrics with clickstream data.
                 </span>
               </div>
             </Link>

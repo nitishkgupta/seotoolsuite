@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BinocularsIcon,
   BookOpenTextIcon,
   LoaderPinwheelIcon,
   MenuIcon,
@@ -64,6 +65,26 @@ const Sidebar = () => {
               onClick={() => setResponsiveOpen(false)}
             >
               <LoaderPinwheelIcon size={18} /> <span>Autocomplete</span>
+            </Link>
+          </div>
+        </div>
+        <div className="h-0.5 w-full bg-slate-200"></div>
+        <div className="flex flex-col gap-1.5">
+          <Link
+            href="/tool/competitive-research"
+            className={`flex items-center gap-2 px-3 py-3 text-[15px] font-medium ${pathName.startsWith("/tool/competitive-research") ? "bg-slate-100!" : ""}`}
+            onClick={() => setResponsiveOpen(false)}
+          >
+            <BinocularsIcon size={20} />
+            <span>Competitive Research</span>
+          </Link>
+          <div className="flex flex-col gap-1">
+            <Link
+              href="/tool/competitive-research/overview"
+              className={`relative ml-3 flex items-center gap-2 rounded-l-md px-3 py-2 text-sm transition hover:bg-slate-100 ${isToolActive("competitive-research/overview") ? "bg-slate-100!" : ""}`}
+              onClick={() => setResponsiveOpen(false)}
+            >
+              <BookOpenTextIcon size={18} /> <span>Overview</span>
             </Link>
           </div>
         </div>

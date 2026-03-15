@@ -195,14 +195,14 @@ class DataForSEO {
     keywords: string[],
     location_code: number,
     language_code: string = "en",
-    includeClickstreamData: boolean = false,
+    include_clickstream_data: boolean = false,
   ) {
     if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
       let cachedData;
       try {
         cachedData = await this.upstashRedis.getData(
           btoa(
-            `keywords-overview-${JSON.stringify(keywords)}-${location_code}-${language_code}-${includeClickstreamData}`,
+            `keywords-overview-${JSON.stringify(keywords)}-${location_code}-${language_code}-${include_clickstream_data}`,
           ),
         );
       } catch (error) {
@@ -220,7 +220,7 @@ class DataForSEO {
             keywords,
             location_code,
             language_code,
-            include_clickstream_data: includeClickstreamData,
+            include_clickstream_data,
           },
         ],
         {
@@ -243,7 +243,80 @@ class DataForSEO {
         try {
           this.upstashRedis.setData(
             btoa(
-              `keywords-overview-${JSON.stringify(keywords)}-${location_code}-${language_code}-${includeClickstreamData}`,
+              `keywords-overview-${JSON.stringify(keywords)}-${location_code}-${language_code}-${include_clickstream_data}`,
+            ),
+            JSON.stringify(apiResponse.data),
+            60 * 60 * 24 * this.cachingDuration,
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      return apiResponse.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Get historical rank overview.
+   */
+  async getHistoricalRankOverview(
+    domain: string,
+    location_code: number,
+    language_code: string = "en",
+    date_from: string,
+    include_clickstream_data: boolean = false,
+  ) {
+    if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
+      let cachedData;
+      try {
+        cachedData = await this.upstashRedis.getData(
+          btoa(
+            `historical-rank-overview-${domain}-${location_code}-${language_code}-${date_from}-${include_clickstream_data}`,
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+
+      if (cachedData) return JSON.parse(cachedData);
+    }
+
+    try {
+      const apiResponse = await axios.post(
+        `${this.API_BASE_URL}/dataforseo_labs/google/historical_rank_overview/live`,
+        [
+          {
+            target: domain,
+            location_code,
+            language_code,
+            date_from,
+            include_clickstream_data,
+          },
+        ],
+        {
+          headers: {
+            Authorization: `Basic ${Buffer.from(
+              `${this.USERNAME}:${this.PASSWORD}`,
+            ).toString("base64")}`,
+          },
+        },
+      );
+
+      const taskStatusCode = apiResponse?.data?.tasks[0]?.status_code ?? null;
+
+      if (
+        !this.sandboxEnabled &&
+        this.enableCaching &&
+        this.upstashRedis &&
+        taskStatusCode === 20000
+      ) {
+        try {
+          this.upstashRedis.setData(
+            btoa(
+              `historical-rank-overview-${domain}-${location_code}-${language_code}-${date_from}-${include_clickstream_data}`,
             ),
             JSON.stringify(apiResponse.data),
             60 * 60 * 24 * this.cachingDuration,

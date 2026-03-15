@@ -1,4 +1,5 @@
 import {
+  BinocularsIcon,
   BookOpenTextIcon,
   DatabaseZapIcon,
   LoaderPinwheelIcon,
@@ -17,6 +18,7 @@ import logoImage from "@/assets/images/logo.png";
 import keywordOverviewScreenshot from "@/assets/images/keyword-overview-screenshot.png";
 import keywordSuggestionsScreenshot from "@/assets/images/keyword-suggestions-screenshot.png";
 import keywordAutocompleteScreenshot from "@/assets/images/keyword-autocomplete-screenshot.png";
+import trafficOverviewScreenshot from "@/assets/images/traffic-overview-screenshot.png";
 import dfsLogoImage from "@/assets/images/dataforseo-logo.png";
 import githubIcon from "@/assets/images/github-icon.svg";
 
@@ -236,7 +238,7 @@ export default function HomePage() {
               <Image
                 src={keywordOverviewScreenshot}
                 alt="Keyword Overview Tool"
-                className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                className="w-full rounded-md transition duration-1000 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
                 <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
@@ -340,6 +342,68 @@ export default function HomePage() {
                 src={keywordAutocompleteScreenshot}
                 alt="Keyword Autocomplete Tool"
                 className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+              />
+              <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
+                <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-chevron-down-icon lucide-chevron-down"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="w-full border-b-2 border-slate-200 bg-white py-10">
+        <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
+          <h2 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-4xl">
+            <BinocularsIcon
+              size={52}
+              className="rounded-md bg-sky-950 p-3 text-white"
+            />
+            Competitive Research Tools
+          </h2>
+          <div className="mt-12 flex w-full flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:gap-0">
+            <div className="order-2 lg:order-1 lg:pt-12">
+              <h3 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-3xl">
+                <BookOpenTextIcon
+                  size={48}
+                  className="rounded-md bg-sky-950 p-3 text-white"
+                />
+                Traffic Overview
+              </h3>
+              <p className="mt-4 block max-w-[500px] p-2 text-base text-black/80 lg:text-lg">
+                The Traffic Overview tool analyzes a website’s organic and paid
+                search performance. It provides insights such as estimated
+                traffic, ranked keywords, traffic cost, ranking changes, and
+                historical trends - helping you understand competitor
+                performance and identify SEO opportunities.
+              </p>
+              <div className="mt-0 p-2">
+                <Link
+                  href="/tool/competitive-research/overview"
+                  className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
+                >
+                  Access Tool
+                </Link>
+              </div>
+            </div>
+            <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
+              <Image
+                src={trafficOverviewScreenshot}
+                alt="Traffic Overview Tool"
+                className="w-full rounded-md transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
                 <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">

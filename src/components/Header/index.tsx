@@ -2,12 +2,13 @@
 
 import { APP_VERSION } from "@/env";
 import { Tooltip } from "@heroui/react";
-import { SettingsIcon, SmilePlusIcon, ToolCaseIcon } from "lucide-react";
+import { SettingsIcon, ToolCaseIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logoImage from "@/assets/images/logo.png";
 import DFSBalanceBox from "@/components/DFSBalanceBox";
+import discordIcon from "@/assets/images/discord-icon.svg";
 import { memo } from "react";
 
 function Header() {
@@ -29,7 +30,7 @@ function Header() {
             />
           </Link>
           <Link
-            href="https://github.com/nitishkgupta/seotoolsuite/blob/main/CHANGELOG.md"
+            href="https://github.com/nitishkgupta/seotoolsuite/releases"
             target="_blank"
             rel="nofollow"
             className="block rounded-md border border-slate-200 px-2 py-1 text-sm font-medium text-black/60 transition hover:bg-slate-100"
@@ -61,14 +62,14 @@ function Header() {
             </Link>
           </Tooltip>
           <div className="my-1 hidden w-0.5 bg-slate-200 lg:block"></div>
-          <Tooltip content="Give Feedback">
+          <Tooltip content="Discord Server">
             <Link
-              href="https://github.com/nitishkgupta/seotoolsuite/issues/new/choose"
+              href="https://discord.gg/Wt4RN4Xy8n"
               rel="nofollow"
               target="_blank"
               className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition hover:bg-slate-100`}
             >
-              <SmilePlusIcon size={24} />
+              <Image src={discordIcon} alt="Discord" className="w-5" />
             </Link>
           </Tooltip>
         </div>

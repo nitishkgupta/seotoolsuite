@@ -19,7 +19,7 @@ import {
 import { getDifficultyColor, getDifficultyText } from "@/utils/difficulty";
 import { Tooltip } from "@heroui/react";
 import { memo } from "react";
-import SearchVolumeChart from "@/components/SearchVolumeChart";
+import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
 import {
   getDataForSEOLanguageFromCode,
   getDataForSEOLocationFromCode,
@@ -309,7 +309,7 @@ const KeywordDetails = ({
               <span className="text-base md:text-lg">Search Volume Trend</span>
             </div>
             <div className="p-4">
-              <SearchVolumeChart
+              <SearchVolumeTrendChart
                 data={keywordData.monthlySearches}
                 chartType="bar"
                 xAxisLabelType="month"

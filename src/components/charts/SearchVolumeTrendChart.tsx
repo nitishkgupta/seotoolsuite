@@ -1,6 +1,6 @@
-"use client";
-
 import { MONTH_NAMES } from "@/constants";
+import { MonthlySearches } from "@/types/DFS/common";
+import { formatNumberToWord } from "@/utils/chart";
 import { formatMonthlySearches } from "@/utils/dataforseo";
 import { memo, useMemo } from "react";
 import {
@@ -11,9 +11,11 @@ import {
   Tooltip as RechartsTooltip,
   BarChart,
   Bar,
+  CartesianGrid,
+  Legend,
 } from "recharts";
 
-const SearchVolumeChart = ({
+const SearchVolumeTrendChart = ({
   data,
   xAxisLabelType,
   chartType,
@@ -23,12 +25,11 @@ const SearchVolumeChart = ({
   showAxisLine = true,
   showTickLine = true,
   showTooltip = true,
+  showCartesianGrid = true,
+  showLegend = false,
+  yAxisTickCount = 5,
 }: {
-  data: {
-    year: number;
-    month: number;
-    search_volume: number;
-  }[];
+  data: Array<MonthlySearches>;
   xAxisLabelType: "month" | "monthWithYear";
   chartType: "area" | "bar";
   chartHeight: number;
@@ -37,6 +38,9 @@ const SearchVolumeChart = ({
   showAxisLine?: boolean;
   showTickLine?: boolean;
   showTooltip?: boolean;
+  showCartesianGrid?: boolean;
+  showLegend?: boolean;
+  yAxisTickCount?: number;
 }) => {
   const chartData = useMemo(() => formatMonthlySearches(data), [data]);
 
@@ -48,13 +52,16 @@ const SearchVolumeChart = ({
           data={chartData}
           responsive
         >
+          {showCartesianGrid && (
+            <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
+          )}
           {showTooltip && (
             <RechartsTooltip
-              formatter={(value) => [
-                `${value?.toLocaleString(navigator.language)}`,
-              ]}
+              formatter={(value) => value?.toLocaleString(navigator.language)}
               labelFormatter={(_label: any, payload: any) =>
-                `${MONTH_NAMES[payload[0].payload.month - 1]}, ${payload[0].payload.year}`
+                payload && payload.length > 0
+                  ? `${MONTH_NAMES[payload[0].payload.month - 1]}, ${payload[0].payload.year}`
+                  : ""
               }
               labelStyle={{
                 fontSize: "18px",
@@ -66,6 +73,9 @@ const SearchVolumeChart = ({
               }}
               contentStyle={{
                 borderRadius: "8px",
+              }}
+              wrapperStyle={{
+                zIndex: 9999,
               }}
             />
           )}
@@ -87,24 +97,25 @@ const SearchVolumeChart = ({
             <YAxis
               axisLine={showAxisLine}
               tickLine={showTickLine}
+              tickCount={yAxisTickCount}
               style={{
                 fontSize: "12px",
                 fontFamily: "Poppins",
               }}
-              tickFormatter={(value) =>
-                value.toLocaleString(navigator.language)
-              }
+              tickFormatter={(value) => formatNumberToWord(value)}
             />
           )}
           <Area
             type="monotone"
-            dataKey="search_volume"
-            fill="#052f4a99"
-            stroke="#052f4a"
-            strokeWidth={1.5}
+            dataKey="Monthly Searches"
+            fill="oklch(29.3% 0.066 243.157)"
+            stroke="oklch(29.3% 0.066 243.157)"
+            fillOpacity={0.3}
+            strokeWidth={1}
             isAnimationActive={chartAnimation}
             animationDuration={500}
           />
+          {showLegend && <Legend />}
         </AreaChart>
       )}
       {chartType === "bar" && (
@@ -113,13 +124,16 @@ const SearchVolumeChart = ({
           data={chartData}
           responsive
         >
+          {showCartesianGrid && (
+            <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
+          )}
           {showTooltip && (
             <RechartsTooltip
-              formatter={(value) => [
-                `${value?.toLocaleString(navigator.language)}`,
-              ]}
+              formatter={(value) => value?.toLocaleString(navigator.language)}
               labelFormatter={(_label: any, payload: any) =>
-                `${MONTH_NAMES[payload[0].payload.month - 1]}, ${payload[0].payload.year}`
+                payload && payload.length > 0
+                  ? `${MONTH_NAMES[payload[0].payload.month - 1]}, ${payload[0].payload.year}`
+                  : ""
               }
               labelStyle={{
                 fontSize: "18px",
@@ -131,6 +145,9 @@ const SearchVolumeChart = ({
               }}
               contentStyle={{
                 borderRadius: "8px",
+              }}
+              wrapperStyle={{
+                zIndex: 9999,
               }}
             />
           )}
@@ -152,17 +169,16 @@ const SearchVolumeChart = ({
             <YAxis
               axisLine={showAxisLine}
               tickLine={showTickLine}
+              tickCount={yAxisTickCount}
               style={{
                 fontSize: "12px",
                 fontFamily: "Poppins",
               }}
-              tickFormatter={(value) =>
-                value.toLocaleString(navigator.language)
-              }
+              tickFormatter={(value) => formatNumberToWord(value)}
             />
           )}
           <Bar
-            dataKey="search_volume"
+            dataKey="Monthly Searches"
             fill="#052f4a"
             style={{
               fontSize: "12px",
@@ -172,10 +188,11 @@ const SearchVolumeChart = ({
             isAnimationActive={chartAnimation}
             animationDuration={500}
           />
+          {showLegend && <Legend />}
         </BarChart>
       )}
     </div>
   );
 };
 
-export default memo(SearchVolumeChart);
+export default memo(SearchVolumeTrendChart);

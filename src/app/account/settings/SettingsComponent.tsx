@@ -309,6 +309,12 @@ function SettingsComponent() {
                     <LifeBuoyIcon size={20} />
                   </button>
                 </Tooltip>
+                <Tooltip content="Your credentials are stored securely on your browser.">
+                  <div className="flex items-center gap-1 rounded-md border border-green-500 bg-green-50 px-2 py-1 font-medium text-green-600">
+                    <LockIcon size={16} />
+                    Secured
+                  </div>
+                </Tooltip>
                 <Switch
                   isSelected={cachingEnabled}
                   onValueChange={handleCachingEnabledChange}

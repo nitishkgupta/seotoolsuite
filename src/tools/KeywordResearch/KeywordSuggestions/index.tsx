@@ -48,7 +48,7 @@ import DataForSEO from "@/services/DataForSEO";
 import Image from "next/image";
 import { getFlagImageUrl } from "@/utils/flags";
 import { DataGrid } from "@mui/x-data-grid";
-import SearchVolumeChart from "@/components/SearchVolumeChart";
+import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import KeywordDetails from "./KeywordDetails";
 
@@ -630,7 +630,7 @@ const KeywordSuggestionsTool = ({
         headerAlign: "left",
         renderCell: (params) => (
           <div className="flex w-full items-center">
-            <SearchVolumeChart
+            <SearchVolumeTrendChart
               data={params.row.monthlySearches}
               chartHeight={40}
               chartAnimation={false}
@@ -640,6 +640,7 @@ const KeywordSuggestionsTool = ({
               showAxis={false}
               showAxisLine={false}
               showTickLine={false}
+              showCartesianGrid={false}
             />
           </div>
         ),
@@ -888,9 +889,9 @@ const KeywordSuggestionsTool = ({
                   label="Location"
                   isDisabled={isLoading}
                   isRequired
-                  selectedKey={selectedLocationKey}
-                  onSelectionChange={(key) =>
-                    setSelectedLocationKey(key as string)
+                  value={selectedLocationKey}
+                  onChange={(key: any) =>
+                    setSelectedLocationKey(key.target.value)
                   }
                 >
                   {locations.map((location) => (
@@ -917,9 +918,9 @@ const KeywordSuggestionsTool = ({
                   label="Language"
                   isDisabled={isLoading}
                   isRequired
-                  selectedKey={selectedLanguageKey}
-                  onSelectionChange={(key) =>
-                    setSelectedLanguageKey(key as string)
+                  value={selectedLanguageKey}
+                  onChange={(key: any) =>
+                    setSelectedLanguageKey(key.target.value)
                   }
                 >
                   {languages.map((language) => (

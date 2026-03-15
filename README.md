@@ -2,6 +2,8 @@
 
 SEOToolSuite provides **free and open source SEO tools for everyone**. Keyword research and more, powered by DataForSEO.
 
+[**Get Started**](https://seotoolsuite.nitishkgupta.com/tools) - [**Changelog**](CHANGELOG.md) - [**DataForSEO Account (Free 1$ Credits)**](https://dataforseo.com/?aff=44560) - [**Discord Server**](https://discord.gg/Wt4RN4Xy8n)
+
 [![GitHub Release](https://img.shields.io/github/v/release/nitishkgupta/seotoolsuite?style=for-the-badge)](https://github.com/nitishkgupta/seotoolsuite/releases) [![GitHub License](https://img.shields.io/github/license/nitishkgupta/seotoolsuite?style=for-the-badge)](LICENSE) [![GitHub deployments](https://img.shields.io/github/deployments/nitishkgupta/seotoolsuite/production?style=for-the-badge&label=Deployment)
 ](https://seotoolsuite.nitishkgupta.com)
 
@@ -26,6 +28,14 @@ The Keyword Suggestions tool generates a large list of relevant keyword ideas ba
 ![Keyword Autocomplete Tool](docs/assets/keyword-autocomplete-screenshot.png)
 
 The Keyword Autocomplete tool generates long-tail keyword ideas using Google autocomplete data. It helps you discover real search queries, identify content opportunities, and expand your keyword research quickly.
+
+### Competitive Research
+
+#### Traffic Overview
+
+![Traffic Overview Tool](docs/assets/traffic-overview-screenshot.png)
+
+The Traffic Overview tool analyzes a website’s organic and paid search performance. It provides insights such as estimated traffic, ranked keywords, traffic cost, ranking changes, and historical trends - helping you understand competitor performance and identify SEO opportunities.
 
 ## 📋 Prerequisites
 
@@ -114,7 +124,7 @@ Yes, the entire codebase is licensed under the MIT License, so you’re free to 
 
 ### 4. Where do I report bugs or request features?
 
-If you’ve found a bug or have a feature suggestion, please open an [issue](https://github.com/nitishkgupta/seotoolsuite/issues). Your feedback is always welcome!
+If you’ve found a bug or have a feature suggestion, feel free to open an [issue](https://github.com/nitishkgupta/seotoolsuite/issues) or use the Discord Server. Your feedback is always welcome!
 
 ## 📝 Changelog
 

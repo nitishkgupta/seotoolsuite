@@ -506,9 +506,9 @@ const KeywordAutocompleteTool = ({
                 label="Location"
                 isDisabled={isLoading}
                 isRequired
-                selectedKey={selectedLocationKey}
-                onSelectionChange={(key) =>
-                  setSelectedLocationKey(key as string)
+                value={selectedLocationKey}
+                onChange={(key: any) =>
+                  setSelectedLocationKey(key.target.value)
                 }
               >
                 {locations.map((location) => (
@@ -535,9 +535,9 @@ const KeywordAutocompleteTool = ({
                 label="Language"
                 isDisabled={isLoading}
                 isRequired
-                selectedKey={selectedLanguageKey}
-                onSelectionChange={(key) =>
-                  setSelectedLanguageKey(key as string)
+                value={selectedLanguageKey}
+                onChange={(key: any) =>
+                  setSelectedLanguageKey(key.target.value)
                 }
               >
                 {languages.map((language) => (

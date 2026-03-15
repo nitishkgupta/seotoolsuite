@@ -1,6 +1,8 @@
 import DataForSEOLocationsData from "@/data/dataforseo-locations-data.json";
 import DataForSEOLanguagesData from "@/data/dataforseo-languages-data.json";
 import { MONTH_NAMES } from "@/constants";
+import { MonthlySearches } from "@/types/DFS/common";
+import { HistoricalRankOverviewItem } from "@/types/DFS/HistoricalRankOverview";
 
 export type DataForSEOLocation = {
   location_name: string;
@@ -173,30 +175,63 @@ export function buildDataForSEOKeywordFilters(
   return [];
 }
 
+export interface FormattedMonthlySearches extends MonthlySearches {
+  "Monthly Searches": number;
+  monthLabel: string;
+  monthWithYearLabel: string;
+}
+
 /**
  * Format monthly searches.
  */
 export function formatMonthlySearches(
-  monthlySearches: {
-    year: number;
-    month: number;
-    search_volume: number;
-  }[],
-): {
-  year: number;
-  month: number;
-  search_volume: number;
-  monthLabel: string;
-  monthWithYearLabel: string;
-}[] {
+  monthlySearches: Array<MonthlySearches>,
+): Array<FormattedMonthlySearches> {
   if (monthlySearches.length > 0) {
     const reversedMonthlySearches = [...monthlySearches].reverse();
     return reversedMonthlySearches.map((item) => ({
       ...item,
+      "Monthly Searches": item.search_volume,
       monthLabel: MONTH_NAMES[item.month - 1],
       monthWithYearLabel: `${MONTH_NAMES[item.month - 1]} '${item.year % 100}`,
     }));
   }
 
   return [];
+}
+
+export function formatHistoricalRankOverviewData(
+  data: HistoricalRankOverviewItem[],
+) {
+  const reversedData = [...data].reverse();
+
+  return reversedData.map((item) => ({
+    ...item,
+    metrics: {
+      organic: {
+        ...item.metrics.organic,
+        is_lost:
+          item.metrics && item.metrics.organic && item.metrics.organic.is_lost
+            ? -item.metrics.organic.is_lost
+            : 0,
+        is_down:
+          item.metrics && item.metrics.organic && item.metrics.organic.is_down
+            ? -item.metrics.organic.is_down
+            : 0,
+      },
+      paid: {
+        ...item.metrics.paid,
+        is_lost:
+          item.metrics && item.metrics.paid && item.metrics.paid.is_lost
+            ? -item.metrics.paid.is_lost
+            : 0,
+        is_down:
+          item.metrics && item.metrics.paid && item.metrics.paid.is_down
+            ? -item.metrics.paid.is_down
+            : 0,
+      },
+    },
+    monthLabel: MONTH_NAMES[item.month - 1],
+    monthWithYearLabel: `${MONTH_NAMES[item.month - 1]} '${item.year % 100}`,
+  }));
 }

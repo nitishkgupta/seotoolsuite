@@ -1,5 +1,16 @@
 # SEOToolSuite Changelog
 
+## v4.0.0
+
+- Add a new **Traffic Overview** tool. Analyze a website’s organic and paid search performance.
+- Update the homepage for the new tool and apply minor UI fixes.
+- Add a **Secured** badge element to the **Upstash Redis** section on the settings page.
+- Add a new **Discord Server** link to the header and README.
+- Change the version badge link in the header from Changelog to Releases.
+- Minor UI improvements and bug fixes.
+- Code refactoring.
+- Update packages.
+
 ## v3.0.2
 
 - Update packages.
