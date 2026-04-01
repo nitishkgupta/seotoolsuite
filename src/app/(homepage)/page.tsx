@@ -2,11 +2,11 @@ import {
   BinocularsIcon,
   BookOpenTextIcon,
   DatabaseZapIcon,
+  InfinityIcon,
   LoaderPinwheelIcon,
   PackageIcon,
   ScaleIcon,
   SmilePlusIcon,
-  SparklesIcon,
   TelescopeIcon,
   TextSearchIcon,
   WalletIcon,
@@ -61,7 +61,8 @@ export default function HomePage() {
             SEOToolSuite provides free and open source SEO tools for everyone.
             <span className="mt-1 hidden lg:block"></span>
             <span className="ml-1 lg:ml-0">
-              Keyword research and more, powered by DataForSEO.
+              Keyword research, competitive research, and more, powered by
+              DataForSEO.
             </span>
           </p>
         </div>
@@ -142,9 +143,9 @@ export default function HomePage() {
             Free & Open Source
           </h2>
           <p className="mt-3 max-w-[900px] text-base font-medium text-pretty text-black/60 lg:text-lg">
-            All SEO tools are free and open source. You just need DataForSEO API
-            and that&apos;s it! Get started with your DataForSEO account with
-            free credits to start with.
+            All SEO tools are free and open source. Only pay for your API usage,
+            no exta or hidden charges. Get started with a free DataForSEO
+            account with 1$ credits.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-start gap-2 lg:gap-3">
             <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
@@ -181,12 +182,12 @@ export default function HomePage() {
               </span>
             </div>
             <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
-              <SparklesIcon
+              <InfinityIcon
                 size={32}
                 className="shrink-0 scale-80 lg:scale-100"
               />
               <span className="text-base font-semibold lg:text-xl">
-                AI Ready
+                No Limits
               </span>
             </div>
             <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
