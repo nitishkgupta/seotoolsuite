@@ -14,10 +14,16 @@ import KeywordFilters, {
 } from "@/components/KeywordFilters";
 import { GridColDef } from "@mui/x-data-grid";
 import {
+  addToast,
   Alert,
   Autocomplete,
   AutocompleteItem,
   Button,
+  Chip,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Form,
   Input,
   Modal,
@@ -35,7 +41,9 @@ import {
   BinocularsIcon,
   BookOpenTextIcon,
   BoxIcon,
+  ClipboardCopyIcon,
   DatabaseZapIcon,
+  EllipsisIcon,
   InfoIcon,
   LoaderPinwheelIcon,
   NavigationIcon,
@@ -55,6 +63,7 @@ import KeywordDetails from "./KeywordDetails";
 type KeywordSuggestionItem = {
   id: number;
   keyword: string;
+  wordsCount: number;
   location_code: number;
   language_code: string;
   searchVolume: number;
@@ -142,6 +151,16 @@ const KeywordSuggestionsTool = ({
     language_code?: string;
   }>({});
 
+  const handleKeywordClipboardCopy = useCallback(async (keyword: string) => {
+    if ("clipboard" in navigator) {
+      await navigator.clipboard.writeText(keyword);
+      addToast({
+        title: "Keyword copied to clipboard.",
+        color: "default",
+      });
+    }
+  }, []);
+
   const handleFormSubmit = useCallback(
     async (e: React.SyntheticEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -213,6 +232,7 @@ const KeywordSuggestionsTool = ({
       offset: number,
     ) => {
       setIsLoading(true);
+      setError(null);
 
       window.setTimeout(() => {
         document.getElementById("keywords-table")?.scrollIntoView({
@@ -281,6 +301,7 @@ const KeywordSuggestionsTool = ({
             tableData.push({
               id: rowId,
               keyword: keywordSuggestionItem.keyword,
+              wordsCount: keywordSuggestionItem.keyword.split(" ").length,
               location_code: keywordSuggestionItem.location_code,
               language_code: keywordSuggestionItem.language_code,
               searchVolume: keywordSuggestionItem.keyword_info.search_volume,
@@ -422,6 +443,7 @@ const KeywordSuggestionsTool = ({
           searchVolumeTrendYearly: false,
           lowTopPageBid: false,
           highTopPageBid: false,
+          wordsCount: false,
         },
       },
     };
@@ -460,42 +482,71 @@ const KeywordSuggestionsTool = ({
           <>
             <div className="flex w-full items-center justify-between gap-2 py-2">
               {params.value}
-              <div className="top-0 right-2 bottom-0 z-50 my-auto flex h-fit shrink-0 items-center rounded-md border border-slate-200 bg-white shadow-xs transition group-hover:opacity-100 focus-visible:opacity-100 has-[.keyword-action:focus-visible]:opacity-100 lg:absolute lg:opacity-0">
-                <Tooltip content="Keyword Details">
-                  <button
-                    onClick={() => {
-                      setActiveKeywordData(params.row);
-                      openKeywordDetailsModal();
-                    }}
-                    className="keyword-action cursor-pointer rounded-l-md border-r-1 border-slate-200 p-2 text-black transition"
-                  >
-                    <InfoIcon size={18} />
-                  </button>
-                </Tooltip>
-                <Tooltip content="Keyword Overview">
-                  <Link
-                    prefetch={false}
-                    href={`/tool/keyword-research/overview?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
-                    target="_blank"
-                    className="keyword-action border-r-1 border-slate-200 p-2 text-black/80 transition"
-                  >
-                    <BookOpenTextIcon size={18} />
-                  </Link>
-                </Tooltip>
-                <Tooltip content="Autocomplete Suggestions">
-                  <Link
-                    prefetch={false}
-                    href={`/tool/keyword-research/autocomplete?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
-                    target="_blank"
-                    className="keyword-action rounded-r-md p-2 text-black transition"
-                  >
-                    <LoaderPinwheelIcon size={18} />
-                  </Link>
-                </Tooltip>
+              <div>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button size="sm" isIconOnly variant="flat">
+                      <EllipsisIcon size={16} />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu variant="flat">
+                    <DropdownItem
+                      key="keyword-copy"
+                      onPress={() => handleKeywordClipboardCopy(params.value)}
+                      startContent={<ClipboardCopyIcon size={16} />}
+                    >
+                      Copy Keyword
+                    </DropdownItem>
+                    <DropdownItem
+                      key="keyword-details"
+                      onPress={() => {
+                        setActiveKeywordData(params.row);
+                        openKeywordDetailsModal();
+                      }}
+                      startContent={<InfoIcon size={16} />}
+                    >
+                      Keyword Details
+                    </DropdownItem>
+                    <DropdownItem
+                      key="keyword-overview"
+                      href={`/tool/keyword-research/overview?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
+                      target="_blank"
+                      startContent={<BookOpenTextIcon size={16} />}
+                    >
+                      Keyword Overview
+                    </DropdownItem>
+                    <DropdownItem
+                      key="keyword-suggestions"
+                      href={`/tool/keyword-research/suggestions?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
+                      target="_blank"
+                      startContent={<TextSearchIcon size={18} />}
+                    >
+                      Keyword Suggestions
+                    </DropdownItem>
+                    <DropdownItem
+                      key="autocomplete-suggestions"
+                      href={`/tool/keyword-research/autocomplete?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
+                      target="_blank"
+                      startContent={<LoaderPinwheelIcon size={16} />}
+                    >
+                      Autocomplete Suggestions
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </div>
             </div>
           </>
         ),
+      },
+      {
+        field: "wordsCount",
+        display: "flex",
+        headerName: "Words",
+        description: "No. of Words In Keyword",
+        type: "number",
+        align: "left",
+        headerAlign: "left",
+        width: 100,
       },
       {
         field: "searchIntent",
@@ -797,27 +848,33 @@ const KeywordSuggestionsTool = ({
   return (
     <div className="keyword-suggestions-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
       <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-slate-200 bg-white p-5">
-        {(dfsSandboxEnabled || cachingEnabled) && (
-          <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
-            {dfsSandboxEnabled && (
-              <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
-                <div className="w-fit">
-                  <BoxIcon size={18} />
-                </div>
-              </Tooltip>
-            )}
-            {dfsSandboxEnabled && cachingEnabled && (
-              <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
-            )}
-            {cachingEnabled && (
-              <Tooltip content="Caching Enabled" placement="bottom-end">
-                <div className="w-fit">
-                  <DatabaseZapIcon size={18} />
-                </div>
-              </Tooltip>
-            )}
-          </div>
-        )}
+        <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
+          <Tooltip content="Credits Cost (Uncached)">
+            <Chip size="md" variant="flat">
+              ${0.01 + limit * 0.0001}
+            </Chip>
+          </Tooltip>
+          {(dfsSandboxEnabled || cachingEnabled) && (
+            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+          )}
+          {dfsSandboxEnabled && (
+            <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
+              <div className="w-fit">
+                <BoxIcon size={18} />
+              </div>
+            </Tooltip>
+          )}
+          {dfsSandboxEnabled && cachingEnabled && (
+            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+          )}
+          {cachingEnabled && (
+            <Tooltip content="Caching Enabled" placement="bottom-end">
+              <div className="w-fit">
+                <DatabaseZapIcon size={18} />
+              </div>
+            </Tooltip>
+          )}
+        </div>
         <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
           <div className="flex items-center gap-2 rounded-md border bg-sky-950 p-2 md:p-3">
             <TelescopeIcon
@@ -949,6 +1006,34 @@ const KeywordSuggestionsTool = ({
             </Form>
           )}
         </div>
+        {formInput.keyword &&
+          formInput.location_code &&
+          formInput.language_code && (
+            <div className="mt-4 w-full">
+              <div className="flex w-full flex-col flex-wrap items-start gap-2 rounded-md border border-slate-200 p-3 text-sm md:w-fit md:flex-row md:items-center">
+                <div className="mr-1 flex items-center gap-1 border-slate-200 text-sm font-medium text-black/80 transition">
+                  Other Reports:
+                </div>
+                <Link
+                  prefetch={false}
+                  href={`/tool/keyword-research/overview?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                  target="_blank"
+                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
+                >
+                  <BookOpenTextIcon size={16} /> Keyword Overview
+                </Link>
+                <div className="hidden text-slate-200 md:block">|</div>
+                <Link
+                  prefetch={false}
+                  href={`/tool/keyword-research/autocomplete?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                  target="_blank"
+                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
+                >
+                  <LoaderPinwheelIcon size={16} /> Keyword Autocomplete
+                </Link>
+              </div>
+            </div>
+          )}
       </div>
       {isLoading && (
         <Skeleton className="mt-4 h-[1500px] w-full rounded-md lg:mt-8" />

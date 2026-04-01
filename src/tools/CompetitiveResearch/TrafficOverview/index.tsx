@@ -16,6 +16,7 @@ import {
   Autocomplete,
   AutocompleteItem,
   Button,
+  Chip,
   Form,
   Input,
   Skeleton,
@@ -89,6 +90,12 @@ const TrafficOverviewTool = ({
   const languages = getDataForSEOLanguages();
 
   const dateFromFormatted = "2020-10-01";
+  const dateFrom = new Date(dateFromFormatted);
+  const currentDate = new Date();
+  const dataMonthsCount =
+    (currentDate.getFullYear() - dateFrom.getFullYear()) * 12 +
+    (currentDate.getMonth() - dateFrom.getMonth()) +
+    1;
   const [selectedTarget, setSelectedTarget] = useState<string>("");
   const [selectedLocationKey, setSelectedLocationKey] =
     useState<string>("2356");
@@ -257,27 +264,33 @@ const TrafficOverviewTool = ({
   return (
     <div className="traffic-overview-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
       <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-slate-200 bg-white p-5">
-        {(dfsSandboxEnabled || cachingEnabled) && (
-          <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
-            {dfsSandboxEnabled && (
-              <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
-                <div className="w-fit">
-                  <BoxIcon size={18} />
-                </div>
-              </Tooltip>
-            )}
-            {dfsSandboxEnabled && cachingEnabled && (
-              <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
-            )}
-            {cachingEnabled && (
-              <Tooltip content="Caching Enabled" placement="bottom-end">
-                <div className="w-fit">
-                  <DatabaseZapIcon size={18} />
-                </div>
-              </Tooltip>
-            )}
-          </div>
-        )}
+        <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
+          <Tooltip content="Credits Cost (Uncached)">
+            <Chip size="md" variant="flat">
+              ${0.2 + dataMonthsCount * 0.001}
+            </Chip>
+          </Tooltip>
+          {(dfsSandboxEnabled || cachingEnabled) && (
+            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+          )}
+          {dfsSandboxEnabled && (
+            <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
+              <div className="w-fit">
+                <BoxIcon size={18} />
+              </div>
+            </Tooltip>
+          )}
+          {dfsSandboxEnabled && cachingEnabled && (
+            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+          )}
+          {cachingEnabled && (
+            <Tooltip content="Caching Enabled" placement="bottom-end">
+              <div className="w-fit">
+                <DatabaseZapIcon size={18} />
+              </div>
+            </Tooltip>
+          )}
+        </div>
         <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
           <div className="flex items-center gap-2 rounded-md border bg-sky-950 p-2 md:p-3">
             <BinocularsIcon

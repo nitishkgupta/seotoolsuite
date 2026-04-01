@@ -13,6 +13,10 @@ import {
   Autocomplete,
   AutocompleteItem,
   Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Form,
   Input,
   Progress,
@@ -20,11 +24,15 @@ import {
 } from "@heroui/react";
 import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
 import {
+  BookOpenTextIcon,
   ClipboardCopyIcon,
+  EllipsisIcon,
   LoaderPinwheelIcon,
   TelescopeIcon,
+  TextSearchIcon,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 type KeywordAutocompleteItem = {
@@ -377,15 +385,47 @@ const KeywordAutocompleteTool = ({
           <>
             <div className="flex w-full items-center justify-between gap-2 py-2">
               {params.value}
-              <div className="top-0 right-2 bottom-0 z-50 my-auto flex h-fit shrink-0 items-center rounded-md border border-slate-200 bg-white shadow-xs transition group-hover:opacity-100 focus-visible:opacity-100 has-[.keyword-action:focus-visible]:opacity-100 lg:absolute lg:opacity-0">
-                <Tooltip content="Copy Keyword">
-                  <button
-                    onClick={() => handleKeywordClipboardCopy(params.value)}
-                    className="keyword-action cursor-pointer rounded-md p-2 text-black/80 transition"
-                  >
-                    <ClipboardCopyIcon size={18} />
-                  </button>
-                </Tooltip>
+              <div>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button size="sm" isIconOnly variant="flat">
+                      <EllipsisIcon size={16} />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu variant="flat">
+                    <DropdownItem
+                      key="keyword-copy"
+                      onPress={() => handleKeywordClipboardCopy(params.value)}
+                      startContent={<ClipboardCopyIcon size={16} />}
+                    >
+                      Copy Keyword
+                    </DropdownItem>
+                    <DropdownItem
+                      key="keyword-overview"
+                      href={`/tool/keyword-research/overview?keyword=${params.value}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                      target="_blank"
+                      startContent={<BookOpenTextIcon size={16} />}
+                    >
+                      Keyword Overview
+                    </DropdownItem>
+                    <DropdownItem
+                      key="keyword-suggestions"
+                      href={`/tool/keyword-research/suggestions?keyword=${params.value}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                      target="_blank"
+                      startContent={<TextSearchIcon size={18} />}
+                    >
+                      Keyword Suggestions
+                    </DropdownItem>
+                    <DropdownItem
+                      key="autocomplete-suggestions"
+                      href={`/tool/keyword-research/autocomplete?keyword=${params.value}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                      target="_blank"
+                      startContent={<LoaderPinwheelIcon size={16} />}
+                    >
+                      Autocomplete Suggestions
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </div>
             </div>
           </>
@@ -397,6 +437,8 @@ const KeywordAutocompleteTool = ({
         headerName: "Words",
         description: "No. of Words In Keyword",
         type: "number",
+        align: "left",
+        headerAlign: "left",
         width: 128,
       },
       {
@@ -414,7 +456,7 @@ const KeywordAutocompleteTool = ({
         type: "string",
       },
     ],
-    [handleKeywordClipboardCopy],
+    [handleKeywordClipboardCopy, formInput],
   );
 
   const onDataGridPaginationModelChange = useCallback(() => {
@@ -558,6 +600,34 @@ const KeywordAutocompleteTool = ({
               </Button>
             </div>
           </Form>
+          {formInput.keyword &&
+            formInput.location_code &&
+            formInput.language_code && (
+              <div className="mt-4 w-full">
+                <div className="flex w-full flex-col flex-wrap items-start gap-2 rounded-md border border-slate-200 p-3 text-sm md:w-fit md:flex-row md:items-center">
+                  <div className="mr-1 flex items-center gap-1 border-slate-200 text-sm font-medium text-black/80 transition">
+                    Other Reports:
+                  </div>
+                  <Link
+                    prefetch={false}
+                    href={`/tool/keyword-research/overview?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                    target="_blank"
+                    className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
+                  >
+                    <BookOpenTextIcon size={16} /> Keyword Overview
+                  </Link>
+                  <div className="hidden text-slate-200 md:block">|</div>
+                  <Link
+                    prefetch={false}
+                    href={`/tool/keyword-research/suggestions?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                    target="_blank"
+                    className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
+                  >
+                    <TextSearchIcon size={16} /> Keyword Suggestions
+                  </Link>
+                </div>
+              </div>
+            )}
         </div>
       </div>
       {(isLoading || keywordSuggestionsFound > 0) && (

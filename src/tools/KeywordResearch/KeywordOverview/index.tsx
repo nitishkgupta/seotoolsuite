@@ -17,6 +17,7 @@ import {
   Autocomplete,
   AutocompleteItem,
   Button,
+  Chip,
   Form,
   Input,
   Skeleton,
@@ -33,9 +34,11 @@ import {
   GaugeIcon,
   InfoIcon,
   LinkIcon,
+  LoaderPinwheelIcon,
   NavigationIcon,
   TargetIcon,
   TelescopeIcon,
+  TextSearchIcon,
   TrendingUpIcon,
   UsersIcon,
 } from "lucide-react";
@@ -340,27 +343,33 @@ const KeywordOverviewTool = ({
   return (
     <div className="keyword-overview-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
       <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-slate-200 bg-white p-5">
-        {(dfsSandboxEnabled || cachingEnabled) && (
-          <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
-            {dfsSandboxEnabled && (
-              <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
-                <div className="w-fit">
-                  <BoxIcon size={18} />
-                </div>
-              </Tooltip>
-            )}
-            {dfsSandboxEnabled && cachingEnabled && (
-              <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
-            )}
-            {cachingEnabled && (
-              <Tooltip content="Caching Enabled" placement="bottom-end">
-                <div className="w-fit">
-                  <DatabaseZapIcon size={18} />
-                </div>
-              </Tooltip>
-            )}
-          </div>
-        )}
+        <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
+          <Tooltip content="Credits Cost (Uncached)">
+            <Chip size="md" variant="flat">
+              $0.0201
+            </Chip>
+          </Tooltip>
+          {(dfsSandboxEnabled || cachingEnabled) && (
+            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+          )}
+          {dfsSandboxEnabled && (
+            <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
+              <div className="w-fit">
+                <BoxIcon size={18} />
+              </div>
+            </Tooltip>
+          )}
+          {dfsSandboxEnabled && cachingEnabled && (
+            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+          )}
+          {cachingEnabled && (
+            <Tooltip content="Caching Enabled" placement="bottom-end">
+              <div className="w-fit">
+                <DatabaseZapIcon size={18} />
+              </div>
+            </Tooltip>
+          )}
+        </div>
         <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
           <div className="flex items-center gap-2 rounded-md border bg-sky-950 p-2 md:p-3">
             <TelescopeIcon
@@ -486,6 +495,34 @@ const KeywordOverviewTool = ({
             </Form>
           )}
         </div>
+        {formInput.keyword &&
+          formInput.location_code &&
+          formInput.language_code && (
+            <div className="mt-4 w-full">
+              <div className="flex w-full flex-col flex-wrap items-start gap-2 rounded-md border border-slate-200 p-3 text-sm md:w-fit md:flex-row md:items-center">
+                <div className="mr-1 flex items-center gap-1 border-slate-200 text-sm font-medium text-black/80 transition">
+                  Other Reports:
+                </div>
+                <Link
+                  prefetch={false}
+                  href={`/tool/keyword-research/suggestions?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                  target="_blank"
+                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
+                >
+                  <TextSearchIcon size={16} /> Keyword Suggestions
+                </Link>
+                <div className="hidden text-slate-200 md:block">|</div>
+                <Link
+                  prefetch={false}
+                  href={`/tool/keyword-research/autocomplete?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                  target="_blank"
+                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
+                >
+                  <LoaderPinwheelIcon size={16} /> Keyword Autocomplete
+                </Link>
+              </div>
+            </div>
+          )}
       </div>
       {isLoading && (
         <Skeleton className="mt-4 h-[1000px] w-full rounded-md lg:mt-8 lg:h-[480px]" />
