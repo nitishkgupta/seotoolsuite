@@ -1,6 +1,6 @@
 ![SEOToolSuite](docs/assets/logo.png)
 
-SEOToolSuite provides **free and open source SEO tools for everyone**. Keyword research and more, powered by DataForSEO.
+SEOToolSuite provides **free and open source SEO tools for everyone**. Keyword research, competitive research, and more, powered by DataForSEO.
 
 [**Get Started**](https://seotoolsuite.nitishkgupta.com/tools) - [**Changelog**](CHANGELOG.md) - [**DataForSEO Account (Free 1$ Credits)**](https://dataforseo.com/?aff=44560) - [**Discord Server**](https://discord.gg/Wt4RN4Xy8n)
 
@@ -40,6 +40,7 @@ The Traffic Overview tool analyzes a website’s organic and paid search perform
 ## 📋 Prerequisites
 
 - [DataForSEO API](https://dataforseo.com/?aff=44560) (for tools using DataForSEO APIs)
+- [Upstash Redis](https://upstash.com) (for data caching)
 - Node.js (for localhost/server deployment)
 
 ## 🚀 Getting Started

@@ -1,5 +1,16 @@
 # SEOToolSuite Changelog
 
+## v4.1.0
+
+- Added an **Other Reports** section to the SEO tools.
+- Added a **Credits Cost** badge to the tools that use DataForSEO APIs.
+- Added a new **Words** column to the Keyword Suggestions tool DataGrid, which can be toggled via the columns setting.
+- Updated **Keyword Quick Actions** in the Keyword Suggestions and Keyword Autocomplete tools.
+- Minor UI improvements and bug fixes.
+- Updated the homepage with minor content changes.
+- Updated the README with minor content changes.
+- Updated packages.
+
 ## v4.0.0
 
 - Add a new **Traffic Overview** tool. Analyze a website’s organic and paid search performance.
