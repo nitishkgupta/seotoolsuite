@@ -4,7 +4,6 @@ import useDFSBalance from "@/hooks/useDFSBalance";
 import {
   buildDataForSEOKeywordFilters,
   getDataForSEOLanguages,
-  getDataForSEOLocationFromCode,
   getDataForSEOLocations,
 } from "@/utils/dataforseo";
 import { getLocalStorageItem } from "@/utils/localStorage";
@@ -111,17 +110,21 @@ const KeywordSuggestionsTool = ({
   const [data, setData] = useState<KeywordSuggestionsData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const limit: number = 250;
+  const MAX_ROWS: number = Number(
+    getLocalStorageItem("KW_SUGGESTIONS_MAX_ROWS") ?? 250,
+  );
   const [totalResults, setTotalResults] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const offset = (currentPage - 1) * limit;
-  const totalPages = Math.ceil(totalResults / limit);
+  const offset = (currentPage - 1) * MAX_ROWS;
+  const totalPages = Math.ceil(totalResults / MAX_ROWS);
 
   const dfsUsername = getLocalStorageItem("DATAFORSEO_USERNAME");
   const dfsPassword = getLocalStorageItem("DATAFORSEO_PASSWORD");
   const dfsSandboxEnabled =
     getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
   const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
+  const cachingDuration: number =
+    Number(getLocalStorageItem("KW_SUGGESTIONS_CACHING_DURATION")) ?? 30;
 
   const locations = getDataForSEOLocations();
   const languages = getDataForSEOLanguages(true);
@@ -249,11 +252,7 @@ const KeywordSuggestionsTool = ({
 
       if (!dfsSandboxEnabled) {
         try {
-          trackUmamiEvent("keyword-research/suggestions", {
-            location:
-              getDataForSEOLocationFromCode(Number(location_code))
-                ?.location_name ?? "N/A",
-          });
+          trackUmamiEvent("keyword-research/suggestions");
         } catch (error) {
           console.error(error);
         }
@@ -278,6 +277,7 @@ const KeywordSuggestionsTool = ({
           dfsKeywordFilters,
           limit,
           offset,
+          cachingDuration,
         );
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
@@ -385,7 +385,7 @@ const KeywordSuggestionsTool = ({
         formInput.location_code,
         formInput.language_code,
         activeKeywordFilters,
-        limit,
+        MAX_ROWS,
         offset,
       );
     }
@@ -394,7 +394,7 @@ const KeywordSuggestionsTool = ({
     formInput.location_code,
     formInput.language_code,
     activeKeywordFilters,
-    limit,
+    MAX_ROWS,
     offset,
     getKeywordSuggestions,
   ]);
@@ -851,7 +851,7 @@ const KeywordSuggestionsTool = ({
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
             <Chip size="md" variant="flat">
-              ${0.01 + limit * 0.0001}
+              ${0.01 + MAX_ROWS * 0.0001}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (

@@ -4,7 +4,6 @@ import useDFSBalance from "@/hooks/useDFSBalance";
 import DataForSEO from "@/services/DataForSEO";
 import {
   getDataForSEOLanguages,
-  getDataForSEOLocationFromCode,
   getDataForSEOLocations,
 } from "@/utils/dataforseo";
 import demographyIcon from "@/assets/icons/demography.svg";
@@ -85,6 +84,8 @@ const TrafficOverviewTool = ({
   const dfsSandboxEnabled =
     getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
   const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
+  const cachingDuration: number =
+    Number(getLocalStorageItem("TRAFFIC_OVERVIEW_CACHING_DURATION")) ?? 30;
 
   const locations = getDataForSEOLocations();
   const languages = getDataForSEOLanguages();
@@ -149,11 +150,7 @@ const TrafficOverviewTool = ({
 
       if (!dfsSandboxEnabled) {
         try {
-          trackUmamiEvent("competitive-research/traffic-overview", {
-            location:
-              getDataForSEOLocationFromCode(Number(location_code))
-                ?.location_name ?? "N/A",
-          });
+          trackUmamiEvent("competitive-research/traffic-overview");
         } catch (error) {
           console.error(error);
         }
@@ -173,6 +170,7 @@ const TrafficOverviewTool = ({
           language_code,
           dateFromFormatted,
           true,
+          cachingDuration,
         );
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
@@ -294,8 +292,8 @@ const TrafficOverviewTool = ({
         <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
           <div className="flex items-center gap-2 rounded-md border bg-sky-950 p-2 md:p-3">
             <BinocularsIcon
-              size={24}
-              className="animate-appearance-in text-white"
+              size={28}
+              className="animate-appearance-in scale-90 text-white"
             />
             <div
               className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
@@ -652,6 +650,24 @@ const TrafficOverviewTool = ({
                     />
                   )}
                 </div>
+                <div className="my-2 flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded-full bg-green-700"></div>
+                    <span className="text-sm">New Keywords</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                    <span className="text-sm">Keywords Moved Up</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded-full bg-red-700"></div>
+                    <span className="text-sm">Keywords Lost</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded-full bg-red-500"></div>
+                    <span className="text-sm">Keywords Moved Down</span>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="flex w-full flex-col justify-between border-b-2 border-slate-200 p-4 pb-1">
@@ -675,6 +691,24 @@ const TrafficOverviewTool = ({
                     chartAnimation={false}
                   />
                 )}
+              </div>
+              <div className="my-2 flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                <div className="flex items-center gap-1">
+                  <div className="h-3 w-3 rounded-full bg-green-700"></div>
+                  <span className="text-sm">Position 1-3</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                  <span className="text-sm">Position 4-10</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+                  <span className="text-sm">Position 11-50</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="h-3 w-3 rounded-full bg-red-500"></div>
+                  <span className="text-sm">Position 51-100</span>
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-1 items-stretch border-slate-200 lg:grid-cols-2">
@@ -929,6 +963,16 @@ const TrafficOverviewTool = ({
                       yAxisTickCount={9}
                     />
                   )}
+                </div>
+                <div className="my-2 flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded-full bg-green-700"></div>
+                    <span className="text-sm">New Keywords</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded-full bg-red-700"></div>
+                    <span className="text-sm">Keywords Lost</span>
+                  </div>
                 </div>
               </div>
             </div>

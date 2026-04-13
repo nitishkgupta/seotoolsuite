@@ -6,6 +6,8 @@ import {
   setLocalStorageItem,
 } from "@/utils/localStorage";
 import {
+  Accordion,
+  AccordionItem,
   addToast,
   Button,
   Form,
@@ -17,12 +19,17 @@ import {
 import { memo, useCallback, useEffect, useState } from "react";
 import DataForSEO from "@/services/DataForSEO";
 import {
+  BinocularsIcon,
+  BookOpenTextIcon,
   BoxIcon,
   DatabaseIcon,
   DatabaseZapIcon,
   LifeBuoyIcon,
   LockIcon,
-  TimerResetIcon,
+  Rows4Icon,
+  TelescopeIcon,
+  TextSearchIcon,
+  ToolCaseIcon,
 } from "lucide-react";
 import Link from "next/link";
 import useDFSBalance from "@/hooks/useDFSBalance";
@@ -31,7 +38,14 @@ function SettingsComponent() {
   const { refreshDFSBalance } = useDFSBalance(false);
   const [dfsSandboxEnabled, setDFSSandboxEnabled] = useState<boolean>(false);
   const [cachingEnabled, setCachingEnabled] = useState<boolean>(false);
-  const [cachingDuration, setCachingDuration] = useState<number>(30);
+
+  const [KWOverviewCachingDuration, setKWOverviewCachingDuration] =
+    useState<number>(30);
+  const [KWSuggestionsCachingDuration, setKWSuggestionsCachingDuration] =
+    useState<number>(30);
+  const [KWSuggestionsMaxRows, setKWSuggestionsMaxRows] = useState<number>(250);
+  const [TrafficOverviewCachingDuration, setTrafficOverviewCachingDuration] =
+    useState<number>(30);
 
   const [dfsTutorialShown, setDFSTutorialShown] = useState<boolean>(false);
   const [upstashTutorialShown, setUpstashTutorialShown] =
@@ -93,7 +107,7 @@ function SettingsComponent() {
   }, []);
 
   const handleUpstashCredentialsFormSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
+    event: React.SyntheticEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -121,11 +135,50 @@ function SettingsComponent() {
     }
   }, []);
 
-  const handleCachingDurationChange = useCallback(
+  const handleKWOverviewCachingDurationChange = useCallback(
     (duration: number | number[]) => {
       if (typeof duration === "number") {
-        setCachingDuration(duration);
-        setLocalStorageItem("CACHING_DURATION", duration.toString());
+        setKWOverviewCachingDuration(duration);
+        setLocalStorageItem(
+          "KW_OVERVIEW_CACHING_DURATION",
+          duration.toString(),
+        );
+      }
+    },
+    [],
+  );
+
+  const handleKWSuggestionsCachingDurationChange = useCallback(
+    (duration: number | number[]) => {
+      if (typeof duration === "number") {
+        setKWSuggestionsCachingDuration(duration);
+        setLocalStorageItem(
+          "KW_SUGGESTIONS_CACHING_DURATION",
+          duration.toString(),
+        );
+      }
+    },
+    [],
+  );
+
+  const handleTrafficOverviewCachingDurationChange = useCallback(
+    (duration: number | number[]) => {
+      if (typeof duration === "number") {
+        setTrafficOverviewCachingDuration(duration);
+        setLocalStorageItem(
+          "TRAFFIC_OVERVIEW_CACHING_DURATION",
+          duration.toString(),
+        );
+      }
+    },
+    [],
+  );
+
+  const handleKWSuggestionsMaxRowsChange = useCallback(
+    (rows: number | number[]) => {
+      if (typeof rows === "number") {
+        setKWSuggestionsMaxRows(rows);
+        setLocalStorageItem("KW_SUGGESTIONS_MAX_ROWS", rows.toString());
       }
     },
     [],
@@ -134,12 +187,175 @@ function SettingsComponent() {
   useEffect(() => {
     setDFSSandboxEnabled(getLocalStorageItem("DATAFORSEO_SANDBOX") === "true");
     setCachingEnabled(getLocalStorageItem("CACHING_ENABLED") === "true");
-    setCachingDuration(Number(getLocalStorageItem("CACHING_DURATION") ?? 30));
+    setKWOverviewCachingDuration(
+      Number(getLocalStorageItem("KW_OVERVIEW_CACHING_DURATION") ?? 30),
+    );
+    setKWSuggestionsCachingDuration(
+      Number(getLocalStorageItem("KW_SUGGESTIONS_CACHING_DURATION") ?? 30),
+    );
+    setTrafficOverviewCachingDuration(
+      Number(getLocalStorageItem("TRAFFIC_OVERVIEW_CACHING_DURATION") ?? 30),
+    );
+    setKWSuggestionsMaxRows(
+      Number(getLocalStorageItem("KW_SUGGESTIONS_MAX_ROWS") ?? 250),
+    );
   }, []);
 
   return (
     <div className="settings-page px-4 py-4 md:px-8 md:py-8">
+      <h1 className="mb-4 w-fit text-2xl font-semibold text-sky-950 md:mb-8 md:text-4xl">
+        Settings
+      </h1>
       <div className="w-full rounded-md border-2 border-slate-200 bg-white">
+        <div className="flex flex-col">
+          <div
+            className={`flex items-center gap-2 border-b-2 border-slate-200 px-4 py-3`}
+          >
+            <div className="flex w-full flex-wrap items-center justify-between gap-4">
+              <h2 className="flex items-center gap-2 text-lg font-medium lg:text-2xl">
+                <ToolCaseIcon size={24} />
+                SEO Tools
+              </h2>
+            </div>
+          </div>
+          <div className={`w-full p-4`}>
+            <Accordion
+              variant="bordered"
+              selectionMode="multiple"
+              className="border-slate-200"
+            >
+              <AccordionItem
+                key="keyword-overview"
+                aria-label="Keyword Overview"
+                title={
+                  <span className="text-base md:text-lg">Keyword Overview</span>
+                }
+                startContent={
+                  <div className="flex items-center gap-1.5">
+                    <TelescopeIcon className="w-5" />
+                    <div className="h-4 w-0.5 bg-black"></div>
+                    <BookOpenTextIcon className="w-4" />
+                  </div>
+                }
+              >
+                <div className="flex flex-col gap-2 pb-2">
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <DatabaseZapIcon size={16} />
+                      <div className="text-sm md:text-base">Cache Duration</div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={KWOverviewCachingDuration}
+                        onChange={handleKWOverviewCachingDurationChange}
+                        minValue={0}
+                        maxValue={365}
+                        step={1}
+                        showTooltip
+                        label="Days"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                </div>
+              </AccordionItem>
+              <AccordionItem
+                key="keyword-suggestions"
+                aria-label="Keyword Suggestions"
+                title={
+                  <span className="text-base md:text-lg">
+                    Keyword Suggestions
+                  </span>
+                }
+                startContent={
+                  <div className="flex items-center gap-1.5">
+                    <TelescopeIcon className="w-5" />
+                    <div className="h-4 w-0.5 bg-black"></div>
+                    <TextSearchIcon className="w-4" />
+                  </div>
+                }
+              >
+                <div className="flex flex-col gap-2 pb-2">
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <Rows4Icon size={16} />
+                      <div className="text-sm md:text-base">
+                        Max. Rows Per Page
+                      </div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={KWSuggestionsMaxRows}
+                        onChange={handleKWSuggestionsMaxRowsChange}
+                        minValue={1}
+                        maxValue={1000}
+                        step={1}
+                        showTooltip
+                        label="Rows"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <DatabaseZapIcon size={16} />
+                      <div className="text-sm md:text-base">Cache Duration</div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={KWSuggestionsCachingDuration}
+                        onChange={handleKWSuggestionsCachingDurationChange}
+                        minValue={0}
+                        maxValue={365}
+                        step={1}
+                        showTooltip
+                        label="Days"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                </div>
+              </AccordionItem>
+              <AccordionItem
+                key="traffic-overview"
+                aria-label="Traffic Overview"
+                title={
+                  <span className="text-base md:text-lg">Traffic Overview</span>
+                }
+                startContent={
+                  <div className="flex items-center gap-1.5">
+                    <BinocularsIcon className="w-5 scale-90" />
+                    <div className="h-4 w-0.5 bg-black"></div>
+                    <BookOpenTextIcon className="w-4" />
+                  </div>
+                }
+              >
+                <div className="flex flex-col gap-2 pb-2">
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <DatabaseZapIcon size={16} />
+                      <div className="text-sm md:text-base">Cache Duration</div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={TrafficOverviewCachingDuration}
+                        onChange={handleTrafficOverviewCachingDurationChange}
+                        minValue={0}
+                        maxValue={365}
+                        step={1}
+                        showTooltip
+                        label="Days"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                </div>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </div>
+      </div>
+      <div className="mt-4 w-full rounded-md border-2 border-slate-200 bg-white">
         <div className="flex flex-col">
           <div className="flex items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
             <div className="flex w-full flex-wrap items-center justify-between gap-4">
@@ -440,24 +656,6 @@ function SettingsComponent() {
               >
                 Create one for free!
               </Link>
-            </div>
-            <div className="mt-6">
-              <div className="flex items-center gap-1">
-                <TimerResetIcon size={22} />
-                <div className="text-lg">Cache Duration</div>
-              </div>
-              <div className="mt-4 px-4">
-                <Slider
-                  value={cachingDuration}
-                  onChange={handleCachingDurationChange}
-                  minValue={1}
-                  maxValue={365}
-                  step={1}
-                  showTooltip
-                  label="Days"
-                  size="sm"
-                ></Slider>
-              </div>
             </div>
           </div>
         </div>

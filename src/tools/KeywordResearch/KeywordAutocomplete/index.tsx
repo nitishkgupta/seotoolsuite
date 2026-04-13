@@ -20,7 +20,6 @@ import {
   Form,
   Input,
   Progress,
-  Tooltip,
 } from "@heroui/react";
 import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
 import {
@@ -227,12 +226,7 @@ const KeywordAutocompleteTool = ({
   }, []);
 
   const getKeywordAutocompleteSuggestions = useCallback(
-    async (
-      keyword: string,
-      locationCode: string,
-      languageCode: string,
-      locationName?: string,
-    ) => {
+    async (keyword: string, locationCode: string, languageCode: string) => {
       setIsLoading(true);
       setKeywordModifiersDone(0);
       setKeywordSuggestionsFound(0);
@@ -252,9 +246,7 @@ const KeywordAutocompleteTool = ({
       let rowId = 1;
 
       try {
-        trackUmamiEvent("keyword-research/autocomplete", {
-          location: locationName || "N/A",
-        });
+        trackUmamiEvent("keyword-research/autocomplete");
       } catch (error) {
         console.error(error);
       }
@@ -349,8 +341,6 @@ const KeywordAutocompleteTool = ({
         getDataForSEOLocationFromCode(Number(formInput.location_code))
           ?.country_iso_code || "in",
         formInput.language_code,
-        getDataForSEOLocationFromCode(Number(formInput.location_code))
-          ?.location_name,
       );
     }
   }, [

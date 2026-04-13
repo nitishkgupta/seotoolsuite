@@ -1,6 +1,5 @@
 import axios from "axios";
 import UpstashRedis from "@/services/UpstashRedis";
-import { getLocalStorageItem } from "@/utils/localStorage";
 
 /**
  * DataForSEO service.
@@ -32,9 +31,9 @@ class DataForSEO {
   private enableCaching: boolean;
 
   /**
-   * Caching duration (in days).
+   * Default caching duration (in days).
    */
-  private cachingDuration: number;
+  private defaultCachingDuration: number;
 
   /**
    * Upstash Redis instance.
@@ -59,9 +58,7 @@ class DataForSEO {
     this.PASSWORD = password;
     this.sandboxEnabled = isSandbox;
     this.enableCaching = enableCaching;
-    this.cachingDuration = Number(
-      getLocalStorageItem("CACHING_DURATION") ?? 30,
-    );
+    this.defaultCachingDuration = 30;
 
     if (!this.sandboxEnabled && enableCaching) {
       this.upstashRedis = new UpstashRedis();
@@ -122,6 +119,7 @@ class DataForSEO {
     filters: Array<any> = [],
     limit: number = 50,
     offset: number = 0,
+    cachingDuration: number = this.defaultCachingDuration,
   ) {
     if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
       let cachedData;
@@ -167,6 +165,7 @@ class DataForSEO {
         !this.sandboxEnabled &&
         this.enableCaching &&
         this.upstashRedis &&
+        cachingDuration > 0 &&
         taskStatusCode === 20000
       ) {
         try {
@@ -175,7 +174,7 @@ class DataForSEO {
               `keyword-suggestions-${keyword}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
             ),
             JSON.stringify(apiResponse.data),
-            60 * 60 * 24 * this.cachingDuration,
+            60 * 60 * 24 * cachingDuration,
           );
         } catch (error) {
           console.error(error);
@@ -196,6 +195,7 @@ class DataForSEO {
     location_code: number,
     language_code: string = "en",
     include_clickstream_data: boolean = false,
+    cachingDuration: number = this.defaultCachingDuration,
   ) {
     if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
       let cachedData;
@@ -238,6 +238,7 @@ class DataForSEO {
         !this.sandboxEnabled &&
         this.enableCaching &&
         this.upstashRedis &&
+        cachingDuration > 0 &&
         taskStatusCode === 20000
       ) {
         try {
@@ -246,7 +247,7 @@ class DataForSEO {
               `keywords-overview-${JSON.stringify(keywords)}-${location_code}-${language_code}-${include_clickstream_data}`,
             ),
             JSON.stringify(apiResponse.data),
-            60 * 60 * 24 * this.cachingDuration,
+            60 * 60 * 24 * cachingDuration,
           );
         } catch (error) {
           console.error(error);
@@ -268,6 +269,7 @@ class DataForSEO {
     language_code: string = "en",
     date_from: string,
     include_clickstream_data: boolean = false,
+    cachingDuration: number = this.defaultCachingDuration,
   ) {
     if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
       let cachedData;
@@ -311,6 +313,7 @@ class DataForSEO {
         !this.sandboxEnabled &&
         this.enableCaching &&
         this.upstashRedis &&
+        cachingDuration > 0 &&
         taskStatusCode === 20000
       ) {
         try {
@@ -319,7 +322,7 @@ class DataForSEO {
               `historical-rank-overview-${domain}-${location_code}-${language_code}-${date_from}-${include_clickstream_data}`,
             ),
             JSON.stringify(apiResponse.data),
-            60 * 60 * 24 * this.cachingDuration,
+            60 * 60 * 24 * cachingDuration,
           );
         } catch (error) {
           console.error(error);

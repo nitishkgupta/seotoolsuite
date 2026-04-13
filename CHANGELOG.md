@@ -1,5 +1,14 @@
 # SEOToolSuite Changelog
 
+## v4.2.0
+
+- Added **Cache Duration** setting for individual tools.
+- Added **Max Rows** setting for the **Keyword Suggestions** tool.
+- Added **Legends** to **Traffic Overview** tool charts.
+- Updated **Umami** event tracking.
+- Minor UI improvements and bug fixes.
+- Updated packages.
+
 ## v4.1.0
 
 - Added an **Other Reports** section to the SEO tools.

@@ -4,7 +4,6 @@ import useDFSBalance from "@/hooks/useDFSBalance";
 import DataForSEO from "@/services/DataForSEO";
 import {
   getDataForSEOLanguages,
-  getDataForSEOLocationFromCode,
   getDataForSEOLocations,
 } from "@/utils/dataforseo";
 import demographyIcon from "@/assets/icons/demography.svg";
@@ -110,6 +109,8 @@ const KeywordOverviewTool = ({
   const dfsSandboxEnabled =
     getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
   const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
+  const cachingDuration: number =
+    Number(getLocalStorageItem("KW_OVERVIEW_CACHING_DURATION")) ?? 30;
 
   const locations = getDataForSEOLocations();
   const languages = getDataForSEOLanguages();
@@ -181,11 +182,7 @@ const KeywordOverviewTool = ({
 
       if (!dfsSandboxEnabled) {
         try {
-          trackUmamiEvent("keyword-research/overview", {
-            location:
-              getDataForSEOLocationFromCode(Number(location_code))
-                ?.location_name ?? "N/A",
-          });
+          trackUmamiEvent("keyword-research/overview");
         } catch (error) {
           console.error(error);
         }
@@ -204,6 +201,7 @@ const KeywordOverviewTool = ({
           location_code,
           language_code,
           true,
+          cachingDuration,
         );
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
