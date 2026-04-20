@@ -1,5 +1,12 @@
 # SEOToolSuite Changelog
 
+## v4.3.0
+
+- Added **Footer** on all pages.
+- Updated the **homepage** and **README** for content improvements and clarity.
+- Minor text change for clarity on the **settings** page.
+- Updated packages.
+
 ## v4.2.0
 
 - Added **Cache Duration** setting for individual tools.

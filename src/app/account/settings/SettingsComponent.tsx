@@ -280,7 +280,7 @@ function SettingsComponent() {
                     <div className="flex items-center gap-1.5">
                       <Rows4Icon size={16} />
                       <div className="text-sm md:text-base">
-                        Max. Rows Per Page
+                        Max. Rows Per Report
                       </div>
                     </div>
                     <div className="mt-2.5 px-4">

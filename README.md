@@ -1,11 +1,37 @@
 ![SEOToolSuite](docs/assets/logo.png)
 
-SEOToolSuite provides **free and open source SEO tools for everyone**. Keyword research, competitive research, and more, powered by DataForSEO.
+SEOToolSuite provides **open-source** SEO tools for everyone. Pay only for **what you use**, with **unrestricted access** to SEO data. Keyword research, competitive research, and more, **powered by DataForSEO**. An open-source alternative to **Ahrefs, SEMrush,** and others.
 
 [**Get Started**](https://seotoolsuite.nitishkgupta.com/tools) - [**Changelog**](CHANGELOG.md) - [**DataForSEO Account (Free 1$ Credits)**](https://dataforseo.com/?aff=44560) - [**Discord Server**](https://discord.gg/Wt4RN4Xy8n)
 
 [![GitHub Release](https://img.shields.io/github/v/release/nitishkgupta/seotoolsuite?style=for-the-badge)](https://github.com/nitishkgupta/seotoolsuite/releases) [![GitHub License](https://img.shields.io/github/license/nitishkgupta/seotoolsuite?style=for-the-badge)](LICENSE) [![GitHub deployments](https://img.shields.io/github/deployments/nitishkgupta/seotoolsuite/production?style=for-the-badge&label=Deployment)
 ](https://seotoolsuite.nitishkgupta.com)
+
+## 📈 Why Use SEOToolSuite?
+
+### Pay-Per-Use Model
+
+Pay only for your API usage, based on credits. No extra or hidden charges. Credits never expire.
+
+### Unrestricted Data Access
+
+Get access to SEO data with no limits. No limit on the number of rows you can access.
+
+### Caching Supported
+
+Cache results to save costs and get faster responses.
+
+### 100% Open Source
+
+Codebase completely open-sourced under the MIT license.
+
+### Clean & Responsive UI
+
+Clean and responsive user interface for accessing data with meaningful charts.
+
+### Completely Secured
+
+All API requests made from the browser. No backend required.
 
 ## 🔍 SEO Tools
 
@@ -17,17 +43,23 @@ SEOToolSuite provides **free and open source SEO tools for everyone**. Keyword r
 
 The Keyword Overview tool gives a quick snapshot of a keyword’s performance, including search volume, intent, CPC, competition, trends, and audience insights - helping you evaluate keyword potential and plan your SEO strategy faster.
 
+**- DataForSEO API Required.**
+
 #### Keyword Suggestions
 
 ![Keyword Suggestions Tool](docs/assets/keyword-suggestions-screenshot.png)
 
 The Keyword Suggestions tool generates a large list of relevant keyword ideas based on your seed keyword. It provides key metrics like search volume, intent, CPC, competition, and difficulty, helping you discover new keyword opportunities and expand your SEO strategy.
 
+**- DataForSEO API Required.**
+
 #### Keyword Autocomplete
 
 ![Keyword Autocomplete Tool](docs/assets/keyword-autocomplete-screenshot.png)
 
 The Keyword Autocomplete tool generates long-tail keyword ideas using Google autocomplete data. It helps you discover real search queries, identify content opportunities, and expand your keyword research quickly.
+
+**- Free To Use, No API Required.**
 
 ### Competitive Research
 
@@ -36,6 +68,8 @@ The Keyword Autocomplete tool generates long-tail keyword ideas using Google aut
 ![Traffic Overview Tool](docs/assets/traffic-overview-screenshot.png)
 
 The Traffic Overview tool analyzes a website’s organic and paid search performance. It provides insights such as estimated traffic, ranked keywords, traffic cost, ranking changes, and historical trends - helping you understand competitor performance and identify SEO opportunities.
+
+**- DataForSEO API Required.**
 
 ## 📋 Prerequisites
 
@@ -117,7 +151,7 @@ Yes, your API credentials are stored locally in your browser (via LocalStorage) 
 
 ### 2. Are these SEO tools free to use?
 
-Yes, you only pay for your API usage (DataForSEO). There are no extra or hidden charges.
+Yes, you only pay for your API usage (DataForSEO). There are no extra or hidden charges. Additionally, there are some free tools which don't require any API.
 
 ### 3. Can I reuse the code?
 

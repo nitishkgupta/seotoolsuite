@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 
@@ -11,8 +12,12 @@ export default function ToolLayout({
       <Header />
       <div className="seotoolsuite-tool-container flex h-[calc(100%-68px)] w-full">
         <Sidebar />
-        <div className="seotoolsuite-tool-content h-full w-full overflow-auto">
+        <div
+          className="seotoolsuite-tool-content flex h-full w-full flex-col justify-between overflow-auto"
+          id="seotoolsuite-tool-content"
+        >
           {children}
+          <Footer />
         </div>
       </div>
     </div>

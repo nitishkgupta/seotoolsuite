@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
 export default function AccountLayout({
@@ -9,6 +10,7 @@ export default function AccountLayout({
     <div className="seotoolsuite-account">
       <Header />
       <div className="seotoolsuite-account-content">{children}</div>
+      <Footer />
     </div>
   );
 }

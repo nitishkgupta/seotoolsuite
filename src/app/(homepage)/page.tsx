@@ -4,7 +4,7 @@ import {
   DatabaseZapIcon,
   InfinityIcon,
   LoaderPinwheelIcon,
-  PackageIcon,
+  LockIcon,
   ScaleIcon,
   SmilePlusIcon,
   TelescopeIcon,
@@ -23,9 +23,9 @@ import dfsLogoImage from "@/assets/images/dataforseo-logo.png";
 import githubIcon from "@/assets/images/github-icon.svg";
 
 export const metadata: Metadata = {
-  title: "SEOToolSuite | Free & Open Source SEO Tools For Everyone",
+  title: "SEOToolSuite | Open Source SEO Tools For Everyone",
   description:
-    "Free and open source SEO tools for everyone. Keyword research and more, powered by DataForSEO.",
+    "Open source SEO tools for everyone. Keyword research, competitive research, and more, powered by DataForSEO.",
 };
 
 export default function HomePage() {
@@ -58,11 +58,17 @@ export default function HomePage() {
             SEO Tools For Everyone
           </h1>
           <p className="mt-4 max-w-[800px] text-center text-base font-medium text-balance text-black/60 lg:text-xl">
-            SEOToolSuite provides free and open source SEO tools for everyone.
+            SEOToolSuite provides <b className="font-semibold">open-source</b>{" "}
+            SEO tools for everyone.
             <span className="mt-1 hidden lg:block"></span>
             <span className="ml-1 lg:ml-0">
-              Keyword research, competitive research, and more, powered by
-              DataForSEO.
+              Pay only for <b className="font-semibold">what you use</b>, with{" "}
+              <b className="font-semibold">unrestricted access</b> to SEO data.
+            </span>
+            <span className="mt-1 hidden lg:block"></span>
+            <span className="ml-1 lg:ml-0">
+              Keyword research, competitive research, and more,{" "}
+              <b className="font-semibold">powered by DataForSEO</b>.
             </span>
           </p>
         </div>
@@ -82,13 +88,119 @@ export default function HomePage() {
             GitHub
           </Link>
         </div>
-        <div className="relative mt-8 max-h-[300px] overflow-hidden px-4 lg:max-h-[700px]">
+        <div className="relative mt-8 max-h-[300px] overflow-hidden px-4 lg:max-h-[600px]">
           <Image
             src={keywordOverviewScreenshot}
             alt="Keyword Overview Tool"
             className="mx-auto w-full max-w-[1200px] rounded-t-md border-t-2 border-r-2 border-l-2 border-slate-200 shadow-lg"
           />
           <div className="absolute right-0 bottom-0 left-0 z-10 mx-auto h-14 max-w-[1200px] bg-linear-to-b from-white/5 to-white"></div>
+        </div>
+      </section>
+      <section className="w-full border-b-2 border-slate-200 bg-white py-8">
+        <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
+          <h2 className="text-3xl font-semibold text-sky-950 lg:text-4xl">
+            Why Use SEOToolSuite?
+          </h2>
+          <p className="mt-3 max-w-[900px] text-base font-medium text-pretty text-black/60 lg:text-lg">
+            An <b className="font-semibold">open-source alternative</b> to
+            Ahrefs, SEMrush, and others. Pay only for{" "}
+            <b className="font-semibold">what you use</b>, no{" "}
+            <b className="font-semibold">extra or hidden charges</b>. Get access
+            to SEO data with <b className="font-semibold">no limits</b>. Get
+            started with a{" "}
+            <b className="font-semibold">free DataForSEO account</b> with{" "}
+            <b className="font-semibold">1$ credits</b>.
+          </p>
+          <div className="mt-6 grid w-full grid-cols-1 items-stretch justify-start gap-2 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+            <div className="flex w-full flex-col items-start gap-3 rounded-md border-2 border-slate-200 p-3 lg:p-5">
+              <div className="flex w-full items-center gap-2 text-black/80">
+                <WalletIcon
+                  size={32}
+                  className="shrink-0 scale-80 lg:scale-100"
+                />
+                <h3 className="text-base font-semibold lg:text-xl">
+                  Pay-Per-Use Model
+                </h3>
+              </div>
+              <div className="text-base text-pretty text-black/80">
+                Pay only for your API usage, based on credits. No extra or
+                hidden charges. Credits never expire.
+              </div>
+            </div>
+            <div className="flex w-full flex-col items-start gap-3 rounded-md border-2 border-slate-200 p-3 lg:p-5">
+              <div className="flex w-full items-center gap-2 text-black/80">
+                <InfinityIcon
+                  size={32}
+                  className="shrink-0 scale-80 lg:scale-100"
+                />
+                <h3 className="text-base font-semibold lg:text-xl">
+                  Unrestricted Data Access
+                </h3>
+              </div>
+              <div className="text-base text-pretty text-black/80">
+                Get access to SEO data with no limits. No limit on the number of
+                rows you can access.
+              </div>
+            </div>
+            <div className="flex w-full flex-col items-start gap-3 rounded-md border-2 border-slate-200 p-3 lg:p-5">
+              <div className="flex w-full items-center gap-2 text-black/80">
+                <DatabaseZapIcon
+                  size={32}
+                  className="shrink-0 scale-80 lg:scale-100"
+                />
+                <h3 className="text-base font-semibold lg:text-xl">
+                  Caching Supported
+                </h3>
+              </div>
+              <div className="text-base text-pretty text-black/80">
+                Cache results to save costs and get faster responses.
+              </div>
+            </div>
+            <div className="flex w-full flex-col items-start gap-3 rounded-md border-2 border-slate-200 p-3 lg:p-5">
+              <div className="flex w-full items-center gap-2 text-black/80">
+                <ScaleIcon
+                  size={32}
+                  className="shrink-0 scale-80 lg:scale-100"
+                />
+                <h3 className="text-base font-semibold lg:text-xl">
+                  100% Open Source
+                </h3>
+              </div>
+              <div className="text-base text-pretty text-black/80">
+                Codebase completely open-sourced under the MIT license.
+              </div>
+            </div>
+            <div className="flex w-full flex-col items-start gap-3 rounded-md border-2 border-slate-200 p-3 lg:p-5">
+              <div className="flex w-full items-center gap-2 text-black/80">
+                <SmilePlusIcon
+                  size={32}
+                  className="shrink-0 scale-80 lg:scale-100"
+                />
+                <h3 className="text-base font-semibold lg:text-xl">
+                  Clean & Responsive UI
+                </h3>
+              </div>
+              <div className="text-base text-pretty text-black/80">
+                Clean and responsive user interface for accessing data with
+                meaningful charts.
+              </div>
+            </div>
+            <div className="flex w-full flex-col items-start gap-3 rounded-md border-2 border-slate-200 p-3 lg:p-5">
+              <div className="flex w-full items-center gap-2 text-black/80">
+                <LockIcon
+                  size={32}
+                  className="shrink-0 scale-80 lg:scale-100"
+                />
+                <span className="text-base font-semibold lg:text-xl">
+                  Completely Secured
+                </span>
+              </div>
+              <div className="text-base text-pretty text-black/80">
+                All API requests made from the browser. No backend required.
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       <section className="w-full border-b-2 border-slate-200 bg-white py-8">
@@ -137,71 +249,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="w-full border-b-2 border-slate-200 bg-white py-8">
-        <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
-          <h2 className="text-3xl font-semibold text-sky-950 lg:text-4xl">
-            Free & Open Source
-          </h2>
-          <p className="mt-3 max-w-[900px] text-base font-medium text-pretty text-black/60 lg:text-lg">
-            All SEO tools are free and open source. Only pay for your API usage,
-            no exta or hidden charges. Get started with a free DataForSEO
-            account with 1$ credits.
-          </p>
-          <div className="mt-6 flex flex-wrap items-center justify-start gap-2 lg:gap-3">
-            <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
-              <ScaleIcon size={32} className="shrink-0 scale-80 lg:scale-100" />
-              <span className="text-base font-semibold lg:text-xl">
-                MIT License
-              </span>
-            </div>
-            <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
-              <PackageIcon
-                size={32}
-                className="shrink-0 scale-80 lg:scale-100"
-              />
-              <span className="text-base font-semibold lg:text-xl">
-                Built with Next.js
-              </span>
-            </div>
-            <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
-              <WalletIcon
-                size={32}
-                className="shrink-0 scale-80 lg:scale-100"
-              />
-              <span className="text-base font-semibold lg:text-xl">
-                Credits Based
-              </span>
-            </div>
-            <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
-              <SmilePlusIcon
-                size={32}
-                className="shrink-0 scale-80 lg:scale-100"
-              />
-              <span className="text-base font-semibold lg:text-xl">
-                Clean UI/UX
-              </span>
-            </div>
-            <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
-              <InfinityIcon
-                size={32}
-                className="shrink-0 scale-80 lg:scale-100"
-              />
-              <span className="text-base font-semibold lg:text-xl">
-                No Limits
-              </span>
-            </div>
-            <div className="flex w-full items-center gap-2 rounded-md border-2 border-slate-200 p-3 text-black/80 lg:w-fit lg:p-5">
-              <DatabaseZapIcon
-                size={32}
-                className="shrink-0 scale-80 lg:scale-100"
-              />
-              <span className="text-base font-semibold lg:text-xl">
-                Caching Support
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
       <section className="w-full border-b-2 border-slate-200 bg-white py-10">
         <div className="mx-auto flex w-full max-w-[1432px] flex-col items-start px-4">
           <h2 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-4xl">
@@ -226,6 +273,9 @@ export default function HomePage() {
                 trends, and audience insights - helping you evaluate keyword
                 potential and plan your SEO strategy faster.
               </p>
+              <div className="mt-1 mb-2 px-2 text-sm font-semibold text-black/70">
+                - DataForSEO API Required.
+              </div>
               <div className="mt-0 p-2">
                 <Link
                   href="/tool/keyword-research/overview"
@@ -278,6 +328,9 @@ export default function HomePage() {
                 difficulty, helping you discover new keyword opportunities and
                 expand your SEO strategy.
               </p>
+              <div className="mt-1 mb-2 px-2 text-sm font-semibold text-black/70">
+                - DataForSEO API Required.
+              </div>
               <div className="mt-0 p-2">
                 <Link
                   href="/tool/keyword-research/suggestions"
@@ -329,6 +382,9 @@ export default function HomePage() {
                 search queries, identify content opportunities, and expand your
                 keyword research quickly.
               </p>
+              <div className="mt-1 mb-2 px-2 text-sm font-semibold text-black/70">
+                - Free To Use, No API Required.
+              </div>
               <div className="mt-0 p-2">
                 <Link
                   href="/tool/keyword-research/autocomplete"
@@ -391,6 +447,9 @@ export default function HomePage() {
                 historical trends - helping you understand competitor
                 performance and identify SEO opportunities.
               </p>
+              <div className="mt-1 mb-2 px-2 text-sm font-semibold text-black/70">
+                - DataForSEO API Required.
+              </div>
               <div className="mt-0 p-2">
                 <Link
                   href="/tool/competitive-research/overview"

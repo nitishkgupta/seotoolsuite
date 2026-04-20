@@ -8,6 +8,7 @@ import {
   TextSearchIcon,
 } from "lucide-react";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "SEO Tools | SEOToolSuite",
@@ -140,6 +141,7 @@ export default function ToolsPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
