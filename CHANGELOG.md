@@ -1,5 +1,9 @@
 # SEOToolSuite Changelog
 
+## v4.3.1
+
+- Update packages.
+
 ## v4.3.0
 
 - Added **Footer** on all pages.
