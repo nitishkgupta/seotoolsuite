@@ -19,6 +19,7 @@ import keywordOverviewScreenshot from "@/assets/images/keyword-overview-screensh
 import keywordSuggestionsScreenshot from "@/assets/images/keyword-suggestions-screenshot.png";
 import keywordAutocompleteScreenshot from "@/assets/images/keyword-autocomplete-screenshot.png";
 import trafficOverviewScreenshot from "@/assets/images/traffic-overview-screenshot.png";
+import rankedKeywordsScreenshot from "@/assets/images/ranked-keywords-screenshot.png";
 import dfsLogoImage from "@/assets/images/dataforseo-logo.png";
 import githubIcon from "@/assets/images/github-icon.svg";
 
@@ -463,6 +464,61 @@ export default function HomePage() {
               <Image
                 src={trafficOverviewScreenshot}
                 alt="Traffic Overview Tool"
+                className="w-full rounded-md transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+              />
+              <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
+                <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-chevron-down-icon lucide-chevron-down"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="mx-auto mt-12 h-0.5 w-3/4 rounded-md bg-slate-200"></div>
+          <div className="mt-12 flex w-full flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:gap-0">
+            <div className="order-2 lg:order-1 lg:pt-12">
+              <h3 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-3xl">
+                <TextSearchIcon
+                  size={48}
+                  className="rounded-md bg-sky-950 p-3 text-white"
+                />
+                Ranked Keywords
+              </h3>
+              <p className="mt-4 block max-w-[500px] p-2 text-base text-black/80 lg:text-lg">
+                The Ranked Keywords tool shows the keywords a domain or page
+                ranks for in search results. It provides insights such as
+                rankings, search volume, estimated traffic, CPC, competition,
+                and keyword difficulty - helping you analyze competitor SEO
+                performance and discover ranking opportunities.
+              </p>
+              <div className="mt-1 mb-2 px-2 text-sm font-semibold text-black/70">
+                - DataForSEO API Required.
+              </div>
+              <div className="mt-0 p-2">
+                <Link
+                  href="/tool/competitive-research/keywords"
+                  className="block w-fit rounded-md bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
+                >
+                  Access Tool
+                </Link>
+              </div>
+            </div>
+            <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
+              <Image
+                src={rankedKeywordsScreenshot}
+                alt="Ranked Keywords Tool"
                 className="w-full rounded-md transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">

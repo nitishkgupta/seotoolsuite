@@ -3,6 +3,7 @@ import DataForSEOLanguagesData from "@/data/dataforseo-languages-data.json";
 import { MONTH_NAMES } from "@/constants";
 import { MonthlySearches } from "@/types/DFS/common";
 import { HistoricalRankOverviewItem } from "@/types/DFS/HistoricalRankOverview";
+import { RankedKeywordsMetricsData } from "@/types/DFS/RankedKeywords";
 
 export type DataForSEOLocation = {
   location_name: string;
@@ -29,6 +30,26 @@ export type DataForSEOKeywordFilters = {
   searchIntents?: Array<
     "informational" | "navigational" | "commercial" | "transactional"
   >;
+};
+
+export type DataForSEORankedKeywordFilters = {
+  minSearchVolume?: number;
+  maxSearchVolume?: number;
+  minCPC?: number;
+  maxCPC?: number;
+  minPPC?: number;
+  maxPPC?: number;
+  minKD?: number;
+  maxKD?: number;
+  includeKeyword?: string;
+  excludeKeyword?: string;
+  searchIntents?: Array<
+    "informational" | "navigational" | "commercial" | "transactional"
+  >;
+  minRankedPosition?: number;
+  maxRankedPosition?: number;
+  minEstimatedTraffic?: number;
+  maxEstimatedTraffic?: number;
 };
 
 /**
@@ -234,4 +255,197 @@ export function formatHistoricalRankOverviewData(
     monthLabel: MONTH_NAMES[item.month - 1],
     monthWithYearLabel: `${MONTH_NAMES[item.month - 1]} '${item.year % 100}`,
   }));
+}
+
+/**
+ * Build DataForSEO ranked keyword filters input.
+ */
+export function buildDataForSEORankedKeywordFilters(
+  filters: DataForSEORankedKeywordFilters,
+): Array<any> {
+  if (Object.keys(filters).length > 0) {
+    const dfsFilters = [];
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (key === "minSearchVolume" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "keyword_data.keyword_info.search_volume",
+          ">=",
+          value,
+        ]);
+      }
+
+      if (key === "maxSearchVolume" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "keyword_data.keyword_info.search_volume",
+          "<=",
+          value,
+        ]);
+      }
+
+      if (key === "minCPC" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_data.keyword_info.cpc", ">=", value]);
+      }
+
+      if (key === "maxCPC" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_data.keyword_info.cpc", "<=", value]);
+      }
+
+      if (key === "minPPC" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "keyword_data.keyword_info.competition",
+          ">=",
+          value / 100,
+        ]);
+      }
+
+      if (key === "maxPPC" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "keyword_data.keyword_info.competition",
+          "<=",
+          value / 100,
+        ]);
+      }
+
+      if (key === "minKD" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "keyword_data.keyword_properties.keyword_difficulty",
+          ">=",
+          value,
+        ]);
+      }
+
+      if (key === "maxKD" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "keyword_data.keyword_properties.keyword_difficulty",
+          "<=",
+          value,
+        ]);
+      }
+
+      if (key === "includeKeyword" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_data.keyword", "like", `%${value}%`]);
+      }
+
+      if (key === "excludeKeyword" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["keyword_data.keyword", "not_like", `%${value}%`]);
+      }
+
+      if (key === "searchIntents" && Array.isArray(value) && value.length > 0) {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "keyword_data.search_intent_info.main_intent",
+          "in",
+          value,
+        ]);
+      }
+
+      if (key === "minRankedPosition" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "ranked_serp_element.serp_item.rank_group",
+          ">=",
+          value,
+        ]);
+      }
+
+      if (key === "maxRankedPosition" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "ranked_serp_element.serp_item.rank_group",
+          "<=",
+          value,
+        ]);
+      }
+
+      if (key === "minEstimatedTraffic" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["ranked_serp_element.serp_item.etv", ">=", value]);
+      }
+
+      if (key === "maxEstimatedTraffic" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["ranked_serp_element.serp_item.etv", "<=", value]);
+      }
+    }
+
+    return dfsFilters;
+  }
+
+  return [];
+}
+
+export interface FormattedRankPositionDistributionData {
+  label: string;
+  Keywords: number;
+}
+
+/**
+ * Format ranked keywords position distribution.
+ */
+export function formatRankPositionDistribution(
+  data: RankedKeywordsMetricsData,
+): FormattedRankPositionDistributionData[] {
+  const formattedRankDistributionData = [
+    {
+      label: "1",
+      Keywords: data.pos_1,
+    },
+    {
+      label: "2-3",
+      Keywords: data.pos_2_3,
+    },
+    {
+      label: "4-10",
+      Keywords: data.pos_4_10,
+    },
+    {
+      label: "11-20",
+      Keywords: data.pos_11_20,
+    },
+    {
+      label: "21-30",
+      Keywords: data.pos_21_30,
+    },
+    {
+      label: "31-40",
+      Keywords: data.pos_31_40,
+    },
+    {
+      label: "41-50",
+      Keywords: data.pos_41_50,
+    },
+    {
+      label: "51-60",
+      Keywords: data.pos_51_60,
+    },
+    {
+      label: "61-70",
+      Keywords: data.pos_61_70,
+    },
+    {
+      label: "71-80",
+      Keywords: data.pos_71_80,
+    },
+    {
+      label: "81-90",
+      Keywords: data.pos_81_90,
+    },
+    {
+      label: "91-100",
+      Keywords: data.pos_91_100,
+    },
+  ];
+
+  return formattedRankDistributionData;
 }

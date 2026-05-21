@@ -265,7 +265,7 @@ const TrafficOverviewTool = ({
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
             <Chip size="md" variant="flat">
-              ${0.2 + dataMonthsCount * 0.001}
+              ${Number(0.2 + dataMonthsCount * 0.001).toFixed(4)}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
@@ -415,6 +415,25 @@ const TrafficOverviewTool = ({
             </Form>
           )}
         </div>
+        {formInput.target &&
+          formInput.location_code &&
+          formInput.language_code && (
+            <div className="mt-4 w-full">
+              <div className="flex w-full flex-col flex-wrap items-start gap-2 rounded-md border border-slate-200 p-3 text-sm md:w-fit md:flex-row md:items-center">
+                <div className="mr-1 flex items-center gap-1 border-slate-200 text-sm font-medium text-black/80 transition">
+                  Other Reports:
+                </div>
+                <Link
+                  prefetch={false}
+                  href={`/tool/competitive-research/keywords?target=${formInput.target}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                  target="_blank"
+                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
+                >
+                  <TextSearchIcon size={16} /> Ranked Keywords
+                </Link>
+              </div>
+            </div>
+          )}
       </div>
       {isLoading && (
         <>

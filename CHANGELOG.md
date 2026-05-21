@@ -1,5 +1,11 @@
 # SEOToolSuite Changelog
 
+## v5.0.0
+
+- Added a new **Ranked Keywords** tool. Get the keywords that a domain or page ranks for.
+- Minor UI and bug fixes.
+- Updated packages.
+
 ## v4.3.1
 
 - Update packages.

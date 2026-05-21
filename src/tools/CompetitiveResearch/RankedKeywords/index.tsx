@@ -2,15 +2,15 @@
 
 import useDFSBalance from "@/hooks/useDFSBalance";
 import {
-  buildDataForSEOKeywordFilters,
+  buildDataForSEORankedKeywordFilters,
   getDataForSEOLanguages,
   getDataForSEOLocations,
 } from "@/utils/dataforseo";
 import { getLocalStorageItem } from "@/utils/localStorage";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import KeywordFilters, {
-  KeywordFiltersInitialValues,
-} from "@/components/KeywordFilters";
+import RankedKeywordFilters, {
+  RankedKeywordFiltersInitialValues,
+} from "@/components/RankedKeywordFilters";
 import { GridColDef } from "@mui/x-data-grid";
 import {
   addToast,
@@ -40,14 +40,20 @@ import {
   BinocularsIcon,
   BookOpenTextIcon,
   BoxIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CircleStarIcon,
   ClipboardCopyIcon,
   DatabaseZapIcon,
+  DiffIcon,
   EllipsisIcon,
   InfoIcon,
   LoaderPinwheelIcon,
+  MinusIcon,
   NavigationIcon,
-  TelescopeIcon,
+  PlusIcon,
   TextSearchIcon,
+  TrendingUpIcon,
 } from "lucide-react";
 import { getDifficultyColor, getDifficultyText } from "@/utils/difficulty";
 import { trackUmamiEvent } from "@/utils/umami";
@@ -58,48 +64,27 @@ import { DataGrid } from "@mui/x-data-grid";
 import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import KeywordDetails from "./KeywordDetails";
+import {
+  RankedKeywordsItem,
+  RankedKeywordsMetrics,
+} from "@/types/DFS/RankedKeywords";
+import RankPositionDistributionChart from "@/components/charts/RankPositionDistributionChart";
 
-type KeywordSuggestionItem = {
+type RankedKeywordsTableItem = RankedKeywordsItem & {
   id: number;
-  keyword: string;
   wordsCount: number;
-  location_code: number;
-  language_code: string;
-  searchVolume: number;
-  ppc: number;
-  ppcLevel: string;
-  cpc: number;
-  lowTopPageBid?: number;
-  highTopPageBid?: number;
-  monthlySearches: {
-    year: number;
-    month: number;
-    search_volume: number;
-  }[];
-  searchVolumeTrend: {
-    monthly: number;
-    quarterly: number;
-    yearly: number;
-  };
-  searchIntent?: string;
-  keywordDifficulty?: number;
-  avgBacklinksData?: {
-    backlinks: number;
-    dofollowBacklinks: number;
-    referringPages: number;
-    referringDomains: number;
-    pageRank: number;
-    domainRank: number;
-  };
 };
 
-type KeywordSuggestionsData = KeywordSuggestionItem[];
+type RankedKeywordsData = {
+  metrics: RankedKeywordsMetrics;
+  keywords: RankedKeywordsTableItem[];
+};
 
-const KeywordSuggestionsTool = ({
+const RankedKeywordsTool = ({
   searchParams,
 }: {
   searchParams?: Promise<{
-    keyword?: string;
+    target?: string;
     location_code?: string;
     language_code?: string;
   }>;
@@ -107,11 +92,11 @@ const KeywordSuggestionsTool = ({
   const { refreshDFSBalance } = useDFSBalance(false);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState<KeywordSuggestionsData | null>(null);
+  const [data, setData] = useState<RankedKeywordsData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const MAX_ROWS: number = Number(
-    getLocalStorageItem("KW_SUGGESTIONS_MAX_ROWS") ?? 250,
+    getLocalStorageItem("RANKED_KWS_MAX_ROWS") ?? 250,
   );
   const [totalResults, setTotalResults] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -124,32 +109,33 @@ const KeywordSuggestionsTool = ({
     getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
   const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
   const cachingDuration: number =
-    Number(getLocalStorageItem("KW_SUGGESTIONS_CACHING_DURATION")) ?? 30;
+    Number(getLocalStorageItem("RANKED_KWS_CACHING_DURATION")) ?? 30;
 
   const locations = getDataForSEOLocations();
   const languages = getDataForSEOLanguages(true);
 
-  const [selectedKeyword, setSelectedKeyword] = useState<string>("");
+  const [selectedTarget, setSelectedTarget] = useState<string>("");
   const [selectedLocationKey, setSelectedLocationKey] =
     useState<string>("2356");
   const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>("en");
 
-  const [activeKeywordData, setActiveKeywordData] =
-    useState<KeywordSuggestionItem | null>(null);
+  const [activeKeywordData, setActiveKeywordData] = useState<
+    RankedKeywordsItem["keyword_data"] | null
+  >(null);
   const {
     isOpen: keywordDetailsModalOpen,
     onOpen: openKeywordDetailsModal,
     onOpenChange: setKeywordDetailsModalOpen,
   } = useDisclosure();
 
-  const [activeKeywordFilters, setActiveKeywordFilters] =
-    useState<KeywordFiltersInitialValues>();
-  const activeKeywordFiltersCount: number = activeKeywordFilters
-    ? Object.keys(activeKeywordFilters).length
+  const [activeRankedKeywordFilters, setActiveKeywordFilters] =
+    useState<RankedKeywordFiltersInitialValues>();
+  const activeRankedKeywordFiltersCount: number = activeRankedKeywordFilters
+    ? Object.keys(activeRankedKeywordFilters).length
     : 0;
 
   const [formInput, setFormInput] = useState<{
-    keyword?: string;
+    target?: string;
     location_code?: string;
     language_code?: string;
   }>({});
@@ -169,17 +155,17 @@ const KeywordSuggestionsTool = ({
       e.preventDefault();
 
       const formData = new FormData(e.currentTarget);
-      const keyword: string = selectedKeyword;
+      const target: string = selectedTarget;
       const location_code: string = selectedLocationKey;
       const language_code: string = selectedLanguageKey;
 
-      if (!keyword || !location_code || !language_code) {
+      if (!target || !location_code || !language_code) {
         return;
       }
 
       setCurrentPage(1);
       setFormInput({
-        keyword,
+        target,
         location_code,
         language_code,
       });
@@ -220,17 +206,29 @@ const KeywordSuggestionsTool = ({
           formData.getAll("searchIntents[]").length > 0 && {
             searchIntents: formData.getAll("searchIntents[]") as any,
           }),
+        ...(formData.get("rank-pos-min") !== "" && {
+          minRankedPosition: Number(formData.get("rank-pos-min") as any),
+        }),
+        ...(formData.get("rank-pos-max") !== "" && {
+          maxRankedPosition: Number(formData.get("rank-pos-max") as any),
+        }),
+        ...(formData.get("est-traffic-min") !== "" && {
+          minEstimatedTraffic: Number(formData.get("est-traffic-min") as any),
+        }),
+        ...(formData.get("est-traffic-max") !== "" && {
+          maxEstimatedTraffic: Number(formData.get("est-traffic-max") as any),
+        }),
       });
     },
-    [selectedKeyword, selectedLocationKey, selectedLanguageKey],
+    [selectedTarget, selectedLocationKey, selectedLanguageKey],
   );
 
-  const getKeywordSuggestions = useCallback(
+  const getRankedKeywords = useCallback(
     async (
-      keyword: string,
+      target: string,
       location_code: string,
       language_code: string,
-      keywordFilters: KeywordFiltersInitialValues | undefined,
+      rankedKeywordFilters: RankedKeywordFiltersInitialValues | undefined,
       limit: number,
       offset: number,
     ) => {
@@ -238,7 +236,7 @@ const KeywordSuggestionsTool = ({
       setError(null);
 
       window.setTimeout(() => {
-        document.getElementById("keywords-table")?.scrollIntoView({
+        document.getElementById("ranked-overview-data")?.scrollIntoView({
           behavior: "smooth",
         });
       }, 100);
@@ -252,15 +250,15 @@ const KeywordSuggestionsTool = ({
 
       if (!dfsSandboxEnabled) {
         try {
-          trackUmamiEvent("keyword-research/suggestions");
+          trackUmamiEvent("competitive-research/ranked-keywords");
         } catch (error) {
           console.error(error);
         }
       }
 
       try {
-        const dfsKeywordFilters = keywordFilters
-          ? buildDataForSEOKeywordFilters(keywordFilters)
+        const dfsRankedKeywordFilters = rankedKeywordFilters
+          ? buildDataForSEORankedKeywordFilters(rankedKeywordFilters)
           : [];
 
         const DataForSEOService = new DataForSEO(
@@ -270,11 +268,11 @@ const KeywordSuggestionsTool = ({
           cachingEnabled,
         );
 
-        const apiResponse = await DataForSEOService.getKeywordSuggestions(
-          keyword,
+        const apiResponse = await DataForSEOService.getRankedKeywords(
+          target,
           Number(location_code),
           language_code,
-          dfsKeywordFilters,
+          dfsRankedKeywordFilters,
           limit,
           offset,
           cachingDuration,
@@ -294,59 +292,27 @@ const KeywordSuggestionsTool = ({
         if (data && data.items && data.items.length > 0) {
           const totalCount = data.total_count;
           setTotalResults(totalCount);
-          const tableData: KeywordSuggestionsData = [];
+          const tableData: RankedKeywordsData["keywords"] = [];
           let rowId = 1 + offset;
 
-          data.items.forEach((keywordSuggestionItem: any) => {
+          data.items.forEach((keywordSuggestionItem: RankedKeywordsItem) => {
             tableData.push({
               id: rowId,
-              keyword: keywordSuggestionItem.keyword,
-              wordsCount: keywordSuggestionItem.keyword.split(" ").length,
-              location_code: keywordSuggestionItem.location_code,
-              language_code: keywordSuggestionItem.language_code,
-              searchVolume: keywordSuggestionItem.keyword_info.search_volume,
-              ppc: keywordSuggestionItem.keyword_info.competition,
-              ppcLevel: keywordSuggestionItem.keyword_info.competition_level,
-              cpc: keywordSuggestionItem.keyword_info.cpc,
-              lowTopPageBid:
-                keywordSuggestionItem.keyword_info.low_top_of_page_bid ?? null,
-              highTopPageBid:
-                keywordSuggestionItem.keyword_info.high_top_of_page_bid ?? null,
-              monthlySearches:
-                keywordSuggestionItem.keyword_info.monthly_searches,
-              searchVolumeTrend:
-                keywordSuggestionItem.keyword_info?.search_volume_trend ?? null,
-              searchIntent:
-                keywordSuggestionItem.search_intent_info?.main_intent ?? null,
-              keywordDifficulty:
-                keywordSuggestionItem.keyword_properties?.keyword_difficulty ??
-                null,
-              avgBacklinksData: {
-                backlinks:
-                  keywordSuggestionItem.avg_backlinks_info?.backlinks ?? null,
-                dofollowBacklinks:
-                  keywordSuggestionItem.avg_backlinks_info?.dofollow ?? null,
-                referringPages:
-                  keywordSuggestionItem.avg_backlinks_info?.referring_pages ??
-                  null,
-                referringDomains:
-                  keywordSuggestionItem.avg_backlinks_info?.referring_domains ??
-                  null,
-                pageRank:
-                  keywordSuggestionItem.avg_backlinks_info?.rank ?? null,
-                domainRank:
-                  keywordSuggestionItem.avg_backlinks_info?.main_domain_rank ??
-                  null,
-              },
+              wordsCount:
+                keywordSuggestionItem.keyword_data.keyword.split(" ").length,
+              ...keywordSuggestionItem,
             });
             rowId++;
           });
 
-          setData(tableData);
+          setData({
+            metrics: data.metrics,
+            keywords: tableData,
+          });
         }
 
         window.setTimeout(() => {
-          document.getElementById("keywords-table")?.scrollIntoView({
+          document.getElementById("ranked-overview-data")?.scrollIntoView({
             behavior: "smooth",
           });
         }, 100);
@@ -376,33 +342,35 @@ const KeywordSuggestionsTool = ({
 
   useDeepCompareEffect(() => {
     if (
-      formInput.keyword &&
+      formInput.target &&
       formInput.location_code &&
       formInput.language_code
     ) {
-      getKeywordSuggestions(
-        formInput.keyword,
+      getRankedKeywords(
+        formInput.target,
         formInput.location_code,
         formInput.language_code,
-        activeKeywordFilters,
+        activeRankedKeywordFilters,
         MAX_ROWS,
         offset,
       );
     }
   }, [
-    formInput.keyword,
+    formInput.target,
     formInput.location_code,
     formInput.language_code,
-    activeKeywordFilters,
+    activeRankedKeywordFilters,
     MAX_ROWS,
     offset,
-    getKeywordSuggestions,
+    getRankedKeywords,
   ]);
 
   const getMUIRowHeight = useCallback(() => "auto", []);
 
   const getTogglableColumns = useCallback((columns: GridColDef[]) => {
     const hiddenColumns = [
+      "rankingPage",
+      "positionChange",
       "searchVolumeTrendYearly",
       "lowTopPageBid",
       "highTopPageBid",
@@ -417,7 +385,7 @@ const KeywordSuggestionsTool = ({
       toolbar: {
         csvOptions: {
           allColumns: true,
-          fileName: `SEOToolSuite-keyword-suggestions-${formInput.keyword}-${formInput.location_code}-${formInput.language_code}-${currentPage}`,
+          fileName: `SEOToolSuite-ranked-keywords-${formInput.target}-${formInput.location_code}-${formInput.language_code}-${currentPage}`,
           escapeFormulas: false,
         },
       },
@@ -426,7 +394,7 @@ const KeywordSuggestionsTool = ({
       },
     };
   }, [
-    formInput.keyword,
+    formInput.target,
     formInput.location_code,
     formInput.language_code,
     currentPage,
@@ -440,10 +408,13 @@ const KeywordSuggestionsTool = ({
       },
       columns: {
         columnVisibilityModel: {
+          rankingPage: false,
+          positionChange: false,
           searchVolumeTrendYearly: false,
           lowTopPageBid: false,
           highTopPageBid: false,
           wordsCount: false,
+          volumeTrend: false,
         },
       },
     };
@@ -478,9 +449,10 @@ const KeywordSuggestionsTool = ({
         align: "left",
         headerAlign: "left",
         cellClassName: "min-h-12 relative group",
+        valueGetter: (_, row) => row.keyword_data.keyword,
         renderCell: (params) => (
-          <>
-            <div className="flex w-full items-center justify-between gap-2 py-2">
+          <div className="flex w-full flex-col gap-2 py-2">
+            <div className="flex w-full items-center justify-between gap-2">
               {params.value}
               <div>
                 <Dropdown>
@@ -500,7 +472,7 @@ const KeywordSuggestionsTool = ({
                     <DropdownItem
                       key="keyword-details"
                       onPress={() => {
-                        setActiveKeywordData(params.row);
+                        setActiveKeywordData(params.row.keyword_data);
                         openKeywordDetailsModal();
                       }}
                       startContent={<InfoIcon size={16} />}
@@ -509,7 +481,7 @@ const KeywordSuggestionsTool = ({
                     </DropdownItem>
                     <DropdownItem
                       key="keyword-overview"
-                      href={`/tool/keyword-research/overview?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
+                      href={`/tool/keyword-research/overview?keyword=${params.value}&location_code=${params.row.keyword_data.location_code}&language_code=${params.row.keyword_data.language_code}`}
                       target="_blank"
                       startContent={<BookOpenTextIcon size={16} />}
                     >
@@ -517,7 +489,7 @@ const KeywordSuggestionsTool = ({
                     </DropdownItem>
                     <DropdownItem
                       key="keyword-suggestions"
-                      href={`/tool/keyword-research/suggestions?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
+                      href={`/tool/keyword-research/suggestions?keyword=${params.value}&location_code=${params.row.keyword_data.location_code}&language_code=${params.row.keyword_data.language_code}`}
                       target="_blank"
                       startContent={<TextSearchIcon size={18} />}
                     >
@@ -525,7 +497,7 @@ const KeywordSuggestionsTool = ({
                     </DropdownItem>
                     <DropdownItem
                       key="autocomplete-suggestions"
-                      href={`/tool/keyword-research/autocomplete?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
+                      href={`/tool/keyword-research/autocomplete?keyword=${params.value}&location_code=${params.row.keyword_data.location_code}&language_code=${params.row.keyword_data.language_code}`}
                       target="_blank"
                       startContent={<LoaderPinwheelIcon size={16} />}
                     >
@@ -535,8 +507,103 @@ const KeywordSuggestionsTool = ({
                 </Dropdown>
               </div>
             </div>
-          </>
+            <Tooltip
+              content={
+                <div className="flex flex-col gap-1 py-1">
+                  <div>{params.row.ranked_serp_element.serp_item.title}</div>
+                  <div className="text-xs">
+                    {params.row.ranked_serp_element.serp_item.url}
+                  </div>
+                  {params.row.ranked_serp_element.serp_item.backlinks_info && (
+                    <>
+                      <div className="my-1 h-px w-full bg-slate-200"></div>
+                      <div className="flex flex-col gap-0.5 text-xs leading-normal">
+                        <span>
+                          <b className="font-medium">Domain Rank:</b>{" "}
+                          {typeof params.row.ranked_serp_element.serp_item
+                            .rank_info.main_domain_rank === "number"
+                            ? Math.round(
+                                Math.sin(
+                                  params.row.ranked_serp_element.serp_item
+                                    .rank_info.main_domain_rank / 636.62,
+                                ) * 100,
+                              )
+                            : "N/A"}
+                        </span>
+                        <span>
+                          <b className="font-medium">Page Rank:</b>{" "}
+                          {typeof params.row.ranked_serp_element.serp_item
+                            .rank_info.page_rank === "number"
+                            ? Math.round(
+                                Math.sin(
+                                  params.row.ranked_serp_element.serp_item
+                                    .rank_info.page_rank / 636.62,
+                                ) * 100,
+                              )
+                            : "N/A"}
+                        </span>
+                        <span>
+                          <b className="font-medium">Backlinks:</b>{" "}
+                          {typeof params.row.ranked_serp_element.serp_item
+                            .backlinks_info.backlinks === "number"
+                            ? params.row.ranked_serp_element.serp_item.backlinks_info.backlinks.toLocaleString(
+                                navigator.language,
+                              )
+                            : "N/A"}
+                        </span>
+                        <span>
+                          <b className="font-medium">DoFollow Backlinks:</b>{" "}
+                          {typeof params.row.ranked_serp_element.serp_item
+                            .backlinks_info.dofollow === "number"
+                            ? params.row.ranked_serp_element.serp_item.backlinks_info.dofollow.toLocaleString(
+                                navigator.language,
+                              )
+                            : "N/A"}
+                        </span>
+                        <span>
+                          <b className="font-medium">Referring Pages:</b>{" "}
+                          {typeof params.row.ranked_serp_element.serp_item
+                            .backlinks_info.referring_pages === "number"
+                            ? params.row.ranked_serp_element.serp_item.backlinks_info.referring_pages.toLocaleString(
+                                navigator.language,
+                              )
+                            : "N/A"}
+                        </span>
+                        <span>
+                          <b className="font-medium">Referring Domains:</b>{" "}
+                          {typeof params.row.ranked_serp_element.serp_item
+                            .backlinks_info.referring_domains === "number"
+                            ? params.row.ranked_serp_element.serp_item.backlinks_info.referring_domains.toLocaleString(
+                                navigator.language,
+                              )
+                            : "N/A"}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              }
+              placement="top"
+            >
+              <a
+                href={params.row.ranked_serp_element.serp_item.url}
+                target="_blank"
+                rel="nofollow"
+                className="block w-fit max-w-full overflow-hidden text-xs text-nowrap text-ellipsis text-black/80"
+              >
+                {params.row.ranked_serp_element.serp_item.url
+                  .replace("https://", "")
+                  .replace("http://", "")}
+              </a>
+            </Tooltip>
+          </div>
         ),
+      },
+      {
+        field: "rankingPage",
+        headerName: "Page",
+        type: "string",
+        valueGetter: (_, row) => row.ranked_serp_element.serp_item.url,
       },
       {
         field: "wordsCount",
@@ -560,6 +627,8 @@ const KeywordSuggestionsTool = ({
         resizable: false,
         align: "left",
         headerAlign: "left",
+        valueGetter: (_, row) =>
+          row.keyword_data.search_intent_info.main_intent,
         renderCell: (params) => (
           <>
             {typeof params.value !== "string" ? (
@@ -640,6 +709,7 @@ const KeywordSuggestionsTool = ({
         minWidth: 126,
         align: "left",
         headerAlign: "left",
+        valueGetter: (_, row) => row.keyword_data.keyword_info.search_volume,
         renderCell: (params) => (
           <>
             {typeof params.value !== "number" ? (
@@ -647,13 +717,17 @@ const KeywordSuggestionsTool = ({
             ) : (
               <div className="flex flex-row flex-wrap items-center gap-1 py-2">
                 {params.value.toLocaleString(navigator.language)}
-                {params.row.searchVolumeTrend.yearly ? (
+                {params.row.keyword_data.keyword_info.search_volume_trend
+                  .yearly ? (
                   <Tooltip content="Search Volume Trend (Yearly)">
                     <span
-                      className={`text-xs ${params.row.searchVolumeTrend.yearly > 0 ? "text-green-500" : "text-red-500"}`}
+                      className={`text-xs ${params.row.keyword_data.keyword_info.search_volume_trend.yearly > 0 ? "text-green-500" : "text-red-500"}`}
                     >
-                      {params.row.searchVolumeTrend.yearly > 0 ? "+" : ""}
-                      {params.row.searchVolumeTrend.yearly.toLocaleString(
+                      {params.row.keyword_data.keyword_info.search_volume_trend
+                        .yearly > 0
+                        ? "+"
+                        : ""}
+                      {params.row.keyword_data.keyword_info.search_volume_trend.yearly.toLocaleString(
                         navigator.language,
                       )}
                       %
@@ -665,6 +739,81 @@ const KeywordSuggestionsTool = ({
               </div>
             )}
           </>
+        ),
+      },
+      {
+        field: "position",
+        headerName: "Position",
+        description: "Ranking Position",
+        type: "number",
+        display: "flex",
+        flex: 1,
+        minWidth: 80,
+        maxWidth: 100,
+        align: "left",
+        headerAlign: "left",
+        valueGetter: (_, row) => row.ranked_serp_element.serp_item.rank_group,
+        renderCell: (params) => (
+          <div className="flex items-center gap-2 py-2">
+            <span>
+              {typeof params.value === "number" ? params.value : "N/A"}
+            </span>
+            {params.row.ranked_serp_element.serp_item.rank_changes.is_new && (
+              <Tooltip content="New Keyword">
+                <span className="text-green-700">
+                  <PlusIcon size={16} />
+                </span>
+              </Tooltip>
+            )}
+            {params.row.ranked_serp_element.serp_item.rank_changes.is_up && (
+              <Tooltip content="Moved Up">
+                <span className="text-green-500">
+                  <ChevronUpIcon size={16} />
+                </span>
+              </Tooltip>
+            )}
+            {params.row.ranked_serp_element.serp_item.rank_changes.is_down && (
+              <Tooltip content="Moved Down">
+                <span className="text-red-500">
+                  <ChevronDownIcon size={16} />
+                </span>
+              </Tooltip>
+            )}
+          </div>
+        ),
+      },
+      {
+        field: "positionChange",
+        headerName: "Position Change",
+        type: "string",
+        valueGetter: (_, row) => {
+          const rankChanges = row.ranked_serp_element.serp_item.rank_changes;
+
+          if (rankChanges.is_new) return "New";
+          if (rankChanges.is_up) return "Up";
+          if (rankChanges.is_down) return "Down";
+          return "";
+        },
+      },
+      {
+        field: "estimatedTraffic",
+        headerName: "Traffic",
+        description: "Estimated Traffic",
+        type: "number",
+        display: "flex",
+        flex: 1,
+        minWidth: 110,
+        align: "left",
+        headerAlign: "left",
+        valueGetter: (_, row) => row.ranked_serp_element.serp_item.etv,
+        renderCell: (params) => (
+          <div className="py-2">
+            {typeof params.value === "number"
+              ? params.value.toLocaleString(navigator.language, {
+                  maximumFractionDigits: 0,
+                })
+              : "N/A"}
+          </div>
         ),
       },
       {
@@ -682,7 +831,7 @@ const KeywordSuggestionsTool = ({
         renderCell: (params) => (
           <div className="flex w-full items-center">
             <SearchVolumeTrendChart
-              data={params.row.monthlySearches}
+              data={params.row.keyword_data.keyword_info.monthly_searches}
               chartHeight={40}
               chartAnimation={false}
               xAxisLabelType="month"
@@ -700,7 +849,8 @@ const KeywordSuggestionsTool = ({
         field: "searchVolumeTrendYearly",
         headerName: "Search Volume Trend (Yearly)",
         type: "number",
-        valueGetter: (_value, row) => row.searchVolumeTrend.yearly,
+        valueGetter: (_, row) =>
+          row.keyword_data.keyword_info.search_volume_trend.yearly,
       },
       {
         field: "cpc",
@@ -712,6 +862,8 @@ const KeywordSuggestionsTool = ({
         minWidth: 105,
         align: "left",
         headerAlign: "left",
+        valueGetter: (_, row) =>
+          Number(row?.keyword_data?.keyword_info?.cpc?.toFixed(2)) ?? null,
         renderCell: (params) => (
           <>
             {typeof params.value !== "number" ? (
@@ -719,8 +871,10 @@ const KeywordSuggestionsTool = ({
             ) : (
               <div className="flex w-full flex-col gap-1 py-2">
                 <div>${params.value}</div>
-                {(typeof params.row.lowTopPageBid === "number" ||
-                  typeof params.row.highTopPageBid === "number") && (
+                {(typeof params.row.keyword_data.keyword_info
+                  .low_top_of_page_bid === "number" ||
+                  typeof params.row.keyword_data.keyword_info
+                    .high_top_of_page_bid === "number") && (
                   <div className="text-xs text-black/80">
                     <Tooltip
                       content={
@@ -733,7 +887,14 @@ const KeywordSuggestionsTool = ({
                         </div>
                       }
                     >
-                      <span>${params.row.lowTopPageBid ?? "N/A"}</span>
+                      <span>
+                        $
+                        {Number(
+                          params?.row?.keyword_data?.keyword_info?.low_top_of_page_bid?.toFixed(
+                            2,
+                          ),
+                        ) ?? "N/A"}
+                      </span>
                     </Tooltip>{" "}
                     -{" "}
                     <Tooltip
@@ -749,7 +910,14 @@ const KeywordSuggestionsTool = ({
                         </div>
                       }
                     >
-                      <span>${params.row.highTopPageBid ?? "N/A"}</span>
+                      <span>
+                        $
+                        {Number(
+                          params?.row?.keyword_data?.keyword_info?.high_top_of_page_bid?.toFixed(
+                            2,
+                          ),
+                        ) ?? "N/A"}
+                      </span>
                     </Tooltip>
                   </div>
                 )}
@@ -762,11 +930,19 @@ const KeywordSuggestionsTool = ({
         field: "lowTopPageBid",
         headerName: "Low Top of Page Bid",
         type: "number",
+        valueGetter: (_, row) =>
+          Number(
+            row?.keyword_data?.keyword_info?.low_top_of_page_bid?.toFixed(2),
+          ) ?? null,
       },
       {
         field: "highTopPageBid",
         headerName: "High Top of Page Bid",
         type: "number",
+        valueGetter: (_, row) =>
+          Number(
+            row?.keyword_data?.keyword_info?.high_top_of_page_bid?.toFixed(2),
+          ) ?? null,
       },
       {
         field: "ppc",
@@ -779,6 +955,7 @@ const KeywordSuggestionsTool = ({
         maxWidth: 80,
         align: "left",
         headerAlign: "left",
+        valueGetter: (_, row) => row.keyword_data.keyword_info.competition,
         valueFormatter: (value: number) =>
           typeof value === "number" ? Math.round(value * 100) : null,
         renderCell: (params) => (
@@ -803,6 +980,8 @@ const KeywordSuggestionsTool = ({
         minWidth: 64,
         maxWidth: 80,
         resizable: false,
+        valueGetter: (_, row) =>
+          row.keyword_data.keyword_properties.keyword_difficulty,
         renderCell: (params) => (
           <>
             {typeof params.value !== "number" ? (
@@ -830,13 +1009,13 @@ const KeywordSuggestionsTool = ({
 
   useEffect(() => {
     if (searchParams) {
-      searchParams.then(({ keyword, location_code, language_code }) => {
-        if (keyword && location_code && language_code) {
-          setSelectedKeyword(keyword);
+      searchParams.then(({ target, location_code, language_code }) => {
+        if (target && location_code && language_code) {
+          setSelectedTarget(target);
           setSelectedLocationKey(location_code);
           setSelectedLanguageKey(language_code);
           setFormInput({
-            keyword,
+            target,
             location_code,
             language_code,
           });
@@ -846,7 +1025,7 @@ const KeywordSuggestionsTool = ({
   }, [searchParams]);
 
   return (
-    <div className="keyword-suggestions-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
+    <div className="ranked-keywords-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
       <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-slate-200 bg-white p-5">
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
@@ -877,9 +1056,9 @@ const KeywordSuggestionsTool = ({
         </div>
         <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
           <div className="flex items-center gap-2 rounded-md border bg-sky-950 p-2 md:p-3">
-            <TelescopeIcon
+            <BinocularsIcon
               size={28}
-              className="animate-appearance-in text-white"
+              className="animate-appearance-in scale-90 text-white"
             />
             <div
               className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
@@ -893,10 +1072,10 @@ const KeywordSuggestionsTool = ({
           </div>
           <div className="flex flex-col items-start md:translate-y-0.5">
             <div className="text-xl font-medium text-sky-950 md:leading-none">
-              Keyword Suggestions
+              Ranked Keywords
             </div>
             <div className="text-base font-medium text-slate-500">
-              Get keyword suggestions that include the seed keyword.
+              Get the keywords that a domain or page ranks for.
             </div>
           </div>
         </div>
@@ -930,13 +1109,14 @@ const KeywordSuggestionsTool = ({
               )}
               <div className="flex w-full flex-col items-start justify-start gap-2 md:flex-row">
                 <Input
-                  name="keyword"
+                  name="target"
                   variant="flat"
                   type="text"
-                  label="Keyword"
+                  label="Target"
+                  placeholder="example.com or https://example.com/page"
                   isDisabled={isLoading}
-                  value={selectedKeyword}
-                  onValueChange={setSelectedKeyword}
+                  value={selectedTarget}
+                  onValueChange={setSelectedTarget}
                   autoFocus
                   isRequired
                 />
@@ -998,15 +1178,15 @@ const KeywordSuggestionsTool = ({
                 </Button>
               </div>
               <div className="keyword-filters-container mt-3 w-full">
-                <KeywordFilters
-                  initialValues={activeKeywordFilters}
-                  activeFiltersCount={activeKeywordFiltersCount}
+                <RankedKeywordFilters
+                  initialValues={activeRankedKeywordFilters}
+                  activeFiltersCount={activeRankedKeywordFiltersCount}
                 />
               </div>
             </Form>
           )}
         </div>
-        {formInput.keyword &&
+        {formInput.target &&
           formInput.location_code &&
           formInput.language_code && (
             <div className="mt-4 w-full">
@@ -1016,27 +1196,120 @@ const KeywordSuggestionsTool = ({
                 </div>
                 <Link
                   prefetch={false}
-                  href={`/tool/keyword-research/overview?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                  href={`/tool/competitive-research/overview?target=${formInput.target}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
                   target="_blank"
                   className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
                 >
-                  <BookOpenTextIcon size={16} /> Keyword Overview
-                </Link>
-                <div className="hidden text-slate-200 md:block">|</div>
-                <Link
-                  prefetch={false}
-                  href={`/tool/keyword-research/autocomplete?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                  target="_blank"
-                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
-                >
-                  <LoaderPinwheelIcon size={16} /> Keyword Autocomplete
+                  <BookOpenTextIcon size={16} /> Traffic Overview
                 </Link>
               </div>
             </div>
           )}
       </div>
       {isLoading && (
-        <Skeleton className="mt-4 h-[1500px] w-full rounded-md lg:mt-8" />
+        <>
+          <Skeleton className="mt-4 h-110 w-full rounded-md lg:mt-8" />
+          <Skeleton className="mt-4 h-[1500px] w-full rounded-md lg:mt-8" />
+        </>
+      )}
+      {!isLoading && !error && data && (
+        <div
+          className="mt-4 w-full scroll-m-4 rounded-md border-2 border-slate-200 bg-white lg:mt-8 lg:scroll-m-8"
+          id="ranked-overview-data"
+        >
+          <div className="flex flex-row flex-wrap items-stretch justify-between gap-3 border-b-2 border-slate-200 px-4 py-3">
+            <div className="flex items-center gap-2">
+              <BookOpenTextIcon size={20} />
+              <span className="text-base lg:text-lg">Ranked Overview</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 lg:grid-cols-4">
+            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+              <div className="flex items-center gap-2">
+                <TrendingUpIcon size={18} />
+                Monthly Organic Traffic
+              </div>
+              <div className="mt-4 flex flex-wrap items-center gap-1">
+                <span className="text-xl lg:text-3xl">
+                  {Math.round(data.metrics.organic.etv).toLocaleString(
+                    navigator.language,
+                  )}
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+              <div className="flex items-center gap-2">
+                <TextSearchIcon size={18} />
+                Ranked Keywords
+              </div>
+              <div className="mt-4 flex flex-wrap items-center gap-1">
+                <span className="text-xl lg:text-3xl">
+                  {data.metrics.organic.count.toLocaleString(
+                    navigator.language,
+                  )}
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+              <div className="flex items-center gap-2">
+                <BadgeDollarSignIcon size={18} />
+                Est. Traffic Cost
+              </div>
+              <div className="mt-4 flex flex-wrap items-center gap-1">
+                <div className="text-xl lg:text-3xl">
+                  $
+                  {Math.round(
+                    data.metrics.organic.estimated_paid_traffic_cost,
+                  ).toLocaleString(navigator.language)}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col justify-between border-slate-200 p-4">
+              <div className="flex items-center gap-2">
+                <DiffIcon size={18} />
+                Ranking Changes
+              </div>
+              <div className="mt-4 flex w-full flex-wrap items-center gap-2">
+                <Tooltip content="New Keywords">
+                  <div className="flex items-center gap-1 rounded-md text-sm font-medium text-green-700">
+                    <PlusIcon size={16} />
+                    {data.metrics.organic.is_new.toLocaleString(
+                      navigator.language,
+                    )}
+                  </div>
+                </Tooltip>
+                <Tooltip content="Keywords Moved Up">
+                  <div className="flex items-center gap-1 rounded-md text-sm font-medium text-green-500">
+                    <ChevronUpIcon size={16} />
+                    {data.metrics.organic.is_up.toLocaleString(
+                      navigator.language,
+                    )}
+                  </div>
+                </Tooltip>
+                <Tooltip content="Keywords Moved Down">
+                  <div className="flex items-center gap-1 rounded-md text-sm font-medium text-red-500">
+                    <ChevronDownIcon size={16} />
+                    {data.metrics.organic.is_down.toLocaleString(
+                      navigator.language,
+                    )}
+                  </div>
+                </Tooltip>
+              </div>
+            </div>
+          </div>
+          <div className="flex w-full flex-col justify-between border-slate-200 p-4">
+            <div className="flex items-center gap-2">
+              <CircleStarIcon size={18} />
+              Ranking Position Distribution
+            </div>
+            <div className="mt-4 w-full">
+              <RankPositionDistributionChart
+                data={data.metrics.organic}
+                chartHeight={200}
+              />
+            </div>
+          </div>
+        </div>
       )}
       {!isLoading && !error && data && (
         <div className="tool-results-container mt-4 flex w-full flex-col gap-8 md:gap-4 lg:mt-8 lg:flex-row">
@@ -1047,7 +1320,7 @@ const KeywordSuggestionsTool = ({
             <div className="header flex w-full items-center gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
               <TextSearchIcon size={20} />
               <span>
-                Keyword Suggestions (
+                Ranked Keywords (
                 {totalResults.toLocaleString(navigator.language)})
               </span>
             </div>
@@ -1055,7 +1328,7 @@ const KeywordSuggestionsTool = ({
               <DataGrid
                 showCellVerticalBorder
                 showColumnVerticalBorder
-                rows={data}
+                rows={data.keywords}
                 columns={tableColumns}
                 initialState={dataGridInitialState}
                 showToolbar
@@ -1066,7 +1339,7 @@ const KeywordSuggestionsTool = ({
                 slotProps={dataGridSlotProps}
               />
               <div className="mt-4 w-full text-center text-base text-black/70">
-                Showing {offset + 1}-{offset + data.length} results of{" "}
+                Showing {offset + 1}-{offset + data.keywords.length} results of{" "}
                 {totalResults.toLocaleString(navigator.language)}
               </div>
               {totalPages > 1 && (
@@ -1105,4 +1378,4 @@ const KeywordSuggestionsTool = ({
   );
 };
 
-export default memo(KeywordSuggestionsTool);
+export default memo(RankedKeywordsTool);

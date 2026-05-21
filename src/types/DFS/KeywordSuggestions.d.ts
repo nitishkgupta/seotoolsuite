@@ -7,10 +7,10 @@ import {
 } from "@/types/DFS/common";
 
 /**
- * DataForSEO Keyword Suggestion Item.
+ * DataForSEO Keyword Suggestions Item.
  * @see https://docs.dataforseo.com/v3/dataforseo_labs/google/keyword_suggestions/live/
  */
-export interface KeywordSuggestionItem {
+export interface KeywordSuggestionsItem {
   se_type: string;
   keyword: string;
   location_code: number;

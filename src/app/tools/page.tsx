@@ -138,6 +138,28 @@ export default function ToolsPage() {
                 </span>
               </div>
             </Link>
+            <Link
+              href="/tool/competitive-research/keywords"
+              className={`group flex h-full flex-row items-center rounded-md border-2 border-slate-200 text-lg font-medium transition hover:bg-slate-50`}
+            >
+              <div
+                className={`flex h-full items-center justify-center px-4 md:px-5`}
+              >
+                <TextSearchIcon size={24} className="text-black/80 md:hidden" />
+                <TextSearchIcon
+                  size={46}
+                  className="hidden text-black/80 md:block"
+                />
+              </div>
+              <div className="flex flex-col py-4 pr-4">
+                <span className="text-lg text-black/80 md:text-xl">
+                  Ranked Keywords
+                </span>
+                <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
+                  Get the keywords that a domain or page ranks for.
+                </span>
+              </div>
+            </Link>
           </div>
         </div>
       </div>

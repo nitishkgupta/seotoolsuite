@@ -86,6 +86,13 @@ const Sidebar = () => {
             >
               <BookOpenTextIcon size={18} /> <span>Overview</span>
             </Link>
+            <Link
+              href="/tool/competitive-research/keywords"
+              className={`relative ml-3 flex items-center gap-2 rounded-l-md px-3 py-2 text-sm transition hover:bg-slate-100 ${isToolActive("competitive-research/keywords") ? "bg-slate-100!" : ""}`}
+              onClick={() => setResponsiveOpen(false)}
+            >
+              <TextSearchIcon size={18} /> <span>Keywords</span>
+            </Link>
           </div>
         </div>
       </div>

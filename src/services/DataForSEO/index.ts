@@ -334,6 +334,85 @@ class DataForSEO {
       throw error;
     }
   }
+
+  /**
+   * Get ranked keywords.
+   */
+  async getRankedKeywords(
+    target: string,
+    location_code: number,
+    language_code: string = "en",
+    filters: Array<any> = [],
+    limit: number = 50,
+    offset: number = 0,
+    cachingDuration: number = this.defaultCachingDuration,
+  ) {
+    if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
+      let cachedData;
+      try {
+        cachedData = await this.upstashRedis.getData(
+          btoa(
+            `ranked-keywords-${target}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+
+      if (cachedData) return JSON.parse(cachedData);
+    }
+
+    try {
+      const apiResponse = await axios.post(
+        `${this.API_BASE_URL}/dataforseo_labs/google/ranked_keywords/live`,
+        [
+          {
+            target,
+            location_code,
+            language_code,
+            item_types: ["organic"],
+            ...(filters && filters.length > 0 ? { filters } : {}),
+            limit,
+            offset,
+            order_by: ["ranked_serp_element.serp_item.etv,desc"],
+          },
+        ],
+        {
+          headers: {
+            Authorization: `Basic ${Buffer.from(
+              `${this.USERNAME}:${this.PASSWORD}`,
+            ).toString("base64")}`,
+          },
+        },
+      );
+
+      const taskStatusCode = apiResponse?.data?.tasks[0]?.status_code ?? null;
+
+      if (
+        !this.sandboxEnabled &&
+        this.enableCaching &&
+        this.upstashRedis &&
+        cachingDuration > 0 &&
+        taskStatusCode === 20000
+      ) {
+        try {
+          this.upstashRedis.setData(
+            btoa(
+              `ranked-keywords-${target}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
+            ),
+            JSON.stringify(apiResponse.data),
+            60 * 60 * 24 * cachingDuration,
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      return apiResponse.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default DataForSEO;

@@ -46,6 +46,10 @@ function SettingsComponent() {
   const [KWSuggestionsMaxRows, setKWSuggestionsMaxRows] = useState<number>(250);
   const [TrafficOverviewCachingDuration, setTrafficOverviewCachingDuration] =
     useState<number>(30);
+  const [rankedKeywordsCachingDuration, setRankedKeywordsCachingDuration] =
+    useState<number>(30);
+  const [rankedKeywordsMaxRows, setRankedKeywordsMaxRows] =
+    useState<number>(250);
 
   const [dfsTutorialShown, setDFSTutorialShown] = useState<boolean>(false);
   const [upstashTutorialShown, setUpstashTutorialShown] =
@@ -184,6 +188,26 @@ function SettingsComponent() {
     [],
   );
 
+  const handleRankedKeywordsCachingDurationChange = useCallback(
+    (duration: number | number[]) => {
+      if (typeof duration === "number") {
+        setRankedKeywordsCachingDuration(duration);
+        setLocalStorageItem("RANKED_KWS_CACHING_DURATION", duration.toString());
+      }
+    },
+    [],
+  );
+
+  const handleRankedKeywordsMaxRowsChange = useCallback(
+    (rows: number | number[]) => {
+      if (typeof rows === "number") {
+        setRankedKeywordsMaxRows(rows);
+        setLocalStorageItem("RANKED_KWS_MAX_ROWS", rows.toString());
+      }
+    },
+    [],
+  );
+
   useEffect(() => {
     setDFSSandboxEnabled(getLocalStorageItem("DATAFORSEO_SANDBOX") === "true");
     setCachingEnabled(getLocalStorageItem("CACHING_ENABLED") === "true");
@@ -198,6 +222,12 @@ function SettingsComponent() {
     );
     setKWSuggestionsMaxRows(
       Number(getLocalStorageItem("KW_SUGGESTIONS_MAX_ROWS") ?? 250),
+    );
+    setRankedKeywordsCachingDuration(
+      Number(getLocalStorageItem("RANKED_KWS_CACHING_DURATION") ?? 30),
+    );
+    setRankedKeywordsMaxRows(
+      Number(getLocalStorageItem("RANKED_KWS_MAX_ROWS") ?? 250),
     );
   }, []);
 
@@ -340,6 +370,61 @@ function SettingsComponent() {
                       <Slider
                         value={TrafficOverviewCachingDuration}
                         onChange={handleTrafficOverviewCachingDurationChange}
+                        minValue={0}
+                        maxValue={365}
+                        step={1}
+                        showTooltip
+                        label="Days"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                </div>
+              </AccordionItem>
+              <AccordionItem
+                key="ranked-keywords"
+                aria-label="Ranked Keywords"
+                title={
+                  <span className="text-base md:text-lg">Ranked Keywords</span>
+                }
+                startContent={
+                  <div className="flex items-center gap-1.5">
+                    <BinocularsIcon className="w-5 scale-90" />
+                    <div className="h-4 w-0.5 bg-black"></div>
+                    <TextSearchIcon className="w-4" />
+                  </div>
+                }
+              >
+                <div className="flex flex-col gap-2 pb-2">
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <Rows4Icon size={16} />
+                      <div className="text-sm md:text-base">
+                        Max. Rows Per Report
+                      </div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={rankedKeywordsMaxRows}
+                        onChange={handleRankedKeywordsMaxRowsChange}
+                        minValue={1}
+                        maxValue={1000}
+                        step={1}
+                        showTooltip
+                        label="Rows"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <DatabaseZapIcon size={16} />
+                      <div className="text-sm md:text-base">Cache Duration</div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={rankedKeywordsCachingDuration}
+                        onChange={handleRankedKeywordsCachingDurationChange}
                         minValue={0}
                         maxValue={365}
                         step={1}
