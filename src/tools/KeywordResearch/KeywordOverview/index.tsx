@@ -6,7 +6,6 @@ import {
   getDataForSEOLanguages,
   getDataForSEOLocations,
 } from "@/utils/dataforseo";
-import demographyIcon from "@/assets/icons/demography.svg";
 import { getDifficultyColor, getDifficultyText } from "@/utils/difficulty";
 import { getFlagImageUrl } from "@/utils/flags";
 import { getLocalStorageItem } from "@/utils/localStorage";
@@ -805,7 +804,13 @@ const KeywordOverviewTool = ({
           <div className="grid grid-cols-1 items-stretch border-t-2 border-slate-200 lg:grid-cols-2">
             <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
               <div className="flex items-center gap-2">
-                <Image src={demographyIcon} alt="Demography" className="w-5" />
+                <Image
+                  src="/assets/icons/demography.svg"
+                  width={20}
+                  height={20}
+                  alt="Demography"
+                  className="w-5"
+                />
                 Gender Distribution
               </div>
               {data.genderDistribution && (

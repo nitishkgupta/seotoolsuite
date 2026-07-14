@@ -10,6 +10,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "SEOToolSuite",
+  metadataBase: new URL("https://seotoolsuite.nitishkgupta.com"),
 };
 
 export default function RootLayout({

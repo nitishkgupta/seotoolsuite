@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import NotFoundImage from "@/assets/images/404.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { HomeIcon } from "lucide-react";
@@ -12,7 +11,14 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center bg-slate-50">
-      <Image src={NotFoundImage} alt="404" className="block max-w-[450px]" />
+      <Image
+        src="/assets/images/404.svg"
+        alt="404"
+        className="block max-w-[450px]"
+        width={450}
+        height={450}
+        quality={100}
+      />
       <div className="mt-10 block text-4xl font-medium text-sky-950">
         Page Not Found
       </div>

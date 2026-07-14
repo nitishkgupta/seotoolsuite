@@ -1096,7 +1096,7 @@ const KeywordSuggestionsTool = ({
           <ModalHeader className="border-b-2 border-slate-200">
             Keyword Details
           </ModalHeader>
-          <ModalBody className="gap-0 rounded-b-md bg-slate-50 p-0">
+          <ModalBody className="gap-0 rounded-b-md bg-gray-100 p-0">
             <KeywordDetails keywordData={activeKeywordData} />
           </ModalBody>
         </ModalContent>

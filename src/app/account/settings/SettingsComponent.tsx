@@ -446,7 +446,7 @@ function SettingsComponent() {
             <div className="flex w-full flex-wrap items-center justify-between gap-4">
               <h2 className="flex items-center gap-2 text-lg font-medium lg:text-2xl">
                 <DatabaseIcon size={24} />
-                DataForSEO API
+                DataForSEO API (BYOK)
               </h2>
               <div className="flex items-center gap-2">
                 <Tooltip content="Tutorial">

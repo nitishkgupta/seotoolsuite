@@ -65,6 +65,9 @@ const Sidebar = () => {
               onClick={() => setResponsiveOpen(false)}
             >
               <LoaderPinwheelIcon size={18} /> <span>Autocomplete</span>
+              <span className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-sky-950/10 px-2 py-1 text-[10px] leading-none font-medium text-sky-950">
+                FREE
+              </span>
             </Link>
           </div>
         </div>

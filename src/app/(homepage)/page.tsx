@@ -14,19 +14,22 @@ import {
 import Link from "next/link";
 import type { Metadata } from "next";
 import Image from "next/image";
-import logoImage from "@/assets/images/logo.png";
-import keywordOverviewScreenshot from "@/assets/images/keyword-overview-screenshot.png";
-import keywordSuggestionsScreenshot from "@/assets/images/keyword-suggestions-screenshot.png";
-import keywordAutocompleteScreenshot from "@/assets/images/keyword-autocomplete-screenshot.png";
-import trafficOverviewScreenshot from "@/assets/images/traffic-overview-screenshot.png";
-import rankedKeywordsScreenshot from "@/assets/images/ranked-keywords-screenshot.png";
-import dfsLogoImage from "@/assets/images/dataforseo-logo.png";
-import githubIcon from "@/assets/images/github-icon.svg";
 
 export const metadata: Metadata = {
   title: "SEOToolSuite | Open Source SEO Tools For Everyone",
   description:
     "Open source SEO tools for everyone. Keyword research, competitive research, and more, powered by DataForSEO.",
+  openGraph: {
+    type: "website",
+    title: "SEOToolSuite | Open Source SEO Tools For Everyone",
+    description:
+      "Open source SEO tools for everyone. Keyword research, competitive research, and more, powered by DataForSEO.",
+    images: [
+      {
+        url: "/assets/images/seotoolsuite-homepage-screenshot.png",
+      },
+    ],
+  },
 };
 
 export default function HomePage() {
@@ -37,9 +40,12 @@ export default function HomePage() {
           <div className="header-left flex items-center">
             <Link href="/">
               <Image
-                src={logoImage}
+                src="/assets/images/logo.png"
                 alt="SEOToolSuite"
                 className="w-38 lg:w-54"
+                width={216}
+                height={30}
+                quality={100}
               />
             </Link>
           </div>
@@ -85,15 +91,25 @@ export default function HomePage() {
             target="_blank"
             className="flex items-center gap-1 rounded-md border-2 border-sky-950 px-4 py-2 text-sm font-medium text-sky-950 transition hover:scale-105 active:scale-95 lg:text-base"
           >
-            <Image src={githubIcon} alt="GitHub" className="w-5" />
+            <Image
+              src="/assets/images/github-icon.svg"
+              alt="GitHub"
+              width={20}
+              height={20}
+              quality={100}
+            />
             GitHub
           </Link>
         </div>
         <div className="relative mt-8 max-h-[300px] overflow-hidden px-4 lg:max-h-[600px]">
           <Image
-            src={keywordOverviewScreenshot}
+            src="/assets/images/keyword-overview-screenshot.png"
             alt="Keyword Overview Tool"
             className="mx-auto w-full max-w-[1200px] rounded-t-md border-t-2 border-r-2 border-l-2 border-slate-200 shadow-lg"
+            width={1200}
+            height={1164}
+            quality={100}
+            loading="eager"
           />
           <div className="absolute right-0 bottom-0 left-0 z-10 mx-auto h-14 max-w-[1200px] bg-linear-to-b from-white/5 to-white"></div>
         </div>
@@ -288,9 +304,12 @@ export default function HomePage() {
             </div>
             <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
               <Image
-                src={keywordOverviewScreenshot}
+                src="/assets/images/keyword-overview-screenshot.png"
                 alt="Keyword Overview Tool"
                 className="w-full rounded-md transition duration-1000 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                width={1200}
+                height={1164}
+                quality={100}
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
                 <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
@@ -343,9 +362,12 @@ export default function HomePage() {
             </div>
             <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
               <Image
-                src={keywordSuggestionsScreenshot}
+                src="/assets/images/keyword-suggestions-screenshot.png"
                 alt="Keyword Suggestions Tool"
                 className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                width={1200}
+                height={1164}
+                quality={100}
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
                 <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
@@ -397,9 +419,12 @@ export default function HomePage() {
             </div>
             <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
               <Image
-                src={keywordAutocompleteScreenshot}
+                src="/assets/images/keyword-autocomplete-screenshot.png"
                 alt="Keyword Autocomplete Tool"
                 className="w-full rounded-md transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                width={1200}
+                height={1164}
+                quality={100}
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
                 <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
@@ -462,9 +487,12 @@ export default function HomePage() {
             </div>
             <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
               <Image
-                src={trafficOverviewScreenshot}
+                src="/assets/images/traffic-overview-screenshot.png"
                 alt="Traffic Overview Tool"
                 className="w-full rounded-md transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                width={1200}
+                height={1164}
+                quality={100}
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
                 <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
@@ -517,9 +545,12 @@ export default function HomePage() {
             </div>
             <div className="group relative order-1 mt-4 max-h-[200px] max-w-[800px] overflow-hidden rounded-md border-2 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-[400px]">
               <Image
-                src={rankedKeywordsScreenshot}
+                src="/assets/images/ranked-keywords-screenshot.png"
                 alt="Ranked Keywords Tool"
                 className="w-full rounded-md transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                width={1200}
+                height={1164}
+                quality={100}
               />
               <div className="absolute bottom-0 left-0 z-20 flex h-[50px] w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
                 <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
@@ -543,7 +574,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <footer className="flex flex-col items-center bg-slate-50 pt-4 text-base lg:text-lg">
+      <footer className="flex flex-col items-center bg-gray-100 pt-4 text-base lg:text-lg">
         <span>© 2026 SEOToolSuite.</span>
         <div className="mt-1 text-center">
           Made with ❤️ in{" "}
@@ -573,9 +604,12 @@ export default function HomePage() {
             className="underline"
           >
             <Image
-              src={dfsLogoImage}
+              src="/assets/images/dataforseo-logo.png"
               alt="DataForSEO"
               className="inline-block w-28 -translate-y-0.5"
+              width={429}
+              height={63}
+              quality={100}
             />
           </Link>
         </div>

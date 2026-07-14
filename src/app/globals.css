@@ -22,7 +22,7 @@ body {
 body:has(.seotoolsuite-tool),
 body:has(.seotoolsuite-account),
 body:has(.seotoolsuite-tools) {
-  @apply bg-slate-50;
+  @apply bg-gray-100;
 }
 
 /* Scrollbar */

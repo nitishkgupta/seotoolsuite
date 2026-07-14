@@ -6,7 +6,6 @@ import {
   getDataForSEOLanguages,
   getDataForSEOLocations,
 } from "@/utils/dataforseo";
-import demographyIcon from "@/assets/icons/demography.svg";
 import { getFlagImageUrl } from "@/utils/flags";
 import { getLocalStorageItem } from "@/utils/localStorage";
 import { trackUmamiEvent } from "@/utils/umami";
@@ -30,7 +29,6 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   CircleStarIcon,
-  ClockIcon,
   DatabaseZapIcon,
   DiffIcon,
   MegaphoneIcon,
@@ -455,14 +453,6 @@ const TrafficOverviewTool = ({
                 <BookOpenTextIcon size={20} />
                 <span className="text-base lg:text-lg">Organic Overview</span>
               </div>
-              <div className="flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1">
-                <ClockIcon size={16} />
-                <span className="text-sm lg:text-base">
-                  {latestRankOverviewData
-                    ? `${MONTH_NAMES[latestRankOverviewData.month - 1]}, ${latestRankOverviewData.year}`
-                    : "N/A"}
-                </span>
-              </div>
             </div>
             <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 lg:grid-cols-4">
               <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
@@ -734,7 +724,10 @@ const TrafficOverviewTool = ({
               <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
                 <div className="flex items-center gap-2">
                   <Image
-                    src={demographyIcon}
+                    src="/assets/icons/demography.svg"
+                    width={20}
+                    height={20}
+                    quality={100}
                     alt="Demography"
                     className="w-5"
                   />
@@ -787,14 +780,6 @@ const TrafficOverviewTool = ({
               <div className="flex items-center gap-2">
                 <MegaphoneIcon size={20} />
                 <span className="text-base lg:text-lg">Paid Overview</span>
-              </div>
-              <div className="flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1">
-                <ClockIcon size={16} />
-                <span className="text-sm lg:text-base">
-                  {latestRankOverviewData
-                    ? `${MONTH_NAMES[latestRankOverviewData.month - 1]}, ${latestRankOverviewData.year}`
-                    : "N/A"}
-                </span>
               </div>
             </div>
             <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 lg:grid-cols-4">
@@ -999,7 +984,10 @@ const TrafficOverviewTool = ({
               <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
                 <div className="flex items-center gap-2">
                   <Image
-                    src={demographyIcon}
+                    src="/assets/icons/demography.svg"
+                    width={20}
+                    height={20}
+                    quality={100}
                     alt="Demography"
                     className="w-5"
                   />

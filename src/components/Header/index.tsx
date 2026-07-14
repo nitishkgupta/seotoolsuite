@@ -6,9 +6,7 @@ import { SettingsIcon, ToolCaseIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import logoImage from "@/assets/images/logo.png";
 import DFSBalanceBox from "@/components/DFSBalanceBox";
-import discordIcon from "@/assets/images/discord-icon.svg";
 import { memo } from "react";
 
 function Header() {
@@ -24,9 +22,12 @@ function Header() {
         <div className="header-left flex items-center gap-2">
           <Link href="/">
             <Image
-              src={logoImage}
+              src="/assets/images/logo.png"
               alt="SEOToolSuite"
               className="w-38 lg:w-46"
+              width={572}
+              height={80}
+              quality={100}
             />
           </Link>
           <Link
@@ -69,7 +70,14 @@ function Header() {
               target="_blank"
               className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition hover:bg-slate-100`}
             >
-              <Image src={discordIcon} alt="Discord" className="w-5" />
+              <Image
+                src="/assets/images/discord-icon.svg"
+                width={20}
+                height={20}
+                quality={100}
+                alt="Discord"
+                className="w-5"
+              />
             </Link>
           </Tooltip>
         </div>

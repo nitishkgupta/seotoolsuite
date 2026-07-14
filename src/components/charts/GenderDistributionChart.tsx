@@ -1,7 +1,5 @@
 import { GenderDistribution } from "@/types/DFS/common";
 import Image from "next/image";
-import manIcon from "@/assets/icons/man.svg";
-import womanIcon from "@/assets/icons/woman.svg";
 import { memo } from "react";
 
 const GenderDistributionChart = ({ data }: { data: GenderDistribution }) => {
@@ -10,7 +8,13 @@ const GenderDistributionChart = ({ data }: { data: GenderDistribution }) => {
       {data.male !== undefined && data.female !== undefined ? (
         <div className="gender-distribution-chart w-full">
           <div className="flex items-center justify-between">
-            <Image src={manIcon} alt="Male" className="w-10" />
+            <Image
+              src="/assets/icons/man.svg"
+              width={40}
+              height={40}
+              quality={100}
+              alt="Male"
+            />
             <div
               className={`relative h-2 w-full shrink overflow-hidden rounded-full ${data.male === 0 && data.female === 0 ? "bg-slate-200" : "bg-pink-400"}`}
             >
@@ -21,7 +25,14 @@ const GenderDistributionChart = ({ data }: { data: GenderDistribution }) => {
                 }}
               ></div>
             </div>
-            <Image src={womanIcon} alt="Female" className="w-10" />
+            <Image
+              src="/assets/icons/woman.svg"
+              width={40}
+              height={40}
+              quality={100}
+              alt="Female"
+              className="w-10"
+            />
           </div>
           <div className="mt-2 grid grid-cols-2 items-stretch">
             <div className="flex flex-col items-start gap-1">

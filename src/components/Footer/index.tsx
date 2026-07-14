@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
-import dfsLogoImage from "@/assets/images/dataforseo-logo.png";
 
 function Footer() {
   return (
@@ -35,9 +34,12 @@ function Footer() {
           className="underline"
         >
           <Image
-            src={dfsLogoImage}
+            src="/assets/images/dataforseo-logo.png"
             alt="DataForSEO"
             className="inline-block w-28 -translate-y-0.5"
+            width={429}
+            height={63}
+            quality={100}
           />
         </Link>
       </div>
