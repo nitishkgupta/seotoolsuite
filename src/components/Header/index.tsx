@@ -11,10 +11,8 @@ import { memo } from "react";
 
 function Header() {
   const pathName = usePathname();
-
-  const isSettingsPageActive = () => {
-    return pathName === `/account/settings`;
-  };
+  const isSettingsPageActive = pathName === `/account/settings`;
+  const isSEOToolsPageActive = pathName == "/tools";
 
   return (
     <div className="header-container shrink-0 border-b-2 border-slate-200 bg-white">
@@ -34,19 +32,21 @@ function Header() {
             href="https://github.com/nitishkgupta/seotoolsuite/releases"
             target="_blank"
             rel="nofollow"
-            className="block rounded-md border border-slate-200 px-2 py-1 text-sm font-medium text-black/60 transition hover:bg-slate-100"
+            className="block rounded-md border border-slate-200 px-2 py-1 text-sm font-medium text-black/60 transition hover:bg-slate-100 active:scale-95 active:duration-75"
           >
             v{APP_VERSION}
           </Link>
         </div>
-        <div className="header-right flex h-fit flex-wrap items-stretch justify-center gap-2">
+        <div
+          className={`header-right hidden h-fit flex-wrap items-stretch justify-center gap-2 lg:flex ${isSettingsPageActive || isSEOToolsPageActive ? "flex!" : ""}`}
+        >
           <DFSBalanceBox />
           {pathName.startsWith("/account/") && (
             <>
               <Tooltip content="SEO Tools">
                 <Link
                   href="/tools"
-                  className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition hover:bg-slate-100`}
+                  className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition hover:bg-slate-100 active:scale-95 active:duration-75`}
                 >
                   <ToolCaseIcon size={24} />
                 </Link>
@@ -57,7 +57,7 @@ function Header() {
           <Tooltip content="Settings">
             <Link
               href="/account/settings"
-              className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition hover:bg-slate-100 ${isSettingsPageActive() ? "bg-slate-100!" : ""}`}
+              className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition hover:bg-slate-100 active:scale-95 active:duration-75 ${isSettingsPageActive ? "bg-slate-100!" : ""}`}
             >
               <SettingsIcon size={24} />
             </Link>
@@ -68,7 +68,7 @@ function Header() {
               href="https://discord.gg/Wt4RN4Xy8n"
               rel="nofollow"
               target="_blank"
-              className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition hover:bg-slate-100`}
+              className={`flex items-center gap-1 rounded-md border-2 border-slate-200 px-2 py-2 text-black/80 transition hover:bg-slate-100 active:scale-95`}
             >
               <Image
                 src="/assets/images/discord-icon.svg"

@@ -51,6 +51,7 @@ import {
   LoaderPinwheelIcon,
   NavigationIcon,
   PlusIcon,
+  RefreshCwIcon,
   TextSearchIcon,
   TrendingUpIcon,
 } from "lucide-react";
@@ -92,6 +93,7 @@ const RankedKeywordsTool = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<RankedKeywordsData | null>(null);
+  const [isCachedData, setIsCachedData] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const MAX_ROWS: number = Number(
@@ -230,9 +232,11 @@ const RankedKeywordsTool = ({
       rankedKeywordFilters: RankedKeywordFiltersInitialValues | undefined,
       limit: number,
       offset: number,
+      refreshData: boolean = false,
     ) => {
       setIsLoading(true);
       setError(null);
+      setIsCachedData(false);
 
       window.setTimeout(() => {
         document.getElementById("ranked-overview-data")?.scrollIntoView({
@@ -275,7 +279,12 @@ const RankedKeywordsTool = ({
           limit,
           offset,
           cachingDuration,
+          refreshData,
         );
+
+        if (apiResponse.isCachedData) {
+          setIsCachedData(true);
+        }
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
         const taskStatusMessage =
@@ -330,13 +339,7 @@ const RankedKeywordsTool = ({
         setIsLoading(false);
       }
     },
-    [
-      dfsUsername,
-      dfsPassword,
-      dfsSandboxEnabled,
-      cachingEnabled,
-      refreshDFSBalance,
-    ],
+    [],
   );
 
   useDeepCompareEffect(() => {
@@ -359,9 +362,38 @@ const RankedKeywordsTool = ({
     formInput.location_code,
     formInput.language_code,
     activeRankedKeywordFilters,
-    MAX_ROWS,
     offset,
     getRankedKeywords,
+  ]);
+
+  const refreshRankedKeywordsData = useCallback(async () => {
+    if (
+      formInput.target &&
+      formInput.location_code &&
+      formInput.language_code
+    ) {
+      if (
+        formInput.target &&
+        formInput.location_code &&
+        formInput.language_code
+      ) {
+        getRankedKeywords(
+          formInput.target,
+          formInput.location_code,
+          formInput.language_code,
+          activeRankedKeywordFilters,
+          MAX_ROWS,
+          offset,
+          true,
+        );
+      }
+    }
+  }, [
+    formInput.target,
+    formInput.location_code,
+    formInput.language_code,
+    activeRankedKeywordFilters,
+    offset,
   ]);
 
   const getMUIRowHeight = useCallback(() => "auto", []);
@@ -1029,7 +1061,7 @@ const RankedKeywordsTool = ({
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
             <Chip size="md" variant="flat">
-              ${Number(0.01 + MAX_ROWS * 0.0001).toFixed(4)}
+              ${parseFloat(Number(0.012 + MAX_ROWS * 0.00012).toFixed(4))}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
@@ -1208,7 +1240,7 @@ const RankedKeywordsTool = ({
       {isLoading && (
         <>
           <Skeleton className="mt-4 h-110 w-full rounded-md lg:mt-8" />
-          <Skeleton className="mt-4 h-[1500px] w-full rounded-md lg:mt-8" />
+          <Skeleton className="mt-4 h-375 w-full rounded-md lg:mt-8" />
         </>
       )}
       {!isLoading && !error && data && (
@@ -1220,6 +1252,24 @@ const RankedKeywordsTool = ({
             <div className="flex items-center gap-2">
               <BookOpenTextIcon size={20} />
               <span className="text-base lg:text-lg">Ranked Overview</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {isCachedData && (
+                <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-slate-200 p-2">
+                  <Tooltip content="Cached Data">
+                    <DatabaseZapIcon size={18} />
+                  </Tooltip>
+                  <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                  <Tooltip content="Refresh Data">
+                    <button
+                      className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
+                      onClick={refreshRankedKeywordsData}
+                    >
+                      <RefreshCwIcon size={18} />
+                    </button>
+                  </Tooltip>
+                </div>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 lg:grid-cols-4">
@@ -1316,12 +1366,32 @@ const RankedKeywordsTool = ({
             className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-slate-200 bg-white lg:scroll-m-8"
             id="keywords-table"
           >
-            <div className="header flex w-full items-center gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
-              <TextSearchIcon size={20} />
-              <span>
-                Ranked Keywords (
-                {totalResults.toLocaleString(navigator.language)})
-              </span>
+            <div className="header flex w-full items-center justify-between gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
+              <div className="flex items-center gap-2">
+                <TextSearchIcon size={20} />
+                <span>
+                  Ranked Keywords (
+                  {totalResults.toLocaleString(navigator.language)})
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                {isCachedData && (
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-slate-200 p-2">
+                    <Tooltip content="Cached Data">
+                      <DatabaseZapIcon size={18} />
+                    </Tooltip>
+                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <Tooltip content="Refresh Data">
+                      <button
+                        className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
+                        onClick={refreshRankedKeywordsData}
+                      >
+                        <RefreshCwIcon size={18} />
+                      </button>
+                    </Tooltip>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="max-h-full overflow-auto p-4">
               <DataGrid

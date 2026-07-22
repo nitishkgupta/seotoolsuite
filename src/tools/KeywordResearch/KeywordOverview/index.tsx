@@ -34,6 +34,7 @@ import {
   LinkIcon,
   LoaderPinwheelIcon,
   NavigationIcon,
+  RefreshCwIcon,
   TargetIcon,
   TelescopeIcon,
   TextSearchIcon,
@@ -43,10 +44,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { memo, useCallback, useEffect, useState } from "react";
-import {
-  getSessionStorageItem,
-  setSessionStorageItem,
-} from "@/utils/sessionStorage";
 import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
 import GenderDistributionChart from "@/components/charts/GenderDistributionChart";
 import AgeDistributionChart from "@/components/charts/AgeDistributionChart";
@@ -101,6 +98,7 @@ const KeywordOverviewTool = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<KeywordOverviewData | null>(null);
+  const [isCachedData, setIsCachedData] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const dfsUsername = getLocalStorageItem("DATAFORSEO_USERNAME");
@@ -146,31 +144,16 @@ const KeywordOverviewTool = ({
     [selectedKeyword, selectedLocationKey, selectedLanguageKey],
   );
 
-  useEffect(() => {
-    const getKeywordOverview = async (
+  const getKeywordOverview = useCallback(
+    async (
       keyword: string,
       location_code: number,
       language_code: string,
+      refreshData: boolean = false,
     ) => {
-      const sessionCacheData = getSessionStorageItem(
-        `kwresearch-overview-${keyword}-${location_code}-${language_code}`,
-      );
-
-      if (sessionCacheData) {
-        setData(JSON.parse(sessionCacheData));
-        setError(null);
-
-        window.setTimeout(() => {
-          document.getElementById("keyword-overview-data")?.scrollIntoView({
-            behavior: "smooth",
-          });
-        }, 100);
-
-        return;
-      }
-
       setIsLoading(true);
       setError(null);
+      setIsCachedData(false);
 
       if (!dfsUsername || !dfsPassword) {
         setError(
@@ -201,7 +184,12 @@ const KeywordOverviewTool = ({
           language_code,
           true,
           cachingDuration,
+          refreshData,
         );
+
+        if (apiResponse.isCachedData) {
+          setIsCachedData(true);
+        }
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
         const taskStatusMessage =
@@ -264,17 +252,6 @@ const KeywordOverviewTool = ({
 
           setData(keywordOverviewData);
 
-          if (!dfsSandboxEnabled) {
-            try {
-              setSessionStorageItem(
-                `kwresearch-overview-${keyword}-${location_code}-${language_code}`,
-                JSON.stringify(keywordOverviewData),
-              );
-            } catch (error) {
-              console.error(error);
-            }
-          }
-
           window.setTimeout(() => {
             document.getElementById("keyword-overview-data")?.scrollIntoView({
               behavior: "smooth",
@@ -296,8 +273,11 @@ const KeywordOverviewTool = ({
       } finally {
         setIsLoading(false);
       }
-    };
+    },
+    [],
+  );
 
+  useEffect(() => {
     if (
       formInput.keyword &&
       formInput.location_code &&
@@ -309,16 +289,7 @@ const KeywordOverviewTool = ({
         formInput.language_code,
       );
     }
-  }, [
-    formInput.keyword,
-    formInput.location_code,
-    formInput.language_code,
-    dfsUsername,
-    dfsPassword,
-    dfsSandboxEnabled,
-    cachingEnabled,
-    refreshDFSBalance,
-  ]);
+  }, [formInput.keyword, formInput.location_code, formInput.language_code]);
 
   useEffect(() => {
     if (searchParams) {
@@ -337,13 +308,28 @@ const KeywordOverviewTool = ({
     }
   }, [searchParams]);
 
+  const refreshKeywordOverviewData = useCallback(async () => {
+    if (
+      formInput.keyword &&
+      formInput.location_code &&
+      formInput.language_code
+    ) {
+      await getKeywordOverview(
+        formInput.keyword,
+        Number(formInput.location_code),
+        formInput.language_code,
+        true,
+      );
+    }
+  }, [formInput.keyword, formInput.location_code, formInput.language_code]);
+
   return (
     <div className="keyword-overview-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
       <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-slate-200 bg-white p-5">
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
             <Chip size="md" variant="flat">
-              $0.0201
+              $0.0241
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
@@ -522,7 +508,7 @@ const KeywordOverviewTool = ({
           )}
       </div>
       {isLoading && (
-        <Skeleton className="mt-4 h-[1000px] w-full rounded-md lg:mt-8 lg:h-[480px]" />
+        <Skeleton className="mt-4 h-250 w-full rounded-md lg:mt-8 lg:h-120" />
       )}
       {!isLoading && !error && data && (
         <div
@@ -533,6 +519,24 @@ const KeywordOverviewTool = ({
             <div className="flex items-center gap-2">
               <BookOpenTextIcon size={20} />
               <span className="text-base lg:text-lg">Keyword Overview</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {isCachedData && (
+                <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-slate-200 p-2">
+                  <Tooltip content="Cached Data">
+                    <DatabaseZapIcon size={18} />
+                  </Tooltip>
+                  <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                  <Tooltip content="Refresh Data">
+                    <button
+                      className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
+                      onClick={refreshKeywordOverviewData}
+                    >
+                      <RefreshCwIcon size={18} />
+                    </button>
+                  </Tooltip>
+                </div>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-1 items-stretch lg:grid-cols-5">

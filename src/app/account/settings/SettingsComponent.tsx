@@ -452,7 +452,7 @@ function SettingsComponent() {
                 <Tooltip content="Tutorial">
                   <button
                     onClick={() => setDFSTutorialShown(!dfsTutorialShown)}
-                    className={`cursor-pointer rounded-md border-2 border-slate-200 bg-white p-2 transition hover:bg-slate-50 ${dfsTutorialShown ? "bg-slate-200!" : ""}`}
+                    className={`cursor-pointer rounded-md border-2 border-slate-200 bg-white p-2 transition hover:bg-slate-50 active:scale-95 active:duration-75 ${dfsTutorialShown ? "bg-slate-200!" : ""}`}
                   >
                     <LifeBuoyIcon size={20} />
                   </button>
@@ -605,7 +605,7 @@ function SettingsComponent() {
                       handleCachingEnabledChange(true);
                       setUpstashTutorialShown(!upstashTutorialShown);
                     }}
-                    className={`cursor-pointer rounded-md border-2 border-slate-200 bg-white p-2 transition hover:bg-slate-50 ${upstashTutorialShown ? "bg-slate-200!" : ""}`}
+                    className={`cursor-pointer rounded-md border-2 border-slate-200 bg-white p-2 transition hover:bg-slate-50 active:scale-95 active:duration-75 ${upstashTutorialShown ? "bg-slate-200!" : ""}`}
                   >
                     <LifeBuoyIcon size={20} />
                   </button>

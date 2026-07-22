@@ -120,8 +120,14 @@ class DataForSEO {
     limit: number = 50,
     offset: number = 0,
     cachingDuration: number = this.defaultCachingDuration,
+    refreshData: boolean = false,
   ) {
-    if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
+    if (
+      !this.sandboxEnabled &&
+      this.enableCaching &&
+      this.upstashRedis &&
+      !refreshData
+    ) {
       let cachedData;
       try {
         cachedData = await this.upstashRedis.getData(
@@ -133,7 +139,11 @@ class DataForSEO {
         console.error(error);
       }
 
-      if (cachedData) return JSON.parse(cachedData);
+      if (cachedData) {
+        cachedData = JSON.parse(cachedData);
+        cachedData.isCachedData = true;
+        return cachedData;
+      }
     }
 
     try {
@@ -196,8 +206,14 @@ class DataForSEO {
     language_code: string = "en",
     include_clickstream_data: boolean = false,
     cachingDuration: number = this.defaultCachingDuration,
+    refreshData: boolean = false,
   ) {
-    if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
+    if (
+      !this.sandboxEnabled &&
+      this.enableCaching &&
+      this.upstashRedis &&
+      !refreshData
+    ) {
       let cachedData;
       try {
         cachedData = await this.upstashRedis.getData(
@@ -209,7 +225,11 @@ class DataForSEO {
         console.error(error);
       }
 
-      if (cachedData) return JSON.parse(cachedData);
+      if (cachedData) {
+        cachedData = JSON.parse(cachedData);
+        cachedData.isCachedData = true;
+        return cachedData;
+      }
     }
 
     try {
@@ -270,8 +290,14 @@ class DataForSEO {
     date_from: string,
     include_clickstream_data: boolean = false,
     cachingDuration: number = this.defaultCachingDuration,
+    refreshData: boolean = false,
   ) {
-    if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
+    if (
+      !this.sandboxEnabled &&
+      this.enableCaching &&
+      this.upstashRedis &&
+      !refreshData
+    ) {
       let cachedData;
       try {
         cachedData = await this.upstashRedis.getData(
@@ -283,7 +309,11 @@ class DataForSEO {
         console.error(error);
       }
 
-      if (cachedData) return JSON.parse(cachedData);
+      if (cachedData) {
+        cachedData = JSON.parse(cachedData);
+        cachedData.isCachedData = true;
+        return cachedData;
+      }
     }
 
     try {
@@ -346,8 +376,14 @@ class DataForSEO {
     limit: number = 50,
     offset: number = 0,
     cachingDuration: number = this.defaultCachingDuration,
+    refreshData: boolean = false,
   ) {
-    if (!this.sandboxEnabled && this.enableCaching && this.upstashRedis) {
+    if (
+      !this.sandboxEnabled &&
+      this.enableCaching &&
+      this.upstashRedis &&
+      !refreshData
+    ) {
       let cachedData;
       try {
         cachedData = await this.upstashRedis.getData(
@@ -359,7 +395,11 @@ class DataForSEO {
         console.error(error);
       }
 
-      if (cachedData) return JSON.parse(cachedData);
+      if (cachedData) {
+        cachedData = JSON.parse(cachedData);
+        cachedData.isCachedData = true;
+        return cachedData;
+      }
     }
 
     try {

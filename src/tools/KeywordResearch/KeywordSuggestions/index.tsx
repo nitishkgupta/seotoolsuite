@@ -46,6 +46,7 @@ import {
   InfoIcon,
   LoaderPinwheelIcon,
   NavigationIcon,
+  RefreshCwIcon,
   TelescopeIcon,
   TextSearchIcon,
 } from "lucide-react";
@@ -108,6 +109,7 @@ const KeywordSuggestionsTool = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<KeywordSuggestionsData | null>(null);
+  const [isCachedData, setIsCachedData] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const MAX_ROWS: number = Number(
@@ -233,9 +235,11 @@ const KeywordSuggestionsTool = ({
       keywordFilters: KeywordFiltersInitialValues | undefined,
       limit: number,
       offset: number,
+      refreshData: boolean = false,
     ) => {
       setIsLoading(true);
       setError(null);
+      setIsCachedData(false);
 
       window.setTimeout(() => {
         document.getElementById("keywords-table")?.scrollIntoView({
@@ -278,7 +282,12 @@ const KeywordSuggestionsTool = ({
           limit,
           offset,
           cachingDuration,
+          refreshData,
         );
+
+        if (apiResponse.isCachedData) {
+          setIsCachedData(true);
+        }
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
         const taskStatusMessage =
@@ -365,13 +374,7 @@ const KeywordSuggestionsTool = ({
         setIsLoading(false);
       }
     },
-    [
-      dfsUsername,
-      dfsPassword,
-      dfsSandboxEnabled,
-      cachingEnabled,
-      refreshDFSBalance,
-    ],
+    [],
   );
 
   useDeepCompareEffect(() => {
@@ -394,9 +397,49 @@ const KeywordSuggestionsTool = ({
     formInput.location_code,
     formInput.language_code,
     activeKeywordFilters,
-    MAX_ROWS,
     offset,
     getKeywordSuggestions,
+  ]);
+
+  useEffect(() => {
+    if (searchParams) {
+      searchParams.then(({ keyword, location_code, language_code }) => {
+        if (keyword && location_code && language_code) {
+          setSelectedKeyword(keyword);
+          setSelectedLocationKey(location_code);
+          setSelectedLanguageKey(language_code);
+          setFormInput({
+            keyword,
+            location_code,
+            language_code,
+          });
+        }
+      });
+    }
+  }, [searchParams]);
+
+  const refreshKeywordSuggestionsData = useCallback(async () => {
+    if (
+      formInput.keyword &&
+      formInput.location_code &&
+      formInput.language_code
+    ) {
+      await getKeywordSuggestions(
+        formInput.keyword,
+        formInput.location_code,
+        formInput.language_code,
+        activeKeywordFilters,
+        MAX_ROWS,
+        offset,
+        true,
+      );
+    }
+  }, [
+    formInput.keyword,
+    formInput.location_code,
+    formInput.language_code,
+    activeKeywordFilters,
+    offset,
   ]);
 
   const getMUIRowHeight = useCallback(() => "auto", []);
@@ -828,30 +871,13 @@ const KeywordSuggestionsTool = ({
     [openKeywordDetailsModal],
   );
 
-  useEffect(() => {
-    if (searchParams) {
-      searchParams.then(({ keyword, location_code, language_code }) => {
-        if (keyword && location_code && language_code) {
-          setSelectedKeyword(keyword);
-          setSelectedLocationKey(location_code);
-          setSelectedLanguageKey(language_code);
-          setFormInput({
-            keyword,
-            location_code,
-            language_code,
-          });
-        }
-      });
-    }
-  }, [searchParams]);
-
   return (
     <div className="keyword-suggestions-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
       <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-slate-200 bg-white p-5">
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
             <Chip size="md" variant="flat">
-              ${Number(0.01 + MAX_ROWS * 0.0001).toFixed(4)}
+              ${parseFloat(Number(0.012 + MAX_ROWS * 0.00012).toFixed(4))}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
@@ -1036,7 +1062,7 @@ const KeywordSuggestionsTool = ({
           )}
       </div>
       {isLoading && (
-        <Skeleton className="mt-4 h-[1500px] w-full rounded-md lg:mt-8" />
+        <Skeleton className="mt-4 h-375 w-full rounded-md lg:mt-8" />
       )}
       {!isLoading && !error && data && (
         <div className="tool-results-container mt-4 flex w-full flex-col gap-8 md:gap-4 lg:mt-8 lg:flex-row">
@@ -1044,12 +1070,32 @@ const KeywordSuggestionsTool = ({
             className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-slate-200 bg-white lg:scroll-m-8"
             id="keywords-table"
           >
-            <div className="header flex w-full items-center gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
-              <TextSearchIcon size={20} />
-              <span>
-                Keyword Suggestions (
-                {totalResults.toLocaleString(navigator.language)})
-              </span>
+            <div className="header flex w-full items-center justify-between gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
+              <div className="flex items-center gap-2">
+                <TextSearchIcon size={20} />
+                <span>
+                  Keyword Suggestions (
+                  {totalResults.toLocaleString(navigator.language)})
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                {isCachedData && (
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-slate-200 p-2">
+                    <Tooltip content="Cached Data">
+                      <DatabaseZapIcon size={18} />
+                    </Tooltip>
+                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <Tooltip content="Refresh Data">
+                      <button
+                        className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
+                        onClick={refreshKeywordSuggestionsData}
+                      >
+                        <RefreshCwIcon size={18} />
+                      </button>
+                    </Tooltip>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="max-h-full overflow-auto p-4">
               <DataGrid

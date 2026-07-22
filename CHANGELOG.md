@@ -1,5 +1,14 @@
 # SEOToolSuite Changelog
 
+## v5.2.0
+
+- Added feature to refresh cached data on all tools.
+- Updated credits cost according to the new DataForSEO API pricing.
+- Responsive UI fixes.
+- UI improvements.
+- Code optimization and refactor.
+- Updated packages.
+
 ## v5.1.0
 
 - UI improvements and fixes.

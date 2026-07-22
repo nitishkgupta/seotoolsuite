@@ -14,7 +14,7 @@ export default function NotFound() {
       <Image
         src="/assets/images/404.svg"
         alt="404"
-        className="block max-w-[450px]"
+        className="block max-w-112.5"
         width={450}
         height={450}
         quality={100}

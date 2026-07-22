@@ -19,7 +19,7 @@ function DFSBalanceBox() {
             <WalletIcon size={22} />
           </div>
           <div className="flex h-full items-center pr-2">
-            ${Number(currentBalance).toFixed(4)}
+            ${parseFloat(Number(currentBalance).toFixed(4))}
           </div>
         </div>
       </Tooltip>

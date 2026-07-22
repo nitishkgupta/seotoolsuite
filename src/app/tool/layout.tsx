@@ -13,7 +13,7 @@ export default function ToolLayout({
       <div className="seotoolsuite-tool-container flex h-[calc(100%-68px)] w-full">
         <Sidebar />
         <div
-          className="seotoolsuite-tool-content flex h-full w-full flex-col justify-between overflow-auto"
+          className="seotoolsuite-tool-content flex h-full min-h-[calc(100vh-62px)] w-full flex-col justify-between overflow-auto lg:min-h-auto"
           id="seotoolsuite-tool-content"
         >
           {children}

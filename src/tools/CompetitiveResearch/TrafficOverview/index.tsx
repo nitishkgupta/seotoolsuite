@@ -34,6 +34,7 @@ import {
   MegaphoneIcon,
   MinusIcon,
   PlusIcon,
+  RefreshCwIcon,
   TextSearchIcon,
   TrendingUpIcon,
   UsersIcon,
@@ -41,7 +42,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { MONTH_NAMES } from "@/constants";
 import { HistoricalRankOverviewItem } from "@/types/DFS/HistoricalRankOverview";
 import GenderDistributionChart from "@/components/charts/GenderDistributionChart";
 import AgeDistributionChart from "@/components/charts/AgeDistributionChart";
@@ -67,6 +67,7 @@ const TrafficOverviewTool = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<TrafficOverviewData | null>(null);
+  const [isCachedData, setIsCachedData] = useState<boolean>(false);
   const latestRankOverviewData: HistoricalRankOverviewItem | null =
     useMemo(() => {
       return data?.historicalRankOverviewData?.[0] ?? null;
@@ -130,14 +131,16 @@ const TrafficOverviewTool = ({
     [selectedTarget, selectedLocationKey, selectedLanguageKey],
   );
 
-  useEffect(() => {
-    const getTrafficOverview = async (
+  const getTrafficOverview = useCallback(
+    async (
       target: string,
       location_code: number,
       language_code: string,
+      refreshData: boolean = false,
     ) => {
       setIsLoading(true);
       setError(null);
+      setIsCachedData(false);
 
       if (!dfsUsername || !dfsPassword) {
         setError(
@@ -169,7 +172,12 @@ const TrafficOverviewTool = ({
           dateFromFormatted,
           true,
           cachingDuration,
+          refreshData,
         );
+
+        if (apiResponse.isCachedData) {
+          setIsCachedData(true);
+        }
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
         const taskStatusMessage =
@@ -211,8 +219,11 @@ const TrafficOverviewTool = ({
       } finally {
         setIsLoading(false);
       }
-    };
+    },
+    [],
+  );
 
+  useEffect(() => {
     if (
       formInput.target &&
       formInput.location_code &&
@@ -224,17 +235,7 @@ const TrafficOverviewTool = ({
         formInput.language_code,
       );
     }
-  }, [
-    dateFromFormatted,
-    formInput.target,
-    formInput.location_code,
-    formInput.language_code,
-    dfsUsername,
-    dfsPassword,
-    dfsSandboxEnabled,
-    cachingEnabled,
-    refreshDFSBalance,
-  ]);
+  }, [formInput.target, formInput.location_code, formInput.language_code]);
 
   useEffect(() => {
     if (searchParams) {
@@ -257,13 +258,28 @@ const TrafficOverviewTool = ({
     }
   }, [searchParams]);
 
+  const refreshTrafficOverviewData = useCallback(async () => {
+    if (
+      formInput.target &&
+      formInput.location_code &&
+      formInput.language_code
+    ) {
+      getTrafficOverview(
+        formInput.target,
+        Number(formInput.location_code),
+        formInput.language_code,
+        true,
+      );
+    }
+  }, [formInput.target, formInput.location_code, formInput.language_code]);
+
   return (
     <div className="traffic-overview-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
       <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-slate-200 bg-white p-5">
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
             <Chip size="md" variant="flat">
-              ${Number(0.2 + dataMonthsCount * 0.001).toFixed(4)}
+              ${parseFloat(Number(0.24 + dataMonthsCount * 0.0012).toFixed(4))}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
@@ -435,8 +451,8 @@ const TrafficOverviewTool = ({
       </div>
       {isLoading && (
         <>
-          <Skeleton className="mt-4 h-[1000px] w-full rounded-md lg:mt-8 lg:h-[480px]" />
-          <Skeleton className="mt-4 h-[1000px] w-full rounded-md lg:mt-8 lg:h-[480px]" />
+          <Skeleton className="mt-4 h-250 w-full rounded-md lg:mt-8 lg:h-120" />
+          <Skeleton className="mt-4 h-250 w-full rounded-md lg:mt-8 lg:h-120" />
         </>
       )}
       {!isLoading &&
@@ -452,6 +468,24 @@ const TrafficOverviewTool = ({
               <div className="flex items-center gap-2">
                 <BookOpenTextIcon size={20} />
                 <span className="text-base lg:text-lg">Organic Overview</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {isCachedData && (
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-slate-200 p-2">
+                    <Tooltip content="Cached Data">
+                      <DatabaseZapIcon size={18} />
+                    </Tooltip>
+                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <Tooltip content="Refresh Data">
+                      <button
+                        className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
+                        onClick={refreshTrafficOverviewData}
+                      >
+                        <RefreshCwIcon size={18} />
+                      </button>
+                    </Tooltip>
+                  </div>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 lg:grid-cols-4">
@@ -780,6 +814,24 @@ const TrafficOverviewTool = ({
               <div className="flex items-center gap-2">
                 <MegaphoneIcon size={20} />
                 <span className="text-base lg:text-lg">Paid Overview</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {isCachedData && (
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-slate-200 p-2">
+                    <Tooltip content="Cached Data">
+                      <DatabaseZapIcon size={18} />
+                    </Tooltip>
+                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <Tooltip content="Refresh Data">
+                      <button
+                        className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
+                        onClick={refreshTrafficOverviewData}
+                      >
+                        <RefreshCwIcon size={18} />
+                      </button>
+                    </Tooltip>
+                  </div>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 lg:grid-cols-4">

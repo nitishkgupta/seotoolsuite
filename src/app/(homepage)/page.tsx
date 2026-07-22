@@ -36,7 +36,7 @@ export default function HomePage() {
   return (
     <div className="homepage relative flex w-full flex-col">
       <div className="header-container sticky top-0 z-50 border-b border-slate-200 bg-white/10 backdrop-blur-lg">
-        <header className="header mx-auto flex w-full max-w-[1432px] flex-row items-center justify-between px-4 py-4">
+        <header className="header mx-auto flex w-full max-w-358 flex-row items-center justify-between px-4 py-4">
           <div className="header-left flex items-center">
             <Link href="/">
               <Image
