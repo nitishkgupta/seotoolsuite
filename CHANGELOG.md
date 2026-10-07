@@ -1,5 +1,13 @@
 # SEOToolSuite Changelog
 
+## v6.3.0
+
+- Added new settings to change the default location and language.
+- Removed clickstream data from the "Traffic Overview" tool to reduce costs.
+- Added "Cached Date" to the tooltips for cached data (only works with new cached data).
+- Minor code fixes.
+- Updated packages.
+
 ## v6.2.0
 
 - Improved the styling of the "DR" column in the "Bulk DR Checker" tool.

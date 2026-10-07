@@ -37,18 +37,16 @@ import {
   RefreshCwIcon,
   TextSearchIcon,
   TrendingUpIcon,
-  UsersIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { HistoricalRankOverviewItem } from "@/types/DFS/HistoricalRankOverview";
-import GenderDistributionChart from "@/components/charts/GenderDistributionChart";
-import AgeDistributionChart from "@/components/charts/AgeDistributionChart";
 import HistoricalRankTrendChart from "@/components/charts/HistoricalRankTrendChart";
 import { formatNumberToWord } from "@/utils/chart";
 import HistoricalRankChangesChart from "@/components/charts/HistoricalRankChangesChart";
 import HistoricalRankPositionChart from "@/components/charts/HistoricalRankPositionChart";
+import { getLocalDateTimeFromISOString } from "@/utils/date";
 
 type TrafficOverviewData = {
   historicalRankOverviewData: HistoricalRankOverviewItem[];
@@ -68,6 +66,7 @@ const TrafficOverviewTool = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<TrafficOverviewData | null>(null);
   const [isCachedData, setIsCachedData] = useState<boolean>(false);
+  const [dataCachedAt, setDataCachedAt] = useState<string | null>(null);
   const latestRankOverviewData: HistoricalRankOverviewItem | null =
     useMemo(() => {
       return data?.historicalRankOverviewData?.[0] ?? null;
@@ -97,9 +96,12 @@ const TrafficOverviewTool = ({
     (currentDate.getMonth() - dateFrom.getMonth()) +
     1;
   const [selectedTarget, setSelectedTarget] = useState<string>("");
-  const [selectedLocationKey, setSelectedLocationKey] =
-    useState<string>("2356");
-  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>("en");
+  const [selectedLocationKey, setSelectedLocationKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LOCATION_KEY") ?? "2356",
+  );
+  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LANGUAGE_KEY") ?? "en",
+  );
 
   const [formInput, setFormInput] = useState<{
     target?: string;
@@ -141,6 +143,7 @@ const TrafficOverviewTool = ({
       setIsLoading(true);
       setError(null);
       setIsCachedData(false);
+      setDataCachedAt(null);
 
       if (!dfsUsername || !dfsPassword) {
         setError(
@@ -170,13 +173,14 @@ const TrafficOverviewTool = ({
           location_code,
           language_code,
           dateFromFormatted,
-          true,
+          false,
           cachingDuration,
           refreshData,
         );
 
         if (apiResponse.isCachedData) {
           setIsCachedData(true);
+          if (apiResponse.cachedAt) setDataCachedAt(apiResponse.cachedAt);
         }
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
@@ -220,7 +224,14 @@ const TrafficOverviewTool = ({
         setIsLoading(false);
       }
     },
-    [],
+    [
+      cachingDuration,
+      cachingEnabled,
+      dfsPassword,
+      dfsSandboxEnabled,
+      dfsUsername,
+      refreshDFSBalance,
+    ],
   );
 
   useEffect(() => {
@@ -235,7 +246,12 @@ const TrafficOverviewTool = ({
         formInput.language_code,
       );
     }
-  }, [formInput.target, formInput.location_code, formInput.language_code]);
+  }, [
+    formInput.target,
+    formInput.location_code,
+    formInput.language_code,
+    getTrafficOverview,
+  ]);
 
   useEffect(() => {
     if (searchParams) {
@@ -271,7 +287,12 @@ const TrafficOverviewTool = ({
         true,
       );
     }
-  }, [formInput.target, formInput.location_code, formInput.language_code]);
+  }, [
+    formInput.target,
+    formInput.location_code,
+    formInput.language_code,
+    getTrafficOverview,
+  ]);
 
   return (
     <div className="traffic-overview-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
@@ -279,7 +300,7 @@ const TrafficOverviewTool = ({
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
             <Chip size="md" variant="flat">
-              ${parseFloat(Number(0.24 + dataMonthsCount * 0.0012).toFixed(4))}
+              ${parseFloat(Number(0.12 + dataMonthsCount * 0.0012).toFixed(4))}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
@@ -324,7 +345,7 @@ const TrafficOverviewTool = ({
               Traffic Overview
             </div>
             <div className="text-base font-medium text-slate-500">
-              Analyze website traffic metrics with clickstream data.
+              Analyze website traffic metrics with historical data.
             </div>
           </div>
         </div>
@@ -472,7 +493,9 @@ const TrafficOverviewTool = ({
               <div className="flex items-center gap-2">
                 {isCachedData && (
                   <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
-                    <Tooltip content="Cached Data">
+                    <Tooltip
+                      content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
+                    >
                       <DatabaseZapIcon size={18} />
                     </Tooltip>
                     <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
@@ -713,7 +736,7 @@ const TrafficOverviewTool = ({
                 </div>
               </div>
             </div>
-            <div className="flex w-full flex-col justify-between border-b-2 border-slate-200 p-4 pb-1">
+            <div className="flex w-full flex-col justify-between border-slate-200 p-4 pb-1">
               <div className="flex items-center gap-2">
                 <CircleStarIcon size={18} />
                 Ranking Position Trend
@@ -754,51 +777,6 @@ const TrafficOverviewTool = ({
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-slate-200 lg:grid-cols-2">
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
-                <div className="flex items-center gap-2">
-                  <Image
-                    src="/assets/icons/demography.svg"
-                    width={20}
-                    height={20}
-                    quality={100}
-                    alt="Demography"
-                    className="w-5"
-                  />
-                  Gender Distribution
-                </div>
-                {latestRankOverviewData.metrics.organic
-                  .clickstream_gender_distribution && (
-                  <div className="mt-4">
-                    <GenderDistributionChart
-                      data={
-                        latestRankOverviewData.metrics.organic
-                          .clickstream_gender_distribution
-                      }
-                    />
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col justify-between border-slate-200 p-4">
-                <div className="flex items-center gap-2">
-                  <UsersIcon size={18} />
-                  Age Distribution
-                </div>
-                {latestRankOverviewData.metrics.organic
-                  .clickstream_age_distribution ? (
-                  <div className="mt-4">
-                    <AgeDistributionChart
-                      data={
-                        latestRankOverviewData.metrics.organic
-                          .clickstream_age_distribution
-                      }
-                    />
-                  </div>
-                ) : (
-                  <div className="mt-4 text-xl lg:text-3xl">N/A</div>
-                )}
-              </div>
-            </div>
           </div>
         )}
       {!isLoading &&
@@ -818,7 +796,9 @@ const TrafficOverviewTool = ({
               <div className="flex items-center gap-2">
                 {isCachedData && (
                   <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
-                    <Tooltip content="Cached Data">
+                    <Tooltip
+                      content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
+                    >
                       <DatabaseZapIcon size={18} />
                     </Tooltip>
                     <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
@@ -997,7 +977,7 @@ const TrafficOverviewTool = ({
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200">
+            <div className="grid grid-cols-1 items-stretch border-slate-200">
               <div className="flex flex-col justify-between p-4 pb-1">
                 <div className="flex items-center gap-2">
                   <DiffIcon size={18} />
@@ -1030,51 +1010,6 @@ const TrafficOverviewTool = ({
                     <span className="text-sm">Keywords Lost</span>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 items-stretch border-slate-200 lg:grid-cols-2">
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
-                <div className="flex items-center gap-2">
-                  <Image
-                    src="/assets/icons/demography.svg"
-                    width={20}
-                    height={20}
-                    quality={100}
-                    alt="Demography"
-                    className="w-5"
-                  />
-                  Gender Distribution
-                </div>
-                {latestRankOverviewData.metrics.paid
-                  .clickstream_gender_distribution && (
-                  <div className="mt-4">
-                    <GenderDistributionChart
-                      data={
-                        latestRankOverviewData.metrics.paid
-                          .clickstream_gender_distribution
-                      }
-                    />
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col justify-between border-slate-200 p-4">
-                <div className="flex items-center gap-2">
-                  <UsersIcon size={18} />
-                  Age Distribution
-                </div>
-                {latestRankOverviewData.metrics.paid
-                  .clickstream_age_distribution ? (
-                  <div className="mt-4">
-                    <AgeDistributionChart
-                      data={
-                        latestRankOverviewData.metrics.paid
-                          .clickstream_age_distribution
-                      }
-                    />
-                  </div>
-                ) : (
-                  <div className="mt-4 text-xl lg:text-3xl">N/A</div>
-                )}
               </div>
             </div>
           </div>

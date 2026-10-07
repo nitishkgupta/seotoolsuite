@@ -9,6 +9,8 @@ import {
   Accordion,
   AccordionItem,
   addToast,
+  Autocomplete,
+  AutocompleteItem,
   Button,
   Form,
   Input,
@@ -33,11 +35,23 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import useDFSBalance from "@/hooks/useDFSBalance";
+import {
+  getDataForSEOLanguages,
+  getDataForSEOLocations,
+} from "@/utils/dataforseo";
+import Image from "next/image";
+import { getFlagImageUrl } from "@/utils/flags";
 
 function SettingsComponent() {
   const { refreshDFSBalance } = useDFSBalance(false);
   const [dfsSandboxEnabled, setDFSSandboxEnabled] = useState<boolean>(false);
   const [cachingEnabled, setCachingEnabled] = useState<boolean>(false);
+
+  const locations = getDataForSEOLocations();
+  const languages = getDataForSEOLanguages();
+
+  const [defaultLocationKey, setDefaultLocationKey] = useState<string>("2356");
+  const [defaultLanguageKey, setDefaultLanguageKey] = useState<string>("en");
 
   const [KWOverviewCachingDuration, setKWOverviewCachingDuration] =
     useState<number>(30);
@@ -129,15 +143,18 @@ function SettingsComponent() {
     });
   };
 
-  const handleCachingEnabledChange = useCallback((enabled: boolean) => {
-    setCachingEnabled(enabled);
-    if (enabled) {
-      setLocalStorageItem("CACHING_ENABLED", "true");
-    } else {
-      setUpstashTutorialShown(false);
-      removeLocalStorageItem("CACHING_ENABLED");
-    }
-  }, []);
+  const handleCachingEnabledChange = useCallback(
+    (enabled: boolean) => {
+      setCachingEnabled(enabled);
+      if (enabled) {
+        setLocalStorageItem("CACHING_ENABLED", "true");
+      } else {
+        setUpstashTutorialShown(false);
+        removeLocalStorageItem("CACHING_ENABLED");
+      }
+    },
+    [setUpstashTutorialShown],
+  );
 
   const handleKWOverviewCachingDurationChange = useCallback(
     (duration: number | number[]) => {
@@ -208,7 +225,21 @@ function SettingsComponent() {
     [],
   );
 
+  const handleDefaultLocationKeyChange = useCallback((key: string) => {
+    setDefaultLocationKey(key);
+    setLocalStorageItem("DEFAULT_LOCATION_KEY", key);
+  }, []);
+
+  const handleDefaultLanguageKeyChange = useCallback((key: string) => {
+    setDefaultLanguageKey(key);
+    setLocalStorageItem("DEFAULT_LANGUAGE_KEY", key);
+  }, []);
+
   useEffect(() => {
+    setDefaultLocationKey(
+      getLocalStorageItem("DEFAULT_LOCATION_KEY") ?? "2356",
+    );
+    setDefaultLanguageKey(getLocalStorageItem("DEFAULT_LANGUAGE_KEY") ?? "en");
     setDFSSandboxEnabled(getLocalStorageItem("DATAFORSEO_SANDBOX") === "true");
     setCachingEnabled(getLocalStorageItem("CACHING_ENABLED") === "true");
     setKWOverviewCachingDuration(
@@ -437,6 +468,60 @@ function SettingsComponent() {
                 </div>
               </AccordionItem>
             </Accordion>
+          </div>
+          <div className="w-full px-4 pb-4">
+            <div className="text-base">Default Location</div>
+            <div className="mt-1">
+              <Autocomplete
+                name="default-location"
+                variant="flat"
+                label="Location"
+                isRequired
+                value={defaultLocationKey}
+                onChange={(key: any) =>
+                  handleDefaultLocationKeyChange(key.target.value)
+                }
+              >
+                {locations.map((location) => (
+                  <AutocompleteItem
+                    key={location.location_code}
+                    startContent={
+                      <Image
+                        className="h-auto w-6 rounded-xs border border-slate-400"
+                        src={getFlagImageUrl(location.country_iso_code)}
+                        loading="lazy"
+                        width={24}
+                        height={15}
+                        alt={location.location_name}
+                      />
+                    }
+                  >
+                    {location.location_name}
+                  </AutocompleteItem>
+                ))}
+              </Autocomplete>
+            </div>
+          </div>
+          <div className="w-full px-4 pb-4">
+            <div className="text-base">Default Language</div>
+            <div className="mt-1">
+              <Autocomplete
+                name="default-language"
+                variant="flat"
+                label="Language"
+                isRequired
+                value={defaultLanguageKey}
+                onChange={(key: any) =>
+                  handleDefaultLanguageKeyChange(key.target.value)
+                }
+              >
+                {languages.map((language) => (
+                  <AutocompleteItem key={language.language_code}>
+                    {language.language_name}
+                  </AutocompleteItem>
+                ))}
+              </Autocomplete>
+            </div>
           </div>
         </div>
       </div>

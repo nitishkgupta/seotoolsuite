@@ -4,12 +4,12 @@ import { Slider } from "@heroui/react";
 import { memo, useCallback, useState } from "react";
 
 const CostCalculator = () => {
-  const [kwOverviewReports, setKwOverviewReports] = useState<number>(25);
+  const [kwOverviewReports, setKwOverviewReports] = useState<number>(100);
   const kwOverviewCreditsCost: number = parseFloat(
     Number(0.0241 * kwOverviewReports).toFixed(4),
   );
 
-  const [kwSuggestionsReports, setKwSuggestionsReports] = useState<number>(100);
+  const [kwSuggestionsReports, setKwSuggestionsReports] = useState<number>(50);
   const kwSuggestionsCreditsCost: number = parseFloat(
     Number(0.042 * kwSuggestionsReports).toFixed(4),
   );
@@ -22,15 +22,15 @@ const CostCalculator = () => {
     (currentDate.getMonth() - dateFrom.getMonth()) +
     1;
   const [trafficOverviewReports, setTrafficOverviewReports] =
-    useState<number>(10);
+    useState<number>(15);
   const trafficOverviewCreditsCost: number = parseFloat(
-    Number((0.24 + dataMonthsCount * 0.0012) * trafficOverviewReports).toFixed(
+    Number((0.12 + dataMonthsCount * 0.0012) * trafficOverviewReports).toFixed(
       4,
     ),
   );
 
   const [rankedKeywordsReports, setRankedKeywordsReports] =
-    useState<number>(100);
+    useState<number>(50);
   const rankedKeywordsCreditsCost: number = parseFloat(
     Number(0.042 * rankedKeywordsReports).toFixed(4),
   );
@@ -189,7 +189,8 @@ const CostCalculator = () => {
         </div>
       </div>
       <div className="border-t-2 border-slate-200 p-4 text-base lg:text-lg">
-        - That's only <b className="font-medium">${totalCreditsCost}</b> for{" "}
+        - That&apos;s only <b className="font-medium">${totalCreditsCost}</b>{" "}
+        for{" "}
         <b className="font-medium">
           {totalReports.toLocaleString(navigator.language)} fresh reports,
         </b>{" "}
@@ -198,7 +199,7 @@ const CostCalculator = () => {
           {totalRows.toLocaleString(navigator.language)} rows fetched
         </b>
         .
-        <br />- Cached reports don't cost anything.
+        <br />- Cached reports don&apos;t cost anything.
         <br />- Top up your DataForSEO credits whenever you like - they never
         expire.
       </div>

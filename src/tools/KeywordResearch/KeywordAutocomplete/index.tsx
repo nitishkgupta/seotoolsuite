@@ -7,6 +7,7 @@ import {
   getDataForSEOLocations,
 } from "@/utils/dataforseo";
 import { getFlagImageUrl } from "@/utils/flags";
+import { getLocalStorageItem } from "@/utils/localStorage";
 import { trackUmamiEvent } from "@/utils/umami";
 import {
   addToast,
@@ -63,9 +64,12 @@ const KeywordAutocompleteTool = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [selectedKeyword, setSelectedKeyword] = useState<string>("");
-  const [selectedLocationKey, setSelectedLocationKey] =
-    useState<string>("2356");
-  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>("en");
+  const [selectedLocationKey, setSelectedLocationKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LOCATION_KEY") ?? "2356",
+  );
+  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LANGUAGE_KEY") ?? "en",
+  );
 
   const [keywordModifiersDone, setKeywordModifiersDone] = useState<number>(0);
   const [keywordSuggestionsFound, setKeywordSuggestionsFound] =

@@ -59,6 +59,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import KeywordDetails from "./KeywordDetails";
+import { getLocalDateTimeFromISOString } from "@/utils/date";
 
 type KeywordSuggestionItem = {
   id: number;
@@ -110,6 +111,7 @@ const KeywordSuggestionsTool = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<KeywordSuggestionsData | null>(null);
   const [isCachedData, setIsCachedData] = useState<boolean>(false);
+  const [dataCachedAt, setDataCachedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const MAX_ROWS: number = Number(
@@ -132,9 +134,12 @@ const KeywordSuggestionsTool = ({
   const languages = getDataForSEOLanguages(true);
 
   const [selectedKeyword, setSelectedKeyword] = useState<string>("");
-  const [selectedLocationKey, setSelectedLocationKey] =
-    useState<string>("2356");
-  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>("en");
+  const [selectedLocationKey, setSelectedLocationKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LOCATION_KEY") ?? "2356",
+  );
+  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LANGUAGE_KEY") ?? "en",
+  );
 
   const [activeKeywordData, setActiveKeywordData] =
     useState<KeywordSuggestionItem | null>(null);
@@ -240,6 +245,7 @@ const KeywordSuggestionsTool = ({
       setIsLoading(true);
       setError(null);
       setIsCachedData(false);
+      setDataCachedAt(null);
 
       window.setTimeout(() => {
         document.getElementById("keywords-table")?.scrollIntoView({
@@ -287,6 +293,7 @@ const KeywordSuggestionsTool = ({
 
         if (apiResponse.isCachedData) {
           setIsCachedData(true);
+          if (apiResponse.cachedAt) setDataCachedAt(apiResponse.cachedAt);
         }
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
@@ -374,7 +381,14 @@ const KeywordSuggestionsTool = ({
         setIsLoading(false);
       }
     },
-    [],
+    [
+      cachingDuration,
+      cachingEnabled,
+      dfsPassword,
+      dfsSandboxEnabled,
+      dfsUsername,
+      refreshDFSBalance,
+    ],
   );
 
   useDeepCompareEffect(() => {
@@ -440,6 +454,8 @@ const KeywordSuggestionsTool = ({
     formInput.language_code,
     activeKeywordFilters,
     offset,
+    MAX_ROWS,
+    getKeywordSuggestions,
   ]);
 
   const getMUIRowHeight = useCallback(() => "auto", []);
@@ -875,7 +891,7 @@ const KeywordSuggestionsTool = ({
         ),
       },
     ],
-    [openKeywordDetailsModal],
+    [openKeywordDetailsModal, handleKeywordClipboardCopy],
   );
 
   return (
@@ -1088,7 +1104,9 @@ const KeywordSuggestionsTool = ({
               <div className="flex items-center gap-2">
                 {isCachedData && (
                   <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
-                    <Tooltip content="Cached Data">
+                    <Tooltip
+                      content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
+                    >
                       <DatabaseZapIcon size={18} />
                     </Tooltip>
                     <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>

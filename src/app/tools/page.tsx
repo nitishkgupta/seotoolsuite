@@ -140,7 +140,7 @@ export default function ToolsPage() {
                   Traffic Overview
                 </span>
                 <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
-                  Analyze website traffic metrics with clickstream data.
+                  Analyze website traffic metrics with historical data.
                 </span>
               </div>
             </Link>

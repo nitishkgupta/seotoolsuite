@@ -69,6 +69,7 @@ import {
   RankedKeywordsMetrics,
 } from "@/types/DFS/RankedKeywords";
 import RankPositionDistributionChart from "@/components/charts/RankPositionDistributionChart";
+import { getLocalDateTimeFromISOString } from "@/utils/date";
 
 type RankedKeywordsTableItem = RankedKeywordsItem & {
   id: number;
@@ -94,6 +95,7 @@ const RankedKeywordsTool = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<RankedKeywordsData | null>(null);
   const [isCachedData, setIsCachedData] = useState<boolean>(false);
+  const [dataCachedAt, setDataCachedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const MAX_ROWS: number = Number(
@@ -116,9 +118,12 @@ const RankedKeywordsTool = ({
   const languages = getDataForSEOLanguages(true);
 
   const [selectedTarget, setSelectedTarget] = useState<string>("");
-  const [selectedLocationKey, setSelectedLocationKey] =
-    useState<string>("2356");
-  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>("en");
+  const [selectedLocationKey, setSelectedLocationKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LOCATION_KEY") ?? "2356",
+  );
+  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LANGUAGE_KEY") ?? "en",
+  );
 
   const [activeKeywordData, setActiveKeywordData] = useState<
     RankedKeywordsItem["keyword_data"] | null
@@ -237,6 +242,7 @@ const RankedKeywordsTool = ({
       setIsLoading(true);
       setError(null);
       setIsCachedData(false);
+      setDataCachedAt(null);
 
       window.setTimeout(() => {
         document.getElementById("ranked-overview-data")?.scrollIntoView({
@@ -284,6 +290,7 @@ const RankedKeywordsTool = ({
 
         if (apiResponse.isCachedData) {
           setIsCachedData(true);
+          if (apiResponse.cachedAt) setDataCachedAt(apiResponse.cachedAt);
         }
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
@@ -339,7 +346,14 @@ const RankedKeywordsTool = ({
         setIsLoading(false);
       }
     },
-    [],
+    [
+      cachingDuration,
+      cachingEnabled,
+      dfsPassword,
+      dfsSandboxEnabled,
+      dfsUsername,
+      refreshDFSBalance,
+    ],
   );
 
   useDeepCompareEffect(() => {
@@ -394,6 +408,8 @@ const RankedKeywordsTool = ({
     formInput.language_code,
     activeRankedKeywordFilters,
     offset,
+    MAX_ROWS,
+    getRankedKeywords,
   ]);
 
   const getMUIRowHeight = useCallback(() => "auto", []);
@@ -1041,7 +1057,7 @@ const RankedKeywordsTool = ({
         ),
       },
     ],
-    [openKeywordDetailsModal],
+    [openKeywordDetailsModal, handleKeywordClipboardCopy],
   );
 
   useEffect(() => {
@@ -1262,7 +1278,9 @@ const RankedKeywordsTool = ({
             <div className="flex items-center gap-2">
               {isCachedData && (
                 <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
-                  <Tooltip content="Cached Data">
+                  <Tooltip
+                    content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
+                  >
                     <DatabaseZapIcon size={18} />
                   </Tooltip>
                   <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
@@ -1383,7 +1401,9 @@ const RankedKeywordsTool = ({
               <div className="flex items-center gap-2">
                 {isCachedData && (
                   <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
-                    <Tooltip content="Cached Data">
+                    <Tooltip
+                      content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
+                    >
                       <DatabaseZapIcon size={18} />
                     </Tooltip>
                     <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>

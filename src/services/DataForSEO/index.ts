@@ -1,5 +1,6 @@
 import axios from "axios";
 import UpstashRedis from "@/services/UpstashRedis";
+import { getCurrentDateTimeUTC } from "@/utils/date";
 
 /**
  * DataForSEO service.
@@ -183,7 +184,10 @@ class DataForSEO {
             btoa(
               `keyword-suggestions-${keyword}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
             ),
-            JSON.stringify(apiResponse.data),
+            JSON.stringify({
+              ...apiResponse.data,
+              cachedAt: getCurrentDateTimeUTC(),
+            }),
             60 * 60 * 24 * cachingDuration,
           );
         } catch (error) {
@@ -266,7 +270,10 @@ class DataForSEO {
             btoa(
               `keywords-overview-${JSON.stringify(keywords)}-${location_code}-${language_code}-${include_clickstream_data}`,
             ),
-            JSON.stringify(apiResponse.data),
+            JSON.stringify({
+              ...apiResponse.data,
+              cachedAt: getCurrentDateTimeUTC(),
+            }),
             60 * 60 * 24 * cachingDuration,
           );
         } catch (error) {
@@ -351,7 +358,10 @@ class DataForSEO {
             btoa(
               `historical-rank-overview-${domain}-${location_code}-${language_code}-${date_from}-${include_clickstream_data}`,
             ),
-            JSON.stringify(apiResponse.data),
+            JSON.stringify({
+              ...apiResponse.data,
+              cachedAt: getCurrentDateTimeUTC(),
+            }),
             60 * 60 * 24 * cachingDuration,
           );
         } catch (error) {
@@ -440,7 +450,10 @@ class DataForSEO {
             btoa(
               `ranked-keywords-${target}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
             ),
-            JSON.stringify(apiResponse.data),
+            JSON.stringify({
+              ...apiResponse.data,
+              cachedAt: getCurrentDateTimeUTC(),
+            }),
             60 * 60 * 24 * cachingDuration,
           );
         } catch (error) {

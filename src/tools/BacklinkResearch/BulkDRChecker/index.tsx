@@ -109,7 +109,7 @@ const BulkDRCheckerTool = () => {
 
       await getBulkDRCheckerResults(targetsFiltered);
     },
-    [selectedTargets],
+    [selectedTargets, getBulkDRCheckerResults],
   );
 
   const getMUIRowHeight = useCallback(() => "auto", []);

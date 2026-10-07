@@ -47,6 +47,7 @@ import { memo, useCallback, useEffect, useState } from "react";
 import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
 import GenderDistributionChart from "@/components/charts/GenderDistributionChart";
 import AgeDistributionChart from "@/components/charts/AgeDistributionChart";
+import { getLocalDateTimeFromISOString } from "@/utils/date";
 
 type KeywordOverviewData = {
   keyword: string;
@@ -99,6 +100,7 @@ const KeywordOverviewTool = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<KeywordOverviewData | null>(null);
   const [isCachedData, setIsCachedData] = useState<boolean>(false);
+  const [dataCachedAt, setDataCachedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const dfsUsername = getLocalStorageItem("DATAFORSEO_USERNAME");
@@ -113,9 +115,12 @@ const KeywordOverviewTool = ({
   const languages = getDataForSEOLanguages();
 
   const [selectedKeyword, setSelectedKeyword] = useState<string>("");
-  const [selectedLocationKey, setSelectedLocationKey] =
-    useState<string>("2356");
-  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>("en");
+  const [selectedLocationKey, setSelectedLocationKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LOCATION_KEY") ?? "2356",
+  );
+  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LANGUAGE_KEY") ?? "en",
+  );
 
   const [formInput, setFormInput] = useState<{
     keyword?: string;
@@ -154,6 +159,7 @@ const KeywordOverviewTool = ({
       setIsLoading(true);
       setError(null);
       setIsCachedData(false);
+      setDataCachedAt(null);
 
       if (!dfsUsername || !dfsPassword) {
         setError(
@@ -189,6 +195,7 @@ const KeywordOverviewTool = ({
 
         if (apiResponse.isCachedData) {
           setIsCachedData(true);
+          if (apiResponse.cachedAt) setDataCachedAt(apiResponse.cachedAt);
         }
 
         const taskStatusCode = apiResponse?.tasks[0]?.status_code;
@@ -274,7 +281,14 @@ const KeywordOverviewTool = ({
         setIsLoading(false);
       }
     },
-    [],
+    [
+      cachingDuration,
+      cachingEnabled,
+      dfsPassword,
+      dfsSandboxEnabled,
+      dfsUsername,
+      refreshDFSBalance,
+    ],
   );
 
   useEffect(() => {
@@ -289,7 +303,12 @@ const KeywordOverviewTool = ({
         formInput.language_code,
       );
     }
-  }, [formInput.keyword, formInput.location_code, formInput.language_code]);
+  }, [
+    formInput.keyword,
+    formInput.location_code,
+    formInput.language_code,
+    getKeywordOverview,
+  ]);
 
   useEffect(() => {
     if (searchParams) {
@@ -321,7 +340,12 @@ const KeywordOverviewTool = ({
         true,
       );
     }
-  }, [formInput.keyword, formInput.location_code, formInput.language_code]);
+  }, [
+    formInput.keyword,
+    formInput.location_code,
+    formInput.language_code,
+    getKeywordOverview,
+  ]);
 
   return (
     <div className="keyword-overview-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
@@ -523,7 +547,9 @@ const KeywordOverviewTool = ({
             <div className="flex items-center gap-2">
               {isCachedData && (
                 <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
-                  <Tooltip content="Cached Data">
+                  <Tooltip
+                    content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
+                  >
                     <DatabaseZapIcon size={18} />
                   </Tooltip>
                   <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
