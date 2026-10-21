@@ -40,5 +40,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/features/bulk-dr-checker`,
       lastModified: new Date(),
     },
+    {
+      url: `${baseUrl}/features/keyword-ideas`,
+      lastModified: new Date(),
+    },
   ];
 }

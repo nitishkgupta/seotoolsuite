@@ -25,12 +25,12 @@ import { HomeFooter } from "@/components/HomeFooter";
 export const metadata: Metadata = {
   title: "Keyword Suggestions | SEOToolSuite",
   description:
-    "The Keyword Suggestions tool generates a large list of relevant keyword ideas based on your seed keyword. It provides key metrics like search volume, intent, CPC, competition, and difficulty, helping you discover new keyword opportunities and expand your SEO strategy.",
+    "The Keyword Suggestions tool generates a large list of relevant keyword suggestions based on your seed keyword. It provides key metrics like search volume, intent, CPC, competition, and difficulty, helping you discover new keyword opportunities and expand your SEO strategy.",
   openGraph: {
     type: "website",
     title: "Keyword Suggestions | SEOToolSuite",
     description:
-      "The Keyword Suggestions tool generates a large list of relevant keyword ideas based on your seed keyword. It provides key metrics like search volume, intent, CPC, competition, and difficulty, helping you discover new keyword opportunities and expand your SEO strategy.",
+      "The Keyword Suggestions tool generates a large list of relevant keyword suggestions based on your seed keyword. It provides key metrics like search volume, intent, CPC, competition, and difficulty, helping you discover new keyword opportunities and expand your SEO strategy.",
     images: [
       {
         url: "/assets/images/keyword-suggestions-screenshot.png",
@@ -56,8 +56,8 @@ export default function KeywordSuggestionsFeaturePage() {
             Keyword Suggestions
           </h1>
           <p className="mt-4 max-w-225 text-center text-base font-medium text-black/60 sm:text-lg lg:text-xl">
-            Generate thousands of high-converting keyword ideas from a single
-            seed keyword. Analyze{" "}
+            Generate thousands of high-converting keyword suggestions from a
+            single seed keyword. Analyze{" "}
             <b className="font-semibold text-sky-950">search volume</b>,{" "}
             <b className="font-semibold text-sky-950">keyword difficulty</b>,{" "}
             <b className="font-semibold text-sky-950">CPC bidding metrics</b>,
@@ -74,7 +74,7 @@ export default function KeywordSuggestionsFeaturePage() {
               <LightbulbIcon size={20} className="text-sky-950" />
             </div>
             <span className="text-xs font-medium text-sky-950 sm:text-sm md:text-base">
-              Massive Idea Generator
+              Suggestions Generator
             </span>
           </div>
           <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
@@ -412,7 +412,7 @@ export default function KeywordSuggestionsFeaturePage() {
                 2
               </span>
               <h3 className="mt-4 text-lg font-semibold text-sky-950">
-                Fetch Live Ideas
+                Fetch Live Suggestions
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-black/75">
                 Queries DataForSEO&apos;s index to generate hundreds of relevant
@@ -498,7 +498,7 @@ export default function KeywordSuggestionsFeaturePage() {
             Start Discovering Keyword Suggestions
           </h2>
           <p className="mt-3 max-w-175 text-base text-balance text-slate-200 sm:text-lg">
-            Uncover thousands of high-converting keyword ideas with
+            Uncover thousands of high-converting keyword suggestions with
             SEOToolSuite&apos;s open-source tool.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">

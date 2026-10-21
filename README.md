@@ -2,7 +2,7 @@
 
 SEOToolSuite provides **open-source** SEO tools for everyone. Pay only for **what you use**, with **unrestricted access** to SEO data. Keyword research, competitive research, and backlink research, **powered by DataForSEO**. An open-source alternative to **Ahrefs, SEMrush,** and others.
 
-[**Get Started**](https://seotoolsuite.nitishkgupta.com/tools) - [**Pricing (Cost Calculator)**](https://seotoolsuite.nitishkgupta.com/pricing) - [**Changelog**](CHANGELOG.md) - [**DataForSEO Account (Free 1$ Credits)**](https://dataforseo.com/?aff=44560) - [**Discord Server**](https://discord.gg/Wt4RN4Xy8n)
+[**Get Started**](https://seotoolsuite.nitishkgupta.com/tools) - [**Pricing (Cost Calculator)**](https://seotoolsuite.nitishkgupta.com/pricing) - [**Changelog**](CHANGELOG.md) - [**DataForSEO Account (Free 1$ Credits)**](https://dataforseo.com/?aff=4d6a573c-0675-4d96-add0-f864b53b7c11) - [**Discord Server**](https://discord.gg/Wt4RN4Xy8n)
 
 [![GitHub Release](https://img.shields.io/github/v/release/nitishkgupta/seotoolsuite?style=for-the-badge)](https://github.com/nitishkgupta/seotoolsuite/releases) [![GitHub License](https://img.shields.io/github/license/nitishkgupta/seotoolsuite?style=for-the-badge)](LICENSE) [![GitHub deployments](https://img.shields.io/github/deployments/nitishkgupta/seotoolsuite/production?style=for-the-badge&label=Deployment)
 ](https://seotoolsuite.nitishkgupta.com)
@@ -49,7 +49,15 @@ The Keyword Overview tool gives a quick snapshot of a keyword’s performance, i
 
 ![Keyword Suggestions Tool](docs/assets/keyword-suggestions-screenshot.png)
 
-The Keyword Suggestions tool generates a large list of relevant keyword ideas based on your seed keyword. It provides key metrics like search volume, intent, CPC, competition, and difficulty, helping you discover new keyword opportunities and expand your SEO strategy.
+The Keyword Suggestions tool generates a large list of relevant keyword suggestions based on your seed keyword. It provides key metrics like search volume, intent, CPC, competition, and difficulty, helping you discover new keyword opportunities and expand your SEO strategy.
+
+**- DataForSEO API Required.**
+
+#### Keyword Ideas
+
+![Keyword Ideas Tool](docs/assets/keyword-ideas-screenshot.png)
+
+The Keyword Ideas tool discovers relevant keyword opportunities related to your seed keyword. It provides search volume, trends, search intent, CPC, competition, and keyword difficulty to help you find valuable keywords for your SEO strategy.
 
 **- DataForSEO API Required.**
 
@@ -89,7 +97,7 @@ The Bulk DR Checker tool lets you check the Ahrefs Domain Rating (DR) of multipl
 
 ## 📋 Prerequisites
 
-- [DataForSEO API](https://dataforseo.com/?aff=44560) (for tools using DataForSEO APIs)
+- [DataForSEO API](https://dataforseo.com/?aff=4d6a573c-0675-4d96-add0-f864b53b7c11) (for tools using DataForSEO APIs)
 - [Upstash Redis](https://upstash.com) (for data caching)
 - Node.js (for localhost/server deployment)
 

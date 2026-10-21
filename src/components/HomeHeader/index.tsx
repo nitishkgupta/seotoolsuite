@@ -14,6 +14,7 @@ import {
   BookOpenTextIcon,
   ChevronDownIcon,
   ExternalLinkIcon,
+  LightbulbIcon,
   LoaderPinwheelIcon,
   MenuIcon,
   StarIcon,
@@ -94,6 +95,14 @@ const HomeHeader = () => {
                   Keyword Suggestions
                 </DropdownItem>
                 <DropdownItem
+                  key="keyword-ideas"
+                  href="/features/keyword-ideas"
+                  startContent={<LightbulbIcon size={18} />}
+                  className={`p-2 hover:bg-slate-100! ${isFeaturesPageActive("keyword-ideas") ? "bg-slate-100!" : ""}`}
+                >
+                  Keyword Ideas
+                </DropdownItem>
+                <DropdownItem
                   key="keyword-autocomplete"
                   href="/features/keyword-autocomplete"
                   startContent={<LoaderPinwheelIcon size={18} />}
@@ -168,7 +177,7 @@ const HomeHeader = () => {
               </DropdownItem>
               <DropdownItem
                 key="dataforseo"
-                href="https://dataforseo.com/?aff=44560"
+                href="https://dataforseo.com/?aff=4d6a573c-0675-4d96-add0-f864b53b7c11"
                 endContent={<ExternalLinkIcon size={18} />}
                 target="_blank"
                 rel="nofollow"
@@ -185,7 +194,20 @@ const HomeHeader = () => {
             Pricing
           </Link>
         </div>
-        <div className="header-right ml-auto h-fit">
+        <div className="header-right ml-auto flex h-fit items-center gap-3">
+          <Link
+            href="https://github.com/nitishkgupta/seotoolsuite"
+            target="_blank"
+            className="hidden items-center gap-1 rounded-md border-2 border-b-3 border-sky-950 bg-white px-4 py-2 text-sm font-medium text-sky-950 transition hover:scale-105 active:scale-95 md:flex lg:text-base"
+          >
+            <Image
+              src="/assets/images/github-icon.svg"
+              alt="GitHub"
+              width={20}
+              height={20}
+              quality={100}
+            />
+          </Link>
           <Link
             href="/tools"
             className="block rounded-md border-2 border-b-3 border-black/80 bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-base"

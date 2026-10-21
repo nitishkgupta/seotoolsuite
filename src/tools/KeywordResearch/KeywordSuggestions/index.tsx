@@ -13,16 +13,11 @@ import KeywordFilters, {
 } from "@/components/KeywordFilters";
 import { GridColDef } from "@mui/x-data-grid";
 import {
-  addToast,
   Alert,
   Autocomplete,
   AutocompleteItem,
   Button,
   Chip,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Form,
   Input,
   Modal,
@@ -40,10 +35,9 @@ import {
   BinocularsIcon,
   BookOpenTextIcon,
   BoxIcon,
-  ClipboardCopyIcon,
   DatabaseZapIcon,
-  EllipsisIcon,
   InfoIcon,
+  LightbulbIcon,
   LoaderPinwheelIcon,
   NavigationIcon,
   RefreshCwIcon,
@@ -58,44 +52,18 @@ import { getFlagImageUrl } from "@/utils/flags";
 import { DataGrid } from "@mui/x-data-grid";
 import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
 import useDeepCompareEffect from "use-deep-compare-effect";
-import KeywordDetails from "./KeywordDetails";
+import KeywordDetails from "@/components/KeywordDetails";
 import { getLocalDateTimeFromISOString } from "@/utils/date";
+import { KeywordSuggestionsItem } from "@/types/DFS/KeywordSuggestions";
+import KeywordActionsDropdown from "@/components/KeywordActionsDropdown";
+import { ReportTabs, ReportTabsItem } from "@/components/ReportTabs";
 
-type KeywordSuggestionItem = {
+type KeywordSuggestionsTableItem = KeywordSuggestionsItem & {
   id: number;
-  keyword: string;
   wordsCount: number;
-  location_code: number;
-  language_code: string;
-  searchVolume: number;
-  ppc: number;
-  ppcLevel: string;
-  cpc: number;
-  lowTopPageBid?: number;
-  highTopPageBid?: number;
-  monthlySearches: {
-    year: number;
-    month: number;
-    search_volume: number;
-  }[];
-  searchVolumeTrend: {
-    monthly: number;
-    quarterly: number;
-    yearly: number;
-  };
-  searchIntent?: string;
-  keywordDifficulty?: number;
-  avgBacklinksData?: {
-    backlinks: number;
-    dofollowBacklinks: number;
-    referringPages: number;
-    referringDomains: number;
-    pageRank: number;
-    domainRank: number;
-  };
 };
 
-type KeywordSuggestionsData = KeywordSuggestionItem[];
+type KeywordSuggestionsData = KeywordSuggestionsTableItem[];
 
 const KeywordSuggestionsTool = ({
   searchParams,
@@ -127,8 +95,11 @@ const KeywordSuggestionsTool = ({
   const dfsSandboxEnabled =
     getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
   const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
-  const cachingDuration: number =
-    Number(getLocalStorageItem("KW_SUGGESTIONS_CACHING_DURATION")) ?? 30;
+  const cachingDuration: number = getLocalStorageItem(
+    "KW_SUGGESTIONS_CACHING_DURATION",
+  )
+    ? Number(getLocalStorageItem("KW_SUGGESTIONS_CACHING_DURATION"))
+    : 30;
 
   const locations = getDataForSEOLocations();
   const languages = getDataForSEOLanguages(true);
@@ -142,7 +113,7 @@ const KeywordSuggestionsTool = ({
   );
 
   const [activeKeywordData, setActiveKeywordData] =
-    useState<KeywordSuggestionItem | null>(null);
+    useState<KeywordSuggestionsItem | null>(null);
   const {
     isOpen: keywordDetailsModalOpen,
     onOpen: openKeywordDetailsModal,
@@ -160,16 +131,6 @@ const KeywordSuggestionsTool = ({
     location_code?: string;
     language_code?: string;
   }>({});
-
-  const handleKeywordClipboardCopy = useCallback(async (keyword: string) => {
-    if ("clipboard" in navigator) {
-      await navigator.clipboard.writeText(keyword);
-      addToast({
-        title: "Keyword copied to clipboard.",
-        color: "default",
-      });
-    }
-  }, []);
 
   const handleFormSubmit = useCallback(
     async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -313,50 +274,16 @@ const KeywordSuggestionsTool = ({
           const tableData: KeywordSuggestionsData = [];
           let rowId = 1 + offset;
 
-          data.items.forEach((keywordSuggestionItem: any) => {
-            tableData.push({
-              id: rowId,
-              keyword: keywordSuggestionItem.keyword,
-              wordsCount: keywordSuggestionItem.keyword.split(" ").length,
-              location_code: keywordSuggestionItem.location_code,
-              language_code: keywordSuggestionItem.language_code,
-              searchVolume: keywordSuggestionItem.keyword_info.search_volume,
-              ppc: keywordSuggestionItem.keyword_info.competition,
-              ppcLevel: keywordSuggestionItem.keyword_info.competition_level,
-              cpc: keywordSuggestionItem.keyword_info.cpc,
-              lowTopPageBid:
-                keywordSuggestionItem.keyword_info.low_top_of_page_bid ?? null,
-              highTopPageBid:
-                keywordSuggestionItem.keyword_info.high_top_of_page_bid ?? null,
-              monthlySearches:
-                keywordSuggestionItem.keyword_info.monthly_searches,
-              searchVolumeTrend:
-                keywordSuggestionItem.keyword_info?.search_volume_trend ?? null,
-              searchIntent:
-                keywordSuggestionItem.search_intent_info?.main_intent ?? null,
-              keywordDifficulty:
-                keywordSuggestionItem.keyword_properties?.keyword_difficulty ??
-                null,
-              avgBacklinksData: {
-                backlinks:
-                  keywordSuggestionItem.avg_backlinks_info?.backlinks ?? null,
-                dofollowBacklinks:
-                  keywordSuggestionItem.avg_backlinks_info?.dofollow ?? null,
-                referringPages:
-                  keywordSuggestionItem.avg_backlinks_info?.referring_pages ??
-                  null,
-                referringDomains:
-                  keywordSuggestionItem.avg_backlinks_info?.referring_domains ??
-                  null,
-                pageRank:
-                  keywordSuggestionItem.avg_backlinks_info?.rank ?? null,
-                domainRank:
-                  keywordSuggestionItem.avg_backlinks_info?.main_domain_rank ??
-                  null,
-              },
-            });
-            rowId++;
-          });
+          data.items.forEach(
+            (keywordSuggestionItem: KeywordSuggestionsItem) => {
+              tableData.push({
+                id: rowId,
+                wordsCount: keywordSuggestionItem.keyword.split(" ").length,
+                ...keywordSuggestionItem,
+              });
+              rowId++;
+            },
+          );
 
           setData(tableData);
         }
@@ -516,7 +443,7 @@ const KeywordSuggestionsTool = ({
     }, 100);
   }, []);
 
-  const tableColumns: GridColDef[] = useMemo(
+  const tableColumns: GridColDef<KeywordSuggestionsTableItem>[] = useMemo(
     () => [
       {
         field: "id",
@@ -537,62 +464,21 @@ const KeywordSuggestionsTool = ({
         align: "left",
         headerAlign: "left",
         cellClassName: "min-h-12 relative group",
+        valueGetter: (_, row) => row.keyword,
         renderCell: (params) => (
           <>
             <div className="flex w-full items-center justify-between gap-2 py-2">
               {params.value}
-              <div>
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button size="sm" isIconOnly variant="flat">
-                      <EllipsisIcon size={16} />
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu variant="flat">
-                    <DropdownItem
-                      key="keyword-copy"
-                      onPress={() => handleKeywordClipboardCopy(params.value)}
-                      startContent={<ClipboardCopyIcon size={16} />}
-                    >
-                      Copy Keyword
-                    </DropdownItem>
-                    <DropdownItem
-                      key="keyword-details"
-                      onPress={() => {
-                        setActiveKeywordData(params.row);
-                        openKeywordDetailsModal();
-                      }}
-                      startContent={<InfoIcon size={16} />}
-                    >
-                      Keyword Details
-                    </DropdownItem>
-                    <DropdownItem
-                      key="keyword-overview"
-                      href={`/tool/keyword-research/overview?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
-                      target="_blank"
-                      startContent={<BookOpenTextIcon size={16} />}
-                    >
-                      Keyword Overview
-                    </DropdownItem>
-                    <DropdownItem
-                      key="keyword-suggestions"
-                      href={`/tool/keyword-research/suggestions?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
-                      target="_blank"
-                      startContent={<TextSearchIcon size={18} />}
-                    >
-                      Keyword Suggestions
-                    </DropdownItem>
-                    <DropdownItem
-                      key="autocomplete-suggestions"
-                      href={`/tool/keyword-research/autocomplete?keyword=${params.value}&location_code=${params.row.location_code}&language_code=${params.row.language_code}`}
-                      target="_blank"
-                      startContent={<LoaderPinwheelIcon size={16} />}
-                    >
-                      Autocomplete Suggestions
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </div>
+              <KeywordActionsDropdown
+                keyword={params.value}
+                locationCode={params.row.location_code}
+                languageCode={params.row.language_code}
+                showKeywordDetailsItem={true}
+                onKeywordDetailsClick={() => {
+                  setActiveKeywordData(params.row);
+                  openKeywordDetailsModal();
+                }}
+              />
             </div>
           </>
         ),
@@ -619,9 +505,10 @@ const KeywordSuggestionsTool = ({
         resizable: false,
         align: "left",
         headerAlign: "left",
+        valueGetter: (_, row) => row.search_intent_info.main_intent,
         renderCell: (params) => (
           <>
-            {typeof params.value !== "string" ? (
+            {typeof params?.value !== "string" ? (
               <div>N/A</div>
             ) : (
               <div className="search-intent-badge flex w-full min-w-8 items-center justify-center rounded-md border border-b-2 border-slate-200 bg-black/1 px-3 py-2">
@@ -699,20 +586,25 @@ const KeywordSuggestionsTool = ({
         minWidth: 126,
         align: "left",
         headerAlign: "left",
+        valueGetter: (_, row) => row.keyword_info.search_volume,
         renderCell: (params) => (
           <>
-            {typeof params.value !== "number" ? (
+            {typeof params?.value !== "number" ? (
               <div>N/A</div>
             ) : (
               <div className="flex flex-row flex-wrap items-center gap-1 py-2">
                 {params.value.toLocaleString(navigator.language)}
-                {params.row.searchVolumeTrend.yearly ? (
+                {typeof params?.row?.keyword_info?.search_volume_trend
+                  ?.yearly === "number" &&
+                params.row.keyword_info.search_volume_trend.yearly !== 0 ? (
                   <Tooltip content="Search Volume Trend (Yearly)">
                     <span
-                      className={`text-xs ${params.row.searchVolumeTrend.yearly > 0 ? "text-green-500" : "text-red-500"}`}
+                      className={`text-xs ${params.row.keyword_info.search_volume_trend.yearly > 0 ? "text-green-500" : "text-red-500"}`}
                     >
-                      {params.row.searchVolumeTrend.yearly > 0 ? "+" : ""}
-                      {params.row.searchVolumeTrend.yearly.toLocaleString(
+                      {params.row.keyword_info.search_volume_trend.yearly > 0
+                        ? "+"
+                        : ""}
+                      {params.row.keyword_info.search_volume_trend.yearly.toLocaleString(
                         navigator.language,
                       )}
                       %
@@ -740,33 +632,39 @@ const KeywordSuggestionsTool = ({
         align: "left",
         headerAlign: "left",
         renderCell: (params) => (
-          <button
-            className="flex w-full cursor-pointer items-center"
-            onClick={() => {
-              setActiveKeywordData(params.row);
-              openKeywordDetailsModal();
-            }}
-          >
-            <SearchVolumeTrendChart
-              data={params.row.monthlySearches}
-              chartHeight={40}
-              chartAnimation={false}
-              xAxisLabelType="month"
-              chartType="area"
-              showTooltip={false}
-              showAxis={false}
-              showAxisLine={false}
-              showTickLine={false}
-              showCartesianGrid={false}
-            />
-          </button>
+          <>
+            {params.row.keyword_info.monthly_searches ? (
+              <button
+                className="flex w-full cursor-pointer items-center"
+                onClick={() => {
+                  setActiveKeywordData(params.row);
+                  openKeywordDetailsModal();
+                }}
+              >
+                <SearchVolumeTrendChart
+                  data={params.row.keyword_info.monthly_searches}
+                  chartHeight={40}
+                  chartAnimation={false}
+                  xAxisLabelType="month"
+                  chartType="area"
+                  showTooltip={false}
+                  showAxis={false}
+                  showAxisLine={false}
+                  showTickLine={false}
+                  showCartesianGrid={false}
+                />
+              </button>
+            ) : (
+              <div>N/A</div>
+            )}
+          </>
         ),
       },
       {
         field: "searchVolumeTrendYearly",
         headerName: "Search Volume Trend (Yearly)",
         type: "number",
-        valueGetter: (_value, row) => row.searchVolumeTrend.yearly,
+        valueGetter: (_, row) => row.keyword_info.search_volume_trend.yearly,
       },
       {
         field: "cpc",
@@ -778,15 +676,21 @@ const KeywordSuggestionsTool = ({
         minWidth: 105,
         align: "left",
         headerAlign: "left",
+        valueGetter: (_, row) =>
+          typeof row?.keyword_info?.cpc === "number"
+            ? Number(row.keyword_info.cpc.toFixed(2))
+            : null,
         renderCell: (params) => (
           <>
-            {typeof params.value !== "number" ? (
+            {typeof params?.value !== "number" ? (
               <div>N/A</div>
             ) : (
               <div className="flex w-full flex-col gap-1 py-2">
                 <div>${params.value}</div>
-                {(typeof params.row.lowTopPageBid === "number" ||
-                  typeof params.row.highTopPageBid === "number") && (
+                {(typeof params?.row?.keyword_info?.low_top_of_page_bid ===
+                  "number" ||
+                  typeof params?.row?.keyword_info?.high_top_of_page_bid ===
+                    "number") && (
                   <div className="text-xs text-black/80">
                     <Tooltip
                       content={
@@ -799,7 +703,12 @@ const KeywordSuggestionsTool = ({
                         </div>
                       }
                     >
-                      <span>${params.row.lowTopPageBid ?? "N/A"}</span>
+                      <span>
+                        {typeof params?.row?.keyword_info
+                          ?.low_top_of_page_bid === "number"
+                          ? `$${params.row.keyword_info.low_top_of_page_bid.toFixed(2)}`
+                          : "N/A"}
+                      </span>
                     </Tooltip>{" "}
                     -{" "}
                     <Tooltip
@@ -815,7 +724,12 @@ const KeywordSuggestionsTool = ({
                         </div>
                       }
                     >
-                      <span>${params.row.highTopPageBid ?? "N/A"}</span>
+                      <span>
+                        {typeof params?.row?.keyword_info
+                          ?.high_top_of_page_bid === "number"
+                          ? `$${params.row.keyword_info.high_top_of_page_bid.toFixed(2)}`
+                          : "N/A"}
+                      </span>
                     </Tooltip>
                   </div>
                 )}
@@ -828,11 +742,19 @@ const KeywordSuggestionsTool = ({
         field: "lowTopPageBid",
         headerName: "Low Top of Page Bid",
         type: "number",
+        valueGetter: (_, row) =>
+          typeof row?.keyword_info?.low_top_of_page_bid === "number"
+            ? Number(row.keyword_info.low_top_of_page_bid.toFixed(2))
+            : null,
       },
       {
         field: "highTopPageBid",
         headerName: "High Top of Page Bid",
         type: "number",
+        valueGetter: (_, row) =>
+          typeof row?.keyword_info?.high_top_of_page_bid === "number"
+            ? Number(row.keyword_info.high_top_of_page_bid.toFixed(2))
+            : null,
       },
       {
         field: "ppc",
@@ -845,11 +767,15 @@ const KeywordSuggestionsTool = ({
         maxWidth: 80,
         align: "left",
         headerAlign: "left",
-        valueFormatter: (value: number) =>
+        valueGetter: (_, row) =>
+          typeof row?.keyword_info?.competition === "number"
+            ? row.keyword_info.competition
+            : null,
+        valueFormatter: (value: any) =>
           typeof value === "number" ? Math.round(value * 100) : null,
         renderCell: (params) => (
           <>
-            {typeof params.value !== "number" ? (
+            {typeof params?.value !== "number" ? (
               <div>N/A</div>
             ) : (
               <div>{Math.round(params.value * 100)}</div>
@@ -869,9 +795,10 @@ const KeywordSuggestionsTool = ({
         minWidth: 64,
         maxWidth: 80,
         resizable: false,
+        valueGetter: (_, row) => row.keyword_properties.keyword_difficulty,
         renderCell: (params) => (
           <>
-            {typeof params.value !== "number" ? (
+            {typeof params?.value !== "number" ? (
               <div className="w-full px-2.5 text-center">N/A</div>
             ) : (
               <Tooltip content={getDifficultyText(params.value)}>
@@ -891,7 +818,7 @@ const KeywordSuggestionsTool = ({
         ),
       },
     ],
-    [openKeywordDetailsModal, handleKeywordClipboardCopy],
+    [openKeywordDetailsModal],
   );
 
   return (
@@ -986,6 +913,9 @@ const KeywordSuggestionsTool = ({
                   isDisabled={isLoading}
                   value={selectedKeyword}
                   onValueChange={setSelectedKeyword}
+                  classNames={{
+                    inputWrapper: "shadow-none",
+                  }}
                   autoFocus
                   isRequired
                 />
@@ -996,6 +926,7 @@ const KeywordSuggestionsTool = ({
                   isDisabled={isLoading}
                   isRequired
                   value={selectedLocationKey}
+                  className="autocomplete-input"
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
                   }
@@ -1025,6 +956,7 @@ const KeywordSuggestionsTool = ({
                   isDisabled={isLoading}
                   isRequired
                   value={selectedLanguageKey}
+                  className="autocomplete-input"
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
                   }
@@ -1058,30 +990,32 @@ const KeywordSuggestionsTool = ({
         {formInput.keyword &&
           formInput.location_code &&
           formInput.language_code && (
-            <div className="mt-4 w-full">
-              <div className="flex w-full flex-col flex-wrap items-start gap-2 rounded-md border border-b-2 border-slate-200 p-3 text-sm md:w-fit md:flex-row md:items-center">
-                <div className="mr-1 flex items-center gap-1 border-slate-200 text-sm font-medium text-black/80 transition">
-                  Other Reports:
-                </div>
-                <Link
-                  prefetch={false}
-                  href={`/tool/keyword-research/overview?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                  target="_blank"
-                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
-                >
-                  <BookOpenTextIcon size={16} /> Keyword Overview
-                </Link>
-                <div className="hidden text-slate-200 md:block">|</div>
-                <Link
-                  prefetch={false}
-                  href={`/tool/keyword-research/autocomplete?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                  target="_blank"
-                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
-                >
-                  <LoaderPinwheelIcon size={16} /> Keyword Autocomplete
-                </Link>
-              </div>
-            </div>
+            <ReportTabs className="mt-4">
+              <ReportTabsItem
+                startContent={<BookOpenTextIcon size={16} />}
+                href={`/tool/keyword-research/overview?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Keyword Overview
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<TextSearchIcon size={16} />}
+                active
+              >
+                Keyword Suggestions
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<LightbulbIcon size={16} />}
+                href={`/tool/keyword-research/ideas?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Keyword Ideas
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<LoaderPinwheelIcon size={16} />}
+                href={`/tool/keyword-research/autocomplete?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Keyword Autocomplete
+              </ReportTabsItem>
+            </ReportTabs>
           )}
       </div>
       {isLoading && (

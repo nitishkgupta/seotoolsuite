@@ -13,7 +13,7 @@ const AgeDistributionChart = ({ data }: { data: AgeDistribution }) => {
           <div className="shrink-0">|</div>
           {value > 0 && (
             <div
-              className="scale-x-anim relative h-3 shrink overflow-hidden rounded-full bg-sky-950 transition-all duration-500"
+              className="relative h-3 shrink overflow-hidden rounded-full bg-sky-950 transition-all duration-500"
               style={{ width: `${value ?? 0}%` }}
             ></div>
           )}

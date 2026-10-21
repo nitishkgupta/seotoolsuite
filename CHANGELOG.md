@@ -1,5 +1,15 @@
 # SEOToolSuite Changelog
 
+## v7.0.0
+
+- Added a new **Keyword Ideas** tool. Get keyword ideas that are related to the seed keyword.
+- Updated the design of **Other Reports**.
+- Updated the design of **Keyword Actions Dropdown**.
+- Major code refactor and optimization.
+- Minor bug fixes.
+- Other minor UI changes and fixes.
+- Updated packages.
+
 ## v6.3.0
 
 - Added new settings to change the default location and language.

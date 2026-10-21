@@ -19,7 +19,7 @@ const GenderDistributionChart = ({ data }: { data: GenderDistribution }) => {
               className={`relative h-2 w-full shrink overflow-hidden rounded-full ${data.male === 0 && data.female === 0 ? "bg-slate-200" : "bg-pink-400"}`}
             >
               <div
-                className={`scale-x-anim h-full border-white bg-blue-400 transition-all duration-500 ${data.male > 0 && data.male < 100 ? "border-r-2" : ""}`}
+                className={`h-full border-white bg-blue-400 transition-all duration-500 ${data.male > 0 && data.male < 100 ? "border-r-2" : ""}`}
                 style={{
                   width: `${data.male ?? 0}%`,
                 }}

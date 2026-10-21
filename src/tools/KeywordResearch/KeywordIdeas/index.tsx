@@ -1,0 +1,1108 @@
+"use client";
+
+import useDFSBalance from "@/hooks/useDFSBalance";
+import {
+  buildDataForSEOKeywordFilters,
+  getDataForSEOLanguages,
+  getDataForSEOLocations,
+} from "@/utils/dataforseo";
+import { getLocalStorageItem } from "@/utils/localStorage";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import KeywordFilters, {
+  KeywordFiltersInitialValues,
+} from "@/components/KeywordFilters";
+import { GridColDef } from "@mui/x-data-grid";
+import {
+  Alert,
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  Chip,
+  Form,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  Pagination,
+  Skeleton,
+  Tooltip,
+  useDisclosure,
+} from "@heroui/react";
+import Link from "next/link";
+import {
+  BadgeDollarSignIcon,
+  BinocularsIcon,
+  BookOpenTextIcon,
+  BoxIcon,
+  DatabaseZapIcon,
+  InfoIcon,
+  LightbulbIcon,
+  LoaderPinwheelIcon,
+  NavigationIcon,
+  RefreshCwIcon,
+  TelescopeIcon,
+  TextSearchIcon,
+} from "lucide-react";
+import { getDifficultyColor, getDifficultyText } from "@/utils/difficulty";
+import { trackUmamiEvent } from "@/utils/umami";
+import DataForSEO from "@/services/DataForSEO";
+import Image from "next/image";
+import { getFlagImageUrl } from "@/utils/flags";
+import { DataGrid } from "@mui/x-data-grid";
+import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
+import useDeepCompareEffect from "use-deep-compare-effect";
+import KeywordDetails from "@/components/KeywordDetails";
+import { getLocalDateTimeFromISOString } from "@/utils/date";
+import { KeywordIdeasItem } from "@/types/DFS/KeywordIdeas";
+import KeywordActionsDropdown from "@/components/KeywordActionsDropdown";
+import { ReportTabs, ReportTabsItem } from "@/components/ReportTabs";
+
+type KeywordIdeasTableItem = KeywordIdeasItem & {
+  id: number;
+  wordsCount: number;
+};
+
+type KeywordIdeasData = KeywordIdeasTableItem[];
+
+const KeywordIdeasTool = ({
+  searchParams,
+}: {
+  searchParams?: {
+    keyword?: string;
+    location_code?: string;
+    language_code?: string;
+  };
+}) => {
+  const { refreshDFSBalance } = useDFSBalance(false);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [data, setData] = useState<KeywordIdeasData | null>(null);
+  const [isCachedData, setIsCachedData] = useState<boolean>(false);
+  const [dataCachedAt, setDataCachedAt] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const MAX_ROWS: number = Number(
+    getLocalStorageItem("KW_IDEAS_MAX_ROWS") ?? 250,
+  );
+  const [totalResults, setTotalResults] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const offset = (currentPage - 1) * MAX_ROWS;
+  const totalPages = Math.ceil(totalResults / MAX_ROWS);
+
+  const dfsUsername = getLocalStorageItem("DATAFORSEO_USERNAME");
+  const dfsPassword = getLocalStorageItem("DATAFORSEO_PASSWORD");
+  const dfsSandboxEnabled =
+    getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
+  const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
+  const cachingDuration: number = getLocalStorageItem(
+    "KW_IDEAS_CACHING_DURATION",
+  )
+    ? Number(getLocalStorageItem("KW_IDEAS_CACHING_DURATION"))
+    : 30;
+
+  const locations = getDataForSEOLocations();
+  const languages = getDataForSEOLanguages(true);
+
+  const [selectedKeyword, setSelectedKeyword] = useState<string>("");
+  const [selectedLocationKey, setSelectedLocationKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LOCATION_KEY") ?? "2356",
+  );
+  const [selectedLanguageKey, setSelectedLanguageKey] = useState<string>(
+    getLocalStorageItem("DEFAULT_LANGUAGE_KEY") ?? "en",
+  );
+
+  const [activeKeywordData, setActiveKeywordData] =
+    useState<KeywordIdeasItem | null>(null);
+  const {
+    isOpen: keywordDetailsModalOpen,
+    onOpen: openKeywordDetailsModal,
+    onOpenChange: setKeywordDetailsModalOpen,
+  } = useDisclosure();
+
+  const [activeKeywordFilters, setActiveKeywordFilters] =
+    useState<KeywordFiltersInitialValues>();
+  const activeKeywordFiltersCount: number = activeKeywordFilters
+    ? Object.keys(activeKeywordFilters).length
+    : 0;
+
+  const [formInput, setFormInput] = useState<{
+    keyword?: string;
+    location_code?: string;
+    language_code?: string;
+  }>({});
+
+  const handleFormSubmit = useCallback(
+    async (e: React.SyntheticEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.currentTarget);
+      const keyword: string = selectedKeyword;
+      const location_code: string = selectedLocationKey;
+      const language_code: string = selectedLanguageKey;
+
+      if (!keyword || !location_code || !language_code) {
+        return;
+      }
+
+      setCurrentPage(1);
+      setFormInput({
+        keyword,
+        location_code,
+        language_code,
+      });
+      setActiveKeywordFilters({
+        ...(formData.get("searchVolume-min") !== "" && {
+          minSearchVolume: Number(formData.get("searchVolume-min") as any),
+        }),
+        ...(formData.get("searchVolume-max") !== "" && {
+          maxSearchVolume: Number(formData.get("searchVolume-max") as any),
+        }),
+        ...(formData.get("cpc-min") !== "" && {
+          minCPC: Number(formData.get("cpc-min") as any),
+        }),
+        ...(formData.get("cpc-max") !== "" && {
+          maxCPC: Number(formData.get("cpc-max") as any),
+        }),
+        ...(formData.get("ppc-min") !== "" && {
+          minPPC: Number(formData.get("ppc-min") as any),
+        }),
+        ...(formData.get("ppc-max") !== "" && {
+          maxPPC: Number(formData.get("ppc-max") as any),
+        }),
+        ...(formData.get("kd-min") !== "" && {
+          minKD: Number(formData.get("kd-min") as any),
+        }),
+        ...(formData.get("kd-max") !== "" && {
+          maxKD: Number(formData.get("kd-max") as any),
+        }),
+        ...(formData.get("includeKeyword") !== "" &&
+          formData.get("includeKeyword") !== null && {
+            includeKeyword: formData.get("includeKeyword") as any,
+          }),
+        ...(formData.get("excludeKeyword") !== "" &&
+          formData.get("excludeKeyword") !== null && {
+            excludeKeyword: formData.get("excludeKeyword") as any,
+          }),
+        ...(formData.getAll("searchIntents[]") &&
+          formData.getAll("searchIntents[]").length > 0 && {
+            searchIntents: formData.getAll("searchIntents[]") as any,
+          }),
+      });
+    },
+    [selectedKeyword, selectedLocationKey, selectedLanguageKey],
+  );
+
+  const getKeywordIdeas = useCallback(
+    async (
+      keyword: string,
+      location_code: string,
+      language_code: string,
+      keywordFilters: KeywordFiltersInitialValues | undefined,
+      limit: number,
+      offset: number,
+      refreshData: boolean = false,
+    ) => {
+      setIsLoading(true);
+      setError(null);
+      setIsCachedData(false);
+      setDataCachedAt(null);
+
+      window.setTimeout(() => {
+        document.getElementById("keywords-table")?.scrollIntoView({
+          behavior: "smooth",
+        });
+      }, 100);
+
+      if (!dfsUsername || !dfsPassword) {
+        setError(
+          "DataForSEO API not connected. Please add credentials from settings.",
+        );
+        return;
+      }
+
+      if (!dfsSandboxEnabled) {
+        try {
+          trackUmamiEvent("keyword-research/ideas");
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      try {
+        const dfsKeywordFilters = keywordFilters
+          ? buildDataForSEOKeywordFilters(keywordFilters)
+          : [];
+
+        const DataForSEOService = new DataForSEO(
+          dfsUsername,
+          dfsPassword,
+          dfsSandboxEnabled,
+          cachingEnabled,
+        );
+
+        const apiResponse = await DataForSEOService.getKeywordIdeas(
+          [keyword],
+          Number(location_code),
+          language_code,
+          dfsKeywordFilters,
+          limit,
+          offset,
+          cachingDuration,
+          refreshData,
+        );
+
+        if (apiResponse.isCachedData) {
+          setIsCachedData(true);
+          if (apiResponse.cachedAt) setDataCachedAt(apiResponse.cachedAt);
+        }
+
+        const taskStatusCode = apiResponse?.tasks[0]?.status_code;
+        const taskStatusMessage =
+          apiResponse?.tasks[0]?.status_message ?? "Unknown error.";
+
+        if (taskStatusCode !== 20000) {
+          setError(`DataForSEO API error: ${taskStatusMessage}`);
+          return;
+        }
+
+        const data = apiResponse?.tasks[0]?.result[0] ?? null;
+
+        if (data && data.items && data.items.length > 0) {
+          const totalCount = data.total_count;
+          setTotalResults(totalCount);
+          const tableData: KeywordIdeasData = [];
+          let rowId = 1 + offset;
+
+          data.items.forEach((keywordIdeasItem: KeywordIdeasItem) => {
+            tableData.push({
+              id: rowId,
+              wordsCount: keywordIdeasItem.keyword.split(" ").length,
+              ...keywordIdeasItem,
+            });
+            rowId++;
+          });
+
+          setData(tableData);
+        }
+
+        window.setTimeout(() => {
+          document.getElementById("keywords-table")?.scrollIntoView({
+            behavior: "smooth",
+          });
+        }, 100);
+
+        if (!dfsSandboxEnabled) refreshDFSBalance();
+      } catch (error: any) {
+        console.error(error);
+        if (error?.response?.data?.tasks[0]?.status_message) {
+          setError(
+            `DataForSEO API error: ${error.response.data.tasks[0].status_message}`,
+          );
+        } else {
+          setError(error.message);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [
+      cachingDuration,
+      cachingEnabled,
+      dfsPassword,
+      dfsSandboxEnabled,
+      dfsUsername,
+      refreshDFSBalance,
+    ],
+  );
+
+  useDeepCompareEffect(() => {
+    if (
+      formInput.keyword &&
+      formInput.location_code &&
+      formInput.language_code
+    ) {
+      getKeywordIdeas(
+        formInput.keyword,
+        formInput.location_code,
+        formInput.language_code,
+        activeKeywordFilters,
+        MAX_ROWS,
+        offset,
+      );
+    }
+  }, [
+    formInput.keyword,
+    formInput.location_code,
+    formInput.language_code,
+    activeKeywordFilters,
+    offset,
+    getKeywordIdeas,
+  ]);
+
+  useEffect(() => {
+    if (searchParams) {
+      const { keyword, location_code, language_code } = searchParams;
+
+      if (keyword && location_code && language_code) {
+        setSelectedKeyword(keyword);
+        setSelectedLocationKey(location_code);
+        setSelectedLanguageKey(language_code);
+        setFormInput({
+          keyword,
+          location_code,
+          language_code,
+        });
+      }
+    }
+  }, [searchParams]);
+
+  const refreshKeywordIdeasData = useCallback(async () => {
+    if (
+      formInput.keyword &&
+      formInput.location_code &&
+      formInput.language_code
+    ) {
+      await getKeywordIdeas(
+        formInput.keyword,
+        formInput.location_code,
+        formInput.language_code,
+        activeKeywordFilters,
+        MAX_ROWS,
+        offset,
+        true,
+      );
+    }
+  }, [
+    formInput.keyword,
+    formInput.location_code,
+    formInput.language_code,
+    activeKeywordFilters,
+    offset,
+    MAX_ROWS,
+    getKeywordIdeas,
+  ]);
+
+  const getMUIRowHeight = useCallback(() => "auto", []);
+
+  const getTogglableColumns = useCallback((columns: GridColDef[]) => {
+    const hiddenColumns = [
+      "searchVolumeTrendYearly",
+      "lowTopPageBid",
+      "highTopPageBid",
+    ];
+    return columns
+      .filter((column) => !hiddenColumns.includes(column.field))
+      .map((column) => column.field);
+  }, []);
+
+  const dataGridSlotProps = useMemo(() => {
+    return {
+      toolbar: {
+        csvOptions: {
+          allColumns: true,
+          fileName: `SEOToolSuite-keyword-ideas-${formInput.keyword}-${formInput.location_code}-${formInput.language_code}-${currentPage}`,
+          escapeFormulas: false,
+        },
+      },
+      columnsManagement: {
+        getTogglableColumns,
+      },
+    };
+  }, [
+    formInput.keyword,
+    formInput.location_code,
+    formInput.language_code,
+    currentPage,
+    getTogglableColumns,
+  ]);
+
+  const dataGridInitialState = useMemo(() => {
+    return {
+      pagination: {
+        paginationModel: { page: 0, pageSize: 25 },
+      },
+      columns: {
+        columnVisibilityModel: {
+          searchVolumeTrendYearly: false,
+          lowTopPageBid: false,
+          highTopPageBid: false,
+          wordsCount: false,
+        },
+      },
+    };
+  }, []);
+
+  const onDataGridPaginationModelChange = useCallback(() => {
+    window.setTimeout(() => {
+      document.getElementById("keywords-table")?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }, 100);
+  }, []);
+
+  const tableColumns: GridColDef<KeywordIdeasTableItem>[] = useMemo(
+    () => [
+      {
+        field: "id",
+        headerName: "#",
+        type: "number",
+        align: "left",
+        display: "flex",
+        headerAlign: "left",
+        width: 64,
+      },
+      {
+        field: "keyword",
+        headerName: "Keyword",
+        minWidth: 350,
+        type: "string",
+        display: "flex",
+        flex: 1,
+        align: "left",
+        headerAlign: "left",
+        cellClassName: "min-h-12 relative group",
+        valueGetter: (_, row) => row.keyword,
+        renderCell: (params) => (
+          <>
+            <div className="flex w-full items-center justify-between gap-2 py-2">
+              {params.value}
+              <KeywordActionsDropdown
+                keyword={params.value}
+                locationCode={params.row.location_code}
+                languageCode={params.row.language_code}
+                showKeywordDetailsItem={true}
+                onKeywordDetailsClick={() => {
+                  setActiveKeywordData(params.row);
+                  openKeywordDetailsModal();
+                }}
+              />
+            </div>
+          </>
+        ),
+      },
+      {
+        field: "wordsCount",
+        display: "flex",
+        headerName: "Words",
+        description: "No. of Words In Keyword",
+        type: "number",
+        align: "left",
+        headerAlign: "left",
+        width: 100,
+      },
+      {
+        field: "searchIntent",
+        headerName: "Intent",
+        description: "Search Intent",
+        type: "string",
+        display: "flex",
+        flex: 1,
+        minWidth: 80,
+        maxWidth: 80,
+        resizable: false,
+        align: "left",
+        headerAlign: "left",
+        valueGetter: (_, row) => row.search_intent_info.main_intent,
+        renderCell: (params) => (
+          <>
+            {typeof params?.value !== "string" ? (
+              <div>N/A</div>
+            ) : (
+              <div className="search-intent-badge flex w-full min-w-8 items-center justify-center rounded-md border border-b-2 border-slate-200 bg-black/1 px-3 py-2">
+                {params.value === "informational" && (
+                  <Tooltip
+                    content={
+                      <div className="flex flex-col gap-1 p-1">
+                        <div className="font-medium">Informational</div>
+                        <div className="max-w-60 text-sm">
+                          Users are seeking information or answers to certain
+                          questions.
+                        </div>
+                      </div>
+                    }
+                  >
+                    <InfoIcon size={18} />
+                  </Tooltip>
+                )}
+                {params.value === "navigational" && (
+                  <Tooltip
+                    content={
+                      <div className="flex flex-col gap-1 p-1">
+                        <div className="font-medium">Navigational</div>
+                        <div className="max-w-60 text-sm">
+                          Users are looking for a specific site or page.
+                        </div>
+                      </div>
+                    }
+                  >
+                    <NavigationIcon size={18} />
+                  </Tooltip>
+                )}
+                {params.value === "commercial" && (
+                  <Tooltip
+                    content={
+                      <div className="flex flex-col gap-1 p-1">
+                        <div className="font-medium">Commercial</div>
+                        <div className="max-w-60 text-sm">
+                          Users are doing research before making a purchase
+                          decision.
+                        </div>
+                      </div>
+                    }
+                  >
+                    <BinocularsIcon size={18} />
+                  </Tooltip>
+                )}
+                {params.value === "transactional" && (
+                  <Tooltip
+                    content={
+                      <div className="flex flex-col gap-1 p-1">
+                        <div className="font-medium">Transactional</div>
+                        <div className="max-w-60 text-sm">
+                          Users are completing a specific action, usually a
+                          purchase.
+                        </div>
+                      </div>
+                    }
+                  >
+                    <BadgeDollarSignIcon size={18} />
+                  </Tooltip>
+                )}
+              </div>
+            )}
+          </>
+        ),
+      },
+      {
+        field: "searchVolume",
+        headerName: "Volume",
+        description: "Avg. Monthly Search Volume",
+        type: "number",
+        display: "flex",
+        flex: 1,
+        minWidth: 126,
+        align: "left",
+        headerAlign: "left",
+        valueGetter: (_, row) => row.keyword_info.search_volume,
+        renderCell: (params) => (
+          <>
+            {typeof params?.value !== "number" ? (
+              <div>N/A</div>
+            ) : (
+              <div className="flex flex-row flex-wrap items-center gap-1 py-2">
+                {params.value.toLocaleString(navigator.language)}
+                {typeof params?.row?.keyword_info?.search_volume_trend
+                  ?.yearly === "number" &&
+                params.row.keyword_info.search_volume_trend.yearly !== 0 ? (
+                  <Tooltip content="Search Volume Trend (Yearly)">
+                    <span
+                      className={`text-xs ${params.row.keyword_info.search_volume_trend.yearly > 0 ? "text-green-500" : "text-red-500"}`}
+                    >
+                      {params.row.keyword_info.search_volume_trend.yearly > 0
+                        ? "+"
+                        : ""}
+                      {params.row.keyword_info.search_volume_trend.yearly.toLocaleString(
+                        navigator.language,
+                      )}
+                      %
+                    </span>
+                  </Tooltip>
+                ) : (
+                  ""
+                )}
+              </div>
+            )}
+          </>
+        ),
+      },
+      {
+        field: "volumeTrend",
+        disableExport: true,
+        filterable: false,
+        sortable: false,
+        headerName: "Volume Trend",
+        description: "Search Volume Trend",
+        display: "flex",
+        flex: 1,
+        minWidth: 150,
+        maxWidth: 150,
+        align: "left",
+        headerAlign: "left",
+        renderCell: (params) => (
+          <>
+            {params.row.keyword_info.monthly_searches ? (
+              <button
+                className="flex w-full cursor-pointer items-center"
+                onClick={() => {
+                  setActiveKeywordData(params.row);
+                  openKeywordDetailsModal();
+                }}
+              >
+                <SearchVolumeTrendChart
+                  data={params.row.keyword_info.monthly_searches}
+                  chartHeight={40}
+                  chartAnimation={false}
+                  xAxisLabelType="month"
+                  chartType="area"
+                  showTooltip={false}
+                  showAxis={false}
+                  showAxisLine={false}
+                  showTickLine={false}
+                  showCartesianGrid={false}
+                />
+              </button>
+            ) : (
+              <div>N/A</div>
+            )}
+          </>
+        ),
+      },
+      {
+        field: "searchVolumeTrendYearly",
+        headerName: "Search Volume Trend (Yearly)",
+        type: "number",
+        valueGetter: (_, row) => row.keyword_info.search_volume_trend.yearly,
+      },
+      {
+        field: "cpc",
+        headerName: "CPC",
+        description: "Avg. Cost Per Click",
+        type: "number",
+        display: "flex",
+        flex: 1,
+        minWidth: 105,
+        align: "left",
+        headerAlign: "left",
+        valueGetter: (_, row) =>
+          typeof row?.keyword_info?.cpc === "number"
+            ? Number(row.keyword_info.cpc.toFixed(2))
+            : null,
+        renderCell: (params) => (
+          <>
+            {typeof params?.value !== "number" ? (
+              <div>N/A</div>
+            ) : (
+              <div className="flex w-full flex-col gap-1 py-2">
+                <div>${params.value}</div>
+                {(typeof params?.row?.keyword_info?.low_top_of_page_bid ===
+                  "number" ||
+                  typeof params?.row?.keyword_info?.high_top_of_page_bid ===
+                    "number") && (
+                  <div className="text-xs text-black/80">
+                    <Tooltip
+                      content={
+                        <div className="flex flex-col gap-1 p-1">
+                          <div className="font-medium">Low Top of Page Bid</div>
+                          <div className="max-w-70 text-sm">
+                            Minimum bid for the ad to be displayed at the top of
+                            the first page.
+                          </div>
+                        </div>
+                      }
+                    >
+                      <span>
+                        {typeof params?.row?.keyword_info
+                          ?.low_top_of_page_bid === "number"
+                          ? `$${params.row.keyword_info.low_top_of_page_bid.toFixed(2)}`
+                          : "N/A"}
+                      </span>
+                    </Tooltip>{" "}
+                    -{" "}
+                    <Tooltip
+                      content={
+                        <div className="flex flex-col gap-1 p-1">
+                          <div className="font-medium">
+                            High Top of Page Bid
+                          </div>
+                          <div className="max-w-70 text-sm">
+                            Maximum bid for the ad to be displayed at the top of
+                            the first page.
+                          </div>
+                        </div>
+                      }
+                    >
+                      <span>
+                        {typeof params?.row?.keyword_info
+                          ?.high_top_of_page_bid === "number"
+                          ? `$${params.row.keyword_info.high_top_of_page_bid.toFixed(2)}`
+                          : "N/A"}
+                      </span>
+                    </Tooltip>
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        ),
+      },
+      {
+        field: "lowTopPageBid",
+        headerName: "Low Top of Page Bid",
+        type: "number",
+        valueGetter: (_, row) =>
+          typeof row?.keyword_info?.low_top_of_page_bid === "number"
+            ? Number(row.keyword_info.low_top_of_page_bid.toFixed(2))
+            : null,
+      },
+      {
+        field: "highTopPageBid",
+        headerName: "High Top of Page Bid",
+        type: "number",
+        valueGetter: (_, row) =>
+          typeof row?.keyword_info?.high_top_of_page_bid === "number"
+            ? Number(row.keyword_info.high_top_of_page_bid.toFixed(2))
+            : null,
+      },
+      {
+        field: "ppc",
+        headerName: "PPC",
+        description: "Paid Competition",
+        type: "number",
+        display: "flex",
+        flex: 1,
+        minWidth: 80,
+        maxWidth: 80,
+        align: "left",
+        headerAlign: "left",
+        valueGetter: (_, row) =>
+          typeof row?.keyword_info?.competition === "number"
+            ? row.keyword_info.competition
+            : null,
+        valueFormatter: (value: any) =>
+          typeof value === "number" ? Math.round(value * 100) : null,
+        renderCell: (params) => (
+          <>
+            {typeof params?.value !== "number" ? (
+              <div>N/A</div>
+            ) : (
+              <div>{Math.round(params.value * 100)}</div>
+            )}
+          </>
+        ),
+      },
+      {
+        field: "keywordDifficulty",
+        headerName: "KD",
+        description: "SEO Difficulty",
+        type: "number",
+        align: "center",
+        headerAlign: "left",
+        display: "flex",
+        flex: 1,
+        minWidth: 64,
+        maxWidth: 80,
+        resizable: false,
+        valueGetter: (_, row) => row.keyword_properties.keyword_difficulty,
+        renderCell: (params) => (
+          <>
+            {typeof params?.value !== "number" ? (
+              <div className="w-full px-2.5 text-center">N/A</div>
+            ) : (
+              <Tooltip content={getDifficultyText(params.value)}>
+                <div
+                  className="relative flex h-8 w-12 items-center justify-center rounded-md border border-b-2 text-center font-medium"
+                  style={{
+                    backgroundColor: `color-mix(in oklch, ${getDifficultyColor(params.value)}, white 90%)`,
+                    color: getDifficultyColor(params.value),
+                    borderColor: `color-mix(in oklch, ${getDifficultyColor(params.value)}, white 50%)`,
+                  }}
+                >
+                  <span className="relative z-20">{params.value}</span>
+                </div>
+              </Tooltip>
+            )}
+          </>
+        ),
+      },
+    ],
+    [openKeywordDetailsModal],
+  );
+
+  return (
+    <div className="keyword-ideas-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
+      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
+        <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
+          <Tooltip content="Credits Cost (Uncached)">
+            <Chip size="md" variant="flat">
+              ${parseFloat(Number(0.012 + MAX_ROWS * 0.00012).toFixed(4))}
+            </Chip>
+          </Tooltip>
+          {(dfsSandboxEnabled || cachingEnabled) && (
+            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+          )}
+          {dfsSandboxEnabled && (
+            <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
+              <div className="w-fit">
+                <BoxIcon size={18} />
+              </div>
+            </Tooltip>
+          )}
+          {dfsSandboxEnabled && cachingEnabled && (
+            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+          )}
+          {cachingEnabled && (
+            <Tooltip content="Caching Enabled" placement="bottom-end">
+              <div className="w-fit">
+                <DatabaseZapIcon size={18} />
+              </div>
+            </Tooltip>
+          )}
+        </div>
+        <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
+          <div className="flex items-center gap-2 rounded-md border bg-sky-950 p-2 md:p-3">
+            <TelescopeIcon
+              size={28}
+              className="animate-appearance-in text-white"
+            />
+            <div
+              className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
+              style={{ animationDelay: "100ms" }}
+            ></div>
+            <LightbulbIcon
+              size={22}
+              className="animate-appearance-in text-white"
+              style={{ animationDelay: "200ms" }}
+            />
+          </div>
+          <div className="flex flex-col items-start md:translate-y-0.5">
+            <div className="text-xl font-medium text-sky-950 md:leading-none">
+              Keyword Ideas
+            </div>
+            <div className="text-base font-medium text-slate-500">
+              Get keyword ideas that are related to the seed keyword.
+            </div>
+          </div>
+        </div>
+        <div className="tool-input-form-container mt-4 w-full">
+          {!dfsUsername || !dfsPassword ? (
+            <Alert
+              color="warning"
+              variant="flat"
+              title={
+                <span>
+                  DataForSEO API not connected. Please add credentials from{" "}
+                  <Link href="/account/settings" className="underline">
+                    settings
+                  </Link>
+                  .
+                </span>
+              }
+            ></Alert>
+          ) : (
+            <Form
+              onSubmit={handleFormSubmit}
+              className="tool-input-form flex w-full flex-col items-start justify-start"
+            >
+              {error && (
+                <Alert
+                  color="danger"
+                  variant="flat"
+                  title={error}
+                  className="mb-2"
+                />
+              )}
+              <div className="flex w-full flex-col items-start justify-start gap-2 md:flex-row">
+                <Input
+                  name="keyword"
+                  variant="flat"
+                  type="text"
+                  label="Keyword"
+                  isDisabled={isLoading}
+                  value={selectedKeyword}
+                  onValueChange={setSelectedKeyword}
+                  classNames={{
+                    inputWrapper: "shadow-none",
+                  }}
+                  autoFocus
+                  isRequired
+                />
+                <Autocomplete
+                  name="location"
+                  variant="flat"
+                  label="Location"
+                  isDisabled={isLoading}
+                  isRequired
+                  value={selectedLocationKey}
+                  className="autocomplete-input"
+                  onChange={(key: any) =>
+                    setSelectedLocationKey(key.target.value)
+                  }
+                >
+                  {locations.map((location) => (
+                    <AutocompleteItem
+                      key={location.location_code}
+                      startContent={
+                        <Image
+                          className="h-auto w-6 rounded-xs border border-slate-400"
+                          src={getFlagImageUrl(location.country_iso_code)}
+                          loading="lazy"
+                          width={24}
+                          height={15}
+                          alt={location.location_name}
+                        />
+                      }
+                    >
+                      {location.location_name}
+                    </AutocompleteItem>
+                  ))}
+                </Autocomplete>
+                <Autocomplete
+                  name="language"
+                  variant="flat"
+                  label="Language"
+                  isDisabled={isLoading}
+                  isRequired
+                  value={selectedLanguageKey}
+                  className="autocomplete-input"
+                  onChange={(key: any) =>
+                    setSelectedLanguageKey(key.target.value)
+                  }
+                >
+                  {languages.map((language) => (
+                    <AutocompleteItem key={language.language_code}>
+                      {language.language_name}
+                    </AutocompleteItem>
+                  ))}
+                </Autocomplete>
+                <Button
+                  color="primary"
+                  variant="flat"
+                  type="submit"
+                  size="lg"
+                  isDisabled={isLoading}
+                  className="h-14 w-full"
+                >
+                  Submit
+                </Button>
+              </div>
+              <div className="keyword-filters-container mt-3 w-full">
+                <KeywordFilters
+                  initialValues={activeKeywordFilters}
+                  activeFiltersCount={activeKeywordFiltersCount}
+                />
+              </div>
+            </Form>
+          )}
+        </div>
+        {formInput.keyword &&
+          formInput.location_code &&
+          formInput.language_code && (
+            <ReportTabs className="mt-4">
+              <ReportTabsItem
+                startContent={<BookOpenTextIcon size={16} />}
+                href={`/tool/keyword-research/overview?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Keyword Overview
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<TextSearchIcon size={16} />}
+                href={`/tool/keyword-research/suggestions?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Keyword Suggestions
+              </ReportTabsItem>
+              <ReportTabsItem startContent={<LightbulbIcon size={16} />} active>
+                Keyword Ideas
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<LoaderPinwheelIcon size={16} />}
+                href={`/tool/keyword-research/autocomplete?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Keyword Autocomplete
+              </ReportTabsItem>
+            </ReportTabs>
+          )}
+      </div>
+      {isLoading && (
+        <Skeleton className="mt-4 h-375 w-full rounded-md lg:mt-8" />
+      )}
+      {!isLoading && !error && data && (
+        <div className="tool-results-container mt-4 flex w-full flex-col gap-8 md:gap-4 lg:mt-8 lg:flex-row">
+          <div
+            className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-slate-200 bg-white lg:scroll-m-8"
+            id="keywords-table"
+          >
+            <div className="header flex w-full items-center justify-between gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
+              <div className="flex items-center gap-2">
+                <LightbulbIcon size={20} />
+                <span>
+                  Keyword Ideas (
+                  {totalResults.toLocaleString(navigator.language)})
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                {isCachedData && (
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
+                    <Tooltip
+                      content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
+                    >
+                      <DatabaseZapIcon size={18} />
+                    </Tooltip>
+                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <Tooltip content="Refresh Data">
+                      <button
+                        className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
+                        onClick={refreshKeywordIdeasData}
+                      >
+                        <RefreshCwIcon size={18} />
+                      </button>
+                    </Tooltip>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="max-h-full overflow-auto p-4">
+              <DataGrid
+                showCellVerticalBorder
+                showColumnVerticalBorder
+                rows={data}
+                columns={tableColumns}
+                initialState={dataGridInitialState}
+                showToolbar
+                disableRowSelectionOnClick
+                getRowHeight={getMUIRowHeight}
+                onPaginationModelChange={onDataGridPaginationModelChange}
+                checkboxSelection
+                slotProps={dataGridSlotProps}
+              />
+              <div className="mt-4 w-full text-center text-base text-black/70">
+                Showing {offset + 1}-{offset + data.length} results of{" "}
+                {totalResults.toLocaleString(navigator.language)}
+              </div>
+              {totalPages > 1 && (
+                <div className="mt-3 flex items-center justify-center">
+                  <Pagination
+                    showControls
+                    variant="light"
+                    initialPage={currentPage}
+                    total={totalPages}
+                    onChange={setCurrentPage}
+                    isDisabled={isLoading}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      <Modal
+        size="4xl"
+        scrollBehavior="inside"
+        backdrop="blur"
+        isOpen={keywordDetailsModalOpen}
+        onOpenChange={setKeywordDetailsModalOpen}
+      >
+        <ModalContent className="rounded-md">
+          <ModalHeader className="border-b-2 border-slate-200">
+            Keyword Details
+          </ModalHeader>
+          <ModalBody className="gap-0 rounded-b-md bg-gray-100 p-0">
+            <KeywordDetails keywordData={activeKeywordData} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+};
+
+export default memo(KeywordIdeasTool);

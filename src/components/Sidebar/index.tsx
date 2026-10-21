@@ -4,6 +4,7 @@ import {
   BinocularsIcon,
   BookOpenTextIcon,
   FaceSlightlySmilingPlusIcon,
+  LightbulbIcon,
   LinkIcon,
   LoaderPinwheelIcon,
   MenuIcon,
@@ -19,7 +20,6 @@ import { usePathname } from "next/navigation";
 import { memo, useState } from "react";
 import DFSBalanceBox from "../DFSBalanceBox";
 import { Tooltip } from "@heroui/react";
-import Image from "next/image";
 
 const Sidebar = () => {
   const pathName = usePathname();
@@ -39,7 +39,7 @@ const Sidebar = () => {
         {responsiveOpen ? <XIcon size={20} /> : <MenuIcon size={20} />}
       </button>
       <div
-        className={`seotoolsuite-sidebar absolute z-50 hidden min-h-[calc(100dvh-62px)] w-full shrink-0 flex-col gap-3 overflow-y-auto border-b-2 border-slate-200 bg-white py-4 opacity-0 lg:relative lg:flex lg:min-h-auto lg:max-w-60 lg:border-r-2 lg:border-b-0 lg:opacity-100 starting:opacity-0 lg:starting:opacity-100 ${responsiveOpen ? "flex! opacity-100" : ""}`}
+        className={`seotoolsuite-sidebar absolute z-50 hidden min-h-[calc(100dvh-62px)] w-full shrink-0 flex-col gap-2 overflow-y-auto border-b-2 border-slate-200 bg-white py-3 opacity-0 lg:relative lg:flex lg:min-h-auto lg:max-w-60 lg:border-r-2 lg:border-b-0 lg:opacity-100 starting:opacity-0 lg:starting:opacity-100 ${responsiveOpen ? "flex! opacity-100" : ""}`}
         style={{
           transition: "all 0.3s ease allow-discrete",
         }}
@@ -47,7 +47,7 @@ const Sidebar = () => {
         <div className="flex flex-col gap-1.5">
           <Link
             href="/tool/keyword-research"
-            className={`flex items-center gap-2 px-3 py-3 text-[15px] font-medium ${pathName.startsWith("/tool/keyword-research") ? "bg-slate-100!" : ""}`}
+            className={`flex items-center gap-2 px-3 py-2 text-[15px] font-medium ${pathName.startsWith("/tool/keyword-research") ? "bg-slate-100!" : ""}`}
             onClick={() => setResponsiveOpen(false)}
           >
             <TelescopeIcon size={22} />
@@ -69,6 +69,13 @@ const Sidebar = () => {
               <TextSearchIcon size={18} /> <span>Suggestions</span>
             </Link>
             <Link
+              href="/tool/keyword-research/ideas"
+              className={`relative ml-3 flex items-center gap-2 rounded-l-md px-3 py-2 text-sm transition hover:bg-slate-100 ${isToolActive("keyword-research/ideas") ? "bg-slate-100!" : ""}`}
+              onClick={() => setResponsiveOpen(false)}
+            >
+              <LightbulbIcon size={18} /> <span>Ideas</span>
+            </Link>
+            <Link
               href="/tool/keyword-research/autocomplete"
               className={`relative ml-3 flex items-center gap-2 rounded-l-md px-3 py-2 text-sm transition hover:bg-slate-100 ${isToolActive("keyword-research/autocomplete") ? "bg-slate-100!" : ""}`}
               onClick={() => setResponsiveOpen(false)}
@@ -84,7 +91,7 @@ const Sidebar = () => {
         <div className="flex flex-col gap-1.5">
           <Link
             href="/tool/competitive-research"
-            className={`flex items-center gap-2 px-3 py-3 text-[15px] font-medium ${pathName.startsWith("/tool/competitive-research") ? "bg-slate-100!" : ""}`}
+            className={`flex items-center gap-2 px-3 py-2 text-[15px] font-medium ${pathName.startsWith("/tool/competitive-research") ? "bg-slate-100!" : ""}`}
             onClick={() => setResponsiveOpen(false)}
           >
             <BinocularsIcon size={20} />
@@ -111,7 +118,7 @@ const Sidebar = () => {
         <div className="flex flex-col gap-1.5">
           <Link
             href="/tool/backlink-research"
-            className={`flex items-center gap-2 px-3 py-3 text-[15px] font-medium ${pathName.startsWith("/tool/backlink-research") ? "bg-slate-100!" : ""}`}
+            className={`flex items-center gap-2 px-3 py-2 text-[15px] font-medium ${pathName.startsWith("/tool/backlink-research") ? "bg-slate-100!" : ""}`}
             onClick={() => setResponsiveOpen(false)}
           >
             <LinkIcon size={20} />

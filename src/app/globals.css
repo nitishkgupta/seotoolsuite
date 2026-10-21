@@ -70,3 +70,8 @@ div[role="tooltip"] > div {
     transform: scaleX(0);
   }
 }
+
+/* HeroUI */
+.autocomplete-input div[data-slot="input-wrapper"] {
+  box-shadow: none !important;
+}

@@ -202,6 +202,97 @@ class DataForSEO {
   }
 
   /**
+   * Get keyword ideas.
+   */
+  async getKeywordIdeas(
+    keywords: string[],
+    location_code: number,
+    language_code: string = "any",
+    filters: Array<any> = [],
+    limit: number = 50,
+    offset: number = 0,
+    cachingDuration: number = this.defaultCachingDuration,
+    refreshData: boolean = false,
+  ) {
+    if (
+      !this.sandboxEnabled &&
+      this.enableCaching &&
+      this.upstashRedis &&
+      !refreshData
+    ) {
+      let cachedData;
+      try {
+        cachedData = await this.upstashRedis.getData(
+          btoa(
+            `keyword-ideas-${JSON.stringify(keywords)}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+
+      if (cachedData) {
+        cachedData = JSON.parse(cachedData);
+        cachedData.isCachedData = true;
+        return cachedData;
+      }
+    }
+
+    try {
+      const apiResponse = await axios.post(
+        `${this.API_BASE_URL}/dataforseo_labs/google/keyword_ideas/live`,
+        [
+          {
+            keywords,
+            location_code,
+            ...(language_code !== "any" ? { language_code } : {}),
+            ...(filters && filters.length > 0 ? { filters } : {}),
+            limit,
+            offset,
+            order_by: ["keyword_info.search_volume,desc"],
+          },
+        ],
+        {
+          headers: {
+            Authorization: `Basic ${Buffer.from(
+              `${this.USERNAME}:${this.PASSWORD}`,
+            ).toString("base64")}`,
+          },
+        },
+      );
+
+      const taskStatusCode = apiResponse?.data?.tasks[0]?.status_code ?? null;
+
+      if (
+        !this.sandboxEnabled &&
+        this.enableCaching &&
+        this.upstashRedis &&
+        cachingDuration > 0 &&
+        taskStatusCode === 20000
+      ) {
+        try {
+          this.upstashRedis.setData(
+            btoa(
+              `keyword-ideas-${JSON.stringify(keywords)}-${location_code}-${language_code}-${JSON.stringify(filters)}-${limit}-${offset}`,
+            ),
+            JSON.stringify({
+              ...apiResponse.data,
+              cachedAt: getCurrentDateTimeUTC(),
+            }),
+            60 * 60 * 24 * cachingDuration,
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      return apiResponse.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
    * Get keywords overview.
    */
   async getKeywordsOverview(

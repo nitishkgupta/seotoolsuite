@@ -24,55 +24,28 @@ import {
   getDataForSEOLanguageFromCode,
   getDataForSEOLocationFromCode,
 } from "@/utils/dataforseo";
-
-type KeywordSuggestionItem = {
-  id: number;
-  keyword: string;
-  location_code: number;
-  language_code: string;
-  searchVolume: number;
-  ppc: number;
-  ppcLevel: string;
-  cpc: number;
-  lowTopPageBid?: number;
-  highTopPageBid?: number;
-  monthlySearches: {
-    year: number;
-    month: number;
-    search_volume: number;
-  }[];
-  searchVolumeTrend: {
-    monthly: number;
-    quarterly: number;
-    yearly: number;
-  };
-  searchIntent?: string;
-  keywordDifficulty?: number;
-  avgBacklinksData?: {
-    backlinks: number;
-    dofollowBacklinks: number;
-    referringPages: number;
-    referringDomains: number;
-    pageRank: number;
-    domainRank: number;
-  };
-};
+import { KeywordIdeasItem } from "@/types/DFS/KeywordIdeas";
+import { KeywordSuggestionsItem } from "@/types/DFS/KeywordSuggestions";
+import { RankedKeywordsItem } from "@/types/DFS/RankedKeywords";
 
 const KeywordDetails = ({
   keywordData,
 }: {
-  keywordData: KeywordSuggestionItem | null;
+  keywordData:
+    | KeywordSuggestionsItem
+    | KeywordIdeasItem
+    | RankedKeywordsItem["keyword_data"]
+    | null;
 }) => {
   const avgPageRank =
-    typeof keywordData?.avgBacklinksData?.pageRank === "number"
-      ? Math.round(
-          Math.sin(keywordData.avgBacklinksData.pageRank / 636.62) * 100,
-        )
+    typeof keywordData?.avg_backlinks_info?.rank === "number"
+      ? Math.round(Math.sin(keywordData.avg_backlinks_info.rank / 636.62) * 100)
       : null;
   const avgDomainRank =
-    typeof keywordData?.avgBacklinksData?.domainRank === "number"
+    typeof keywordData?.avg_backlinks_info?.main_domain_rank === "number"
       ? Math.round(
-          Math.sin(keywordData.avgBacklinksData.domainRank / 636.62) * 100,
+          Math.sin(keywordData.avg_backlinks_info.main_domain_rank / 636.62) *
+            100,
         )
       : null;
 
@@ -105,43 +78,50 @@ const KeywordDetails = ({
             <span className="text-base md:text-lg">SEO Difficulty</span>
           </div>
           <div className="p-4">
-            {typeof keywordData.keywordDifficulty === "number" ? (
+            {typeof keywordData?.keyword_properties?.keyword_difficulty ===
+            "number" ? (
               <div className="flex w-full flex-col">
                 <div
                   className="relative flex w-full items-center justify-center rounded-t-md border px-4 py-3 text-3xl font-medium"
                   style={{
-                    color: getDifficultyColor(keywordData.keywordDifficulty),
+                    color: getDifficultyColor(
+                      keywordData.keyword_properties.keyword_difficulty,
+                    ),
                     borderColor: getDifficultyColor(
-                      keywordData.keywordDifficulty,
+                      keywordData.keyword_properties.keyword_difficulty,
                     ),
                   }}
                 >
                   <div
-                    className="scale-x-anim absolute top-0 left-0 h-full rounded-tl-md transition-all duration-500 ease-[ease]"
+                    className="scale-x-anim absolute top-0 left-0 h-full origin-left rounded-tl-md transition-all duration-500 ease-[ease]"
                     style={{
-                      width: `${keywordData.keywordDifficulty}%`,
-                      backgroundColor: `color-mix(in oklch, ${getDifficultyColor(keywordData.keywordDifficulty)}, white 60%)`,
+                      width: `${keywordData.keyword_properties.keyword_difficulty}%`,
+                      backgroundColor: `color-mix(in oklch, ${getDifficultyColor(keywordData.keyword_properties.keyword_difficulty)}, white 60%)`,
                     }}
                   ></div>
                   <span className="relative z-10">
-                    {keywordData.keywordDifficulty}
+                    {keywordData.keyword_properties.keyword_difficulty}
                   </span>
                 </div>
                 <div
                   className="rounded-b-md border border-t-0 border-b-2 border-slate-200 px-4 py-1.5 text-center"
                   style={{
                     borderColor: getDifficultyColor(
-                      keywordData.keywordDifficulty,
+                      keywordData.keyword_properties.keyword_difficulty,
                     ),
                   }}
                 >
                   <div
                     className="text-sm font-semibold uppercase"
                     style={{
-                      color: getDifficultyColor(keywordData.keywordDifficulty),
+                      color: getDifficultyColor(
+                        keywordData.keyword_properties.keyword_difficulty,
+                      ),
                     }}
                   >
-                    {getDifficultyText(keywordData.keywordDifficulty)}
+                    {getDifficultyText(
+                      keywordData.keyword_properties.keyword_difficulty,
+                    )}
                   </div>
                 </div>
               </div>
@@ -157,20 +137,24 @@ const KeywordDetails = ({
               <span className="text-base">Volume</span>
             </div>
             <div className="flex items-center gap-1 overflow-auto p-4">
-              {typeof keywordData.searchVolume === "number" ? (
+              {typeof keywordData?.keyword_info?.search_volume === "number" ? (
                 <span className="min-h-6.5">
-                  {keywordData.searchVolume.toLocaleString(navigator.language)}
+                  {keywordData.keyword_info.search_volume.toLocaleString(
+                    navigator.language,
+                  )}
                 </span>
               ) : (
                 <span>N/A</span>
               )}
-              {keywordData.searchVolumeTrend.yearly ? (
+              {keywordData?.keyword_info?.search_volume_trend.yearly ? (
                 <Tooltip content="Search Volume Trend (Yearly)">
                   <span
-                    className={`text-xs font-medium ${keywordData.searchVolumeTrend.yearly > 0 ? "text-green-500" : "text-red-500"}`}
+                    className={`text-xs font-medium ${keywordData.keyword_info.search_volume_trend.yearly > 0 ? "text-green-500" : "text-red-500"}`}
                   >
-                    {keywordData.searchVolumeTrend.yearly > 0 ? "+" : ""}
-                    {keywordData.searchVolumeTrend.yearly.toLocaleString(
+                    {keywordData.keyword_info.search_volume_trend.yearly > 0
+                      ? "+"
+                      : ""}
+                    {keywordData.keyword_info.search_volume_trend.yearly.toLocaleString(
                       navigator.language,
                     )}
                     %
@@ -187,8 +171,10 @@ const KeywordDetails = ({
               <span className="text-base">Intent</span>
             </div>
             <div className="flex items-center gap-1 overflow-auto p-4">
-              {typeof keywordData.searchIntent !== "string" && <span>N/A</span>}
-              {keywordData.searchIntent === "informational" && (
+              {typeof keywordData?.search_intent_info?.main_intent !==
+                "string" && <span>N/A</span>}
+              {keywordData?.search_intent_info?.main_intent ===
+                "informational" && (
                 <>
                   <Info size={20} />
                   <Tooltip
@@ -205,7 +191,8 @@ const KeywordDetails = ({
                   </Tooltip>
                 </>
               )}
-              {keywordData.searchIntent === "navigational" && (
+              {keywordData?.search_intent_info?.main_intent ===
+                "navigational" && (
                 <>
                   <Navigation size={20} />
                   <Tooltip
@@ -221,7 +208,8 @@ const KeywordDetails = ({
                   </Tooltip>
                 </>
               )}
-              {keywordData.searchIntent === "commercial" && (
+              {keywordData?.search_intent_info?.main_intent ===
+                "commercial" && (
                 <>
                   <Binoculars size={20} />
                   <Tooltip
@@ -238,7 +226,8 @@ const KeywordDetails = ({
                   </Tooltip>
                 </>
               )}
-              {keywordData.searchIntent === "transactional" && (
+              {keywordData?.search_intent_info?.main_intent ===
+                "transactional" && (
                 <>
                   <BadgeDollarSign size={20} />
                   <Tooltip
@@ -265,11 +254,13 @@ const KeywordDetails = ({
               <span className="text-base">CPC</span>
             </div>
             <div className="flex flex-wrap items-center gap-1 overflow-auto p-4">
-              {typeof keywordData.cpc === "number"
-                ? `$${keywordData.cpc}`
+              {typeof keywordData?.keyword_info?.cpc === "number"
+                ? `$${Number(keywordData.keyword_info.cpc.toFixed(2))}`
                 : "N/A"}
-              {(typeof keywordData.lowTopPageBid === "number" ||
-                typeof keywordData.highTopPageBid === "number") && (
+              {(typeof keywordData?.keyword_info?.low_top_of_page_bid ===
+                "number" ||
+                typeof keywordData?.keyword_info?.high_top_of_page_bid ===
+                  "number") && (
                 <div className="text-xs text-black/80">
                   |{" "}
                   <Tooltip
@@ -283,7 +274,12 @@ const KeywordDetails = ({
                       </div>
                     }
                   >
-                    <span>${keywordData.lowTopPageBid ?? "N/A"}</span>
+                    <span>
+                      $
+                      {Number(
+                        keywordData.keyword_info.low_top_of_page_bid.toFixed(2),
+                      ) ?? "N/A"}
+                    </span>
                   </Tooltip>{" "}
                   -{" "}
                   <Tooltip
@@ -297,7 +293,14 @@ const KeywordDetails = ({
                       </div>
                     }
                   >
-                    <span>${keywordData.highTopPageBid ?? "N/A"}</span>
+                    <span>
+                      $
+                      {Number(
+                        keywordData.keyword_info.high_top_of_page_bid.toFixed(
+                          2,
+                        ),
+                      ) ?? "N/A"}
+                    </span>
                   </Tooltip>
                 </div>
               )}
@@ -309,21 +312,21 @@ const KeywordDetails = ({
               <span className="text-base">PPC</span>
             </div>
             <div className="overflow-auto p-4">
-              {typeof keywordData.ppc === "number"
-                ? Math.round(keywordData.ppc * 100)
+              {typeof keywordData?.keyword_info?.competition === "number"
+                ? Math.round(keywordData.keyword_info.competition * 100)
                 : "N/A"}
             </div>
           </div>
         </div>
-        {keywordData.monthlySearches ? (
+        {keywordData?.keyword_info?.monthly_searches ? (
           <div className="rounded-md border-2 border-b-3 border-slate-200 bg-white">
             <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
               <ChartNoAxesCombined size={20} />
               <span className="text-base md:text-lg">Search Volume Trend</span>
             </div>
-            <div className="p-4">
+            <div className="pt-4 pr-4 pb-2">
               <SearchVolumeTrendChart
-                data={keywordData.monthlySearches}
+                data={keywordData.keyword_info.monthly_searches}
                 chartType="area"
                 xAxisLabelType="month"
                 chartHeight={250}
@@ -331,7 +334,7 @@ const KeywordDetails = ({
             </div>
           </div>
         ) : null}
-        {keywordData.avgBacklinksData ? (
+        {keywordData?.avg_backlinks_info ? (
           <div className="rounded-md border-2 border-b-3 border-slate-200 bg-white">
             <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
               <LinkIcon size={20} />
@@ -340,33 +343,33 @@ const KeywordDetails = ({
             <div className="flex flex-col gap-1 p-4">
               <div>
                 Avg. Backlinks:{" "}
-                {keywordData.avgBacklinksData.backlinks
+                {keywordData.avg_backlinks_info.backlinks
                   ? Math.round(
-                      keywordData.avgBacklinksData.backlinks,
+                      keywordData.avg_backlinks_info.backlinks,
                     ).toLocaleString(navigator.language)
                   : "N/A"}
               </div>
               <div>
                 Avg. DoFollow Backlinks:{" "}
-                {keywordData.avgBacklinksData.dofollowBacklinks
+                {keywordData.avg_backlinks_info.dofollow
                   ? Math.round(
-                      keywordData.avgBacklinksData.dofollowBacklinks,
+                      keywordData.avg_backlinks_info.dofollow,
                     ).toLocaleString(navigator.language)
                   : "N/A"}
               </div>
               <div>
                 Avg. Referring Pages:{" "}
-                {keywordData.avgBacklinksData.referringPages
+                {keywordData.avg_backlinks_info.referring_pages
                   ? Math.round(
-                      keywordData.avgBacklinksData.referringPages,
+                      keywordData.avg_backlinks_info.referring_pages,
                     ).toLocaleString(navigator.language)
                   : "N/A"}
               </div>
               <div>
                 Avg. Referring Domains:{" "}
-                {keywordData.avgBacklinksData.referringDomains
+                {keywordData.avg_backlinks_info.referring_domains
                   ? Math.round(
-                      keywordData.avgBacklinksData.referringDomains,
+                      keywordData.avg_backlinks_info.referring_domains,
                     ).toLocaleString(navigator.language)
                   : "N/A"}
               </div>

@@ -47,6 +47,7 @@ import { formatNumberToWord } from "@/utils/chart";
 import HistoricalRankChangesChart from "@/components/charts/HistoricalRankChangesChart";
 import HistoricalRankPositionChart from "@/components/charts/HistoricalRankPositionChart";
 import { getLocalDateTimeFromISOString } from "@/utils/date";
+import { ReportTabs, ReportTabsItem } from "@/components/ReportTabs";
 
 type TrafficOverviewData = {
   historicalRankOverviewData: HistoricalRankOverviewItem[];
@@ -82,8 +83,11 @@ const TrafficOverviewTool = ({
   const dfsSandboxEnabled =
     getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
   const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
-  const cachingDuration: number =
-    Number(getLocalStorageItem("TRAFFIC_OVERVIEW_CACHING_DURATION")) ?? 30;
+  const cachingDuration: number = getLocalStorageItem(
+    "TRAFFIC_OVERVIEW_CACHING_DURATION",
+  )
+    ? Number(getLocalStorageItem("TRAFFIC_OVERVIEW_CACHING_DURATION"))
+    : 30;
 
   const locations = getDataForSEOLocations();
   const languages = getDataForSEOLanguages();
@@ -114,12 +118,21 @@ const TrafficOverviewTool = ({
       e.preventDefault();
 
       let target: string = selectedTarget;
-      target = target.replace("https://", "").replace("http://", "");
       const location_code: string = selectedLocationKey;
       const language_code: string = selectedLanguageKey;
 
       if (!target || !location_code || !language_code) {
         return;
+      }
+
+      // Convert URL to domain.
+      if (URL.canParse(target)) {
+        target = new URL(target).hostname;
+      } else {
+        target = target
+          .replace("https://", "")
+          .replace("http://", "")
+          .replace("www.", "");
       }
 
       setSelectedTarget(target);
@@ -259,9 +272,17 @@ const TrafficOverviewTool = ({
 
       if (target && location_code && language_code) {
         let targetDomain: string = target;
-        targetDomain = targetDomain
-          .replace("https://", "")
-          .replace("http://", "");
+
+        // Convert URL to domain.
+        if (URL.canParse(targetDomain)) {
+          targetDomain = new URL(targetDomain).hostname;
+        } else {
+          targetDomain = targetDomain
+            .replace("https://", "")
+            .replace("http://", "")
+            .replace("www.", "");
+        }
+
         setSelectedTarget(targetDomain);
         setSelectedLocationKey(location_code);
         setSelectedLanguageKey(language_code);
@@ -382,9 +403,12 @@ const TrafficOverviewTool = ({
                   name="target"
                   variant="flat"
                   type="text"
-                  label="Target"
+                  label="Domain"
                   isDisabled={isLoading}
                   value={selectedTarget}
+                  classNames={{
+                    inputWrapper: "shadow-none",
+                  }}
                   onValueChange={setSelectedTarget}
                   placeholder="example.com"
                   autoFocus
@@ -397,6 +421,7 @@ const TrafficOverviewTool = ({
                   isDisabled={isLoading}
                   isRequired
                   value={selectedLocationKey}
+                  className="autocomplete-input"
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
                   }
@@ -426,6 +451,7 @@ const TrafficOverviewTool = ({
                   isDisabled={isLoading}
                   isRequired
                   value={selectedLanguageKey}
+                  className="autocomplete-input"
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
                   }
@@ -453,21 +479,20 @@ const TrafficOverviewTool = ({
         {formInput.target &&
           formInput.location_code &&
           formInput.language_code && (
-            <div className="mt-4 w-full">
-              <div className="flex w-full flex-col flex-wrap items-start gap-2 rounded-md border border-b-2 border-slate-200 p-3 text-sm md:w-fit md:flex-row md:items-center">
-                <div className="mr-1 flex items-center gap-1 border-slate-200 text-sm font-medium text-black/80 transition">
-                  Other Reports:
-                </div>
-                <Link
-                  prefetch={false}
-                  href={`/tool/competitive-research/keywords?target=${formInput.target}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                  target="_blank"
-                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
-                >
-                  <TextSearchIcon size={16} /> Ranked Keywords
-                </Link>
-              </div>
-            </div>
+            <ReportTabs className="mt-4">
+              <ReportTabsItem
+                startContent={<BookOpenTextIcon size={16} />}
+                active={true}
+              >
+                Traffic Overview
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<TextSearchIcon size={16} />}
+                href={`/tool/competitive-research/keywords?target=${formInput.target}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Ranked Keywords
+              </ReportTabsItem>
+            </ReportTabs>
           )}
       </div>
       {isLoading && (

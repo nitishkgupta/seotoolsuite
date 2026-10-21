@@ -1,5 +1,7 @@
 "use client";
 
+import KeywordActionsDropdown from "@/components/KeywordActionsDropdown";
+import { ReportTabs, ReportTabsItem } from "@/components/ReportTabs";
 import AutoComplete from "@/services/AutoComplete";
 import {
   getDataForSEOLanguages,
@@ -14,10 +16,6 @@ import {
   Autocomplete,
   AutocompleteItem,
   Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Form,
   Input,
   Progress,
@@ -25,14 +23,12 @@ import {
 import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
 import {
   BookOpenTextIcon,
-  ClipboardCopyIcon,
-  EllipsisIcon,
+  LightbulbIcon,
   LoaderPinwheelIcon,
   TelescopeIcon,
   TextSearchIcon,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 type KeywordAutocompleteItem = {
@@ -219,16 +215,6 @@ const KeywordAutocompleteTool = ({
     };
   }, [formInput.keyword, formInput.location_code, formInput.language_code]);
 
-  const handleKeywordClipboardCopy = useCallback(async (keyword: string) => {
-    if ("clipboard" in navigator) {
-      await navigator.clipboard.writeText(keyword);
-      addToast({
-        title: "Keyword copied to clipboard.",
-        color: "default",
-      });
-    }
-  }, []);
-
   const getKeywordAutocompleteSuggestions = useCallback(
     async (keyword: string, locationCode: string, languageCode: string) => {
       setIsLoading(true);
@@ -379,48 +365,11 @@ const KeywordAutocompleteTool = ({
           <>
             <div className="flex w-full items-center justify-between gap-2 py-2">
               {params.value}
-              <div>
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button size="sm" isIconOnly variant="flat">
-                      <EllipsisIcon size={16} />
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu variant="flat">
-                    <DropdownItem
-                      key="keyword-copy"
-                      onPress={() => handleKeywordClipboardCopy(params.value)}
-                      startContent={<ClipboardCopyIcon size={16} />}
-                    >
-                      Copy Keyword
-                    </DropdownItem>
-                    <DropdownItem
-                      key="keyword-overview"
-                      href={`/tool/keyword-research/overview?keyword=${params.value}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                      target="_blank"
-                      startContent={<BookOpenTextIcon size={16} />}
-                    >
-                      Keyword Overview
-                    </DropdownItem>
-                    <DropdownItem
-                      key="keyword-suggestions"
-                      href={`/tool/keyword-research/suggestions?keyword=${params.value}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                      target="_blank"
-                      startContent={<TextSearchIcon size={18} />}
-                    >
-                      Keyword Suggestions
-                    </DropdownItem>
-                    <DropdownItem
-                      key="autocomplete-suggestions"
-                      href={`/tool/keyword-research/autocomplete?keyword=${params.value}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                      target="_blank"
-                      startContent={<LoaderPinwheelIcon size={16} />}
-                    >
-                      Autocomplete Suggestions
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </div>
+              <KeywordActionsDropdown
+                keyword={params.value}
+                locationCode={Number(formInput.location_code!)}
+                languageCode={formInput.language_code!}
+              />
             </div>
           </>
         ),
@@ -450,7 +399,7 @@ const KeywordAutocompleteTool = ({
         type: "string",
       },
     ],
-    [handleKeywordClipboardCopy, formInput],
+    [formInput],
   );
 
   const onDataGridPaginationModelChange = useCallback(() => {
@@ -532,6 +481,9 @@ const KeywordAutocompleteTool = ({
                 label="Keyword"
                 isDisabled={isLoading}
                 value={selectedKeyword}
+                classNames={{
+                  inputWrapper: "shadow-none",
+                }}
                 onValueChange={setSelectedKeyword}
                 autoFocus
                 isRequired
@@ -543,6 +495,7 @@ const KeywordAutocompleteTool = ({
                 isDisabled={isLoading}
                 isRequired
                 value={selectedLocationKey}
+                className="autocomplete-input"
                 onChange={(key: any) =>
                   setSelectedLocationKey(key.target.value)
                 }
@@ -572,6 +525,7 @@ const KeywordAutocompleteTool = ({
                 isDisabled={isLoading}
                 isRequired
                 value={selectedLanguageKey}
+                className="autocomplete-input"
                 onChange={(key: any) =>
                   setSelectedLanguageKey(key.target.value)
                 }
@@ -597,30 +551,32 @@ const KeywordAutocompleteTool = ({
           {formInput.keyword &&
             formInput.location_code &&
             formInput.language_code && (
-              <div className="mt-4 w-full">
-                <div className="flex w-full flex-col flex-wrap items-start gap-2 rounded-md border border-b-2 border-slate-200 p-3 text-sm md:w-fit md:flex-row md:items-center">
-                  <div className="mr-1 flex items-center gap-1 border-slate-200 text-sm font-medium text-black/80 transition">
-                    Other Reports:
-                  </div>
-                  <Link
-                    prefetch={false}
-                    href={`/tool/keyword-research/overview?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                    target="_blank"
-                    className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
-                  >
-                    <BookOpenTextIcon size={16} /> Keyword Overview
-                  </Link>
-                  <div className="hidden text-slate-200 md:block">|</div>
-                  <Link
-                    prefetch={false}
-                    href={`/tool/keyword-research/suggestions?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                    target="_blank"
-                    className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
-                  >
-                    <TextSearchIcon size={16} /> Keyword Suggestions
-                  </Link>
-                </div>
-              </div>
+              <ReportTabs className="mt-4">
+                <ReportTabsItem
+                  startContent={<BookOpenTextIcon size={16} />}
+                  href={`/tool/keyword-research/overview?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                >
+                  Keyword Overview
+                </ReportTabsItem>
+                <ReportTabsItem
+                  startContent={<TextSearchIcon size={16} />}
+                  href={`/tool/keyword-research/suggestions?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                >
+                  Keyword Suggestions
+                </ReportTabsItem>
+                <ReportTabsItem
+                  startContent={<LightbulbIcon size={16} />}
+                  href={`/tool/keyword-research/ideas?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+                >
+                  Keyword Ideas
+                </ReportTabsItem>
+                <ReportTabsItem
+                  startContent={<LoaderPinwheelIcon size={16} />}
+                  active
+                >
+                  Keyword Autocomplete
+                </ReportTabsItem>
+              </ReportTabs>
             )}
         </div>
       </div>

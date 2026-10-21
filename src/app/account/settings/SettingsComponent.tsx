@@ -27,6 +27,7 @@ import {
   DatabaseIcon,
   DatabaseZapIcon,
   LifeBuoyIcon,
+  LightbulbIcon,
   LockIcon,
   Rows4Icon,
   TelescopeIcon,
@@ -58,6 +59,9 @@ function SettingsComponent() {
   const [KWSuggestionsCachingDuration, setKWSuggestionsCachingDuration] =
     useState<number>(30);
   const [KWSuggestionsMaxRows, setKWSuggestionsMaxRows] = useState<number>(250);
+  const [KWIdeasCachingDuration, setKWIdeasCachingDuration] =
+    useState<number>(30);
+  const [KWIdeasMaxRows, setKWIdeasMaxRows] = useState<number>(250);
   const [TrafficOverviewCachingDuration, setTrafficOverviewCachingDuration] =
     useState<number>(30);
   const [rankedKeywordsCachingDuration, setRankedKeywordsCachingDuration] =
@@ -182,6 +186,16 @@ function SettingsComponent() {
     [],
   );
 
+  const handleKWIdeasCachingDurationChange = useCallback(
+    (duration: number | number[]) => {
+      if (typeof duration === "number") {
+        setKWIdeasCachingDuration(duration);
+        setLocalStorageItem("KW_IDEAS_CACHING_DURATION", duration.toString());
+      }
+    },
+    [],
+  );
+
   const handleTrafficOverviewCachingDurationChange = useCallback(
     (duration: number | number[]) => {
       if (typeof duration === "number") {
@@ -204,6 +218,13 @@ function SettingsComponent() {
     },
     [],
   );
+
+  const handleKWIdeasMaxRowsChange = useCallback((rows: number | number[]) => {
+    if (typeof rows === "number") {
+      setKWIdeasMaxRows(rows);
+      setLocalStorageItem("KW_IDEAS_MAX_ROWS", rows.toString());
+    }
+  }, []);
 
   const handleRankedKeywordsCachingDurationChange = useCallback(
     (duration: number | number[]) => {
@@ -248,12 +269,16 @@ function SettingsComponent() {
     setKWSuggestionsCachingDuration(
       Number(getLocalStorageItem("KW_SUGGESTIONS_CACHING_DURATION") ?? 30),
     );
+    setKWIdeasCachingDuration(
+      Number(getLocalStorageItem("KW_IDEAS_CACHING_DURATION") ?? 30),
+    );
     setTrafficOverviewCachingDuration(
       Number(getLocalStorageItem("TRAFFIC_OVERVIEW_CACHING_DURATION") ?? 30),
     );
     setKWSuggestionsMaxRows(
       Number(getLocalStorageItem("KW_SUGGESTIONS_MAX_ROWS") ?? 250),
     );
+    setKWIdeasMaxRows(Number(getLocalStorageItem("KW_IDEAS_MAX_ROWS") ?? 250));
     setRankedKeywordsCachingDuration(
       Number(getLocalStorageItem("RANKED_KWS_CACHING_DURATION") ?? 30),
     );
@@ -378,6 +403,61 @@ function SettingsComponent() {
                 </div>
               </AccordionItem>
               <AccordionItem
+                key="keyword-ideas"
+                aria-label="Keyword Ideas"
+                title={
+                  <span className="text-base md:text-lg">Keyword Ideas</span>
+                }
+                startContent={
+                  <div className="flex items-center gap-1.5">
+                    <TelescopeIcon className="w-5" />
+                    <div className="h-4 w-0.5 bg-black"></div>
+                    <LightbulbIcon className="w-4" />
+                  </div>
+                }
+              >
+                <div className="flex flex-col gap-2 pb-2">
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <Rows4Icon size={16} />
+                      <div className="text-sm md:text-base">
+                        Max. Rows Per Report
+                      </div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={KWIdeasMaxRows}
+                        onChange={handleKWIdeasMaxRowsChange}
+                        minValue={1}
+                        maxValue={1000}
+                        step={1}
+                        showTooltip
+                        label="Rows"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <DatabaseZapIcon size={16} />
+                      <div className="text-sm md:text-base">Cache Duration</div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={KWIdeasCachingDuration}
+                        onChange={handleKWIdeasCachingDurationChange}
+                        minValue={0}
+                        maxValue={365}
+                        step={1}
+                        showTooltip
+                        label="Days"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                </div>
+              </AccordionItem>
+              <AccordionItem
                 key="traffic-overview"
                 aria-label="Traffic Overview"
                 title={
@@ -477,6 +557,7 @@ function SettingsComponent() {
                 variant="flat"
                 label="Location"
                 isRequired
+                className="autocomplete-input"
                 value={defaultLocationKey}
                 onChange={(key: any) =>
                   handleDefaultLocationKeyChange(key.target.value)
@@ -509,6 +590,7 @@ function SettingsComponent() {
                 name="default-language"
                 variant="flat"
                 label="Language"
+                className="autocomplete-input"
                 isRequired
                 value={defaultLanguageKey}
                 onChange={(key: any) =>
@@ -563,7 +645,7 @@ function SettingsComponent() {
                 <h4 className="text-sm md:text-base">
                   1. Get started by creating a{" "}
                   <Link
-                    href="https://app.dataforseo.com/?aff=44560"
+                    href="https://app.dataforseo.com/?aff=4d6a573c-0675-4d96-add0-f864b53b7c11"
                     target="_blank"
                     rel="nofollow"
                     className="underline"
@@ -614,6 +696,9 @@ function SettingsComponent() {
                   type="text"
                   label="API Login"
                   placeholder="test@example.com"
+                  classNames={{
+                    inputWrapper: "shadow-none",
+                  }}
                   defaultValue={
                     getLocalStorageItem("DATAFORSEO_USERNAME") ?? ""
                   }
@@ -624,6 +709,9 @@ function SettingsComponent() {
                   variant="flat"
                   type="password"
                   label="API Password"
+                  classNames={{
+                    inputWrapper: "shadow-none",
+                  }}
                   defaultValue={
                     getLocalStorageItem("DATAFORSEO_PASSWORD") ?? ""
                   }
@@ -646,7 +734,7 @@ function SettingsComponent() {
             <div className="mt-4">
               Don&apos;t have an account?{" "}
               <Link
-                href="https://app.dataforseo.com/?aff=44560"
+                href="https://app.dataforseo.com/?aff=4d6a573c-0675-4d96-add0-f864b53b7c11"
                 target="_blank"
                 rel="nofollow"
                 className="underline"
@@ -789,6 +877,9 @@ function SettingsComponent() {
                   type="text"
                   label="Redis REST URL"
                   placeholder="https://xxxxxxxx.upstash.io"
+                  classNames={{
+                    inputWrapper: "shadow-none",
+                  }}
                   defaultValue={
                     getLocalStorageItem("UPSTASH_REDIS_REST_URL") ?? ""
                   }
@@ -799,6 +890,9 @@ function SettingsComponent() {
                   variant="flat"
                   type="password"
                   label="Redis REST Token"
+                  classNames={{
+                    inputWrapper: "shadow-none",
+                  }}
                   defaultValue={
                     getLocalStorageItem("UPSTASH_REDIS_REST_TOKEN") ?? ""
                   }

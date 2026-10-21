@@ -14,6 +14,11 @@ const CostCalculator = () => {
     Number(0.042 * kwSuggestionsReports).toFixed(4),
   );
 
+  const [kwIdeasReports, setKwIdeasReports] = useState<number>(50);
+  const kwIdeasCreditsCost: number = parseFloat(
+    Number(0.042 * kwIdeasReports).toFixed(4),
+  );
+
   const dateFromFormatted = "2020-10-01";
   const dateFrom = new Date(dateFromFormatted);
   const currentDate = new Date();
@@ -38,17 +43,20 @@ const CostCalculator = () => {
   const totalReports: number =
     kwOverviewReports +
     kwSuggestionsReports +
+    kwIdeasReports +
     trafficOverviewReports +
     rankedKeywordsReports;
   const totalRows: number =
     kwOverviewReports +
     kwSuggestionsReports * 250 +
+    kwIdeasReports * 250 +
     trafficOverviewReports +
     rankedKeywordsReports * 250;
   const totalCreditsCost: number = parseFloat(
     Number(
       kwOverviewCreditsCost +
         kwSuggestionsCreditsCost +
+        kwIdeasCreditsCost +
         trafficOverviewCreditsCost +
         rankedKeywordsCreditsCost,
     ).toFixed(4),
@@ -68,6 +76,13 @@ const CostCalculator = () => {
     [],
   );
 
+  const handleKWIdeasReportsChange = useCallback(
+    (reports: number | number[]) => {
+      if (typeof reports === "number") setKwIdeasReports(reports);
+    },
+    [],
+  );
+
   const handleTrafficOverviewReportsChange = useCallback(
     (reports: number | number[]) => {
       if (typeof reports === "number") setTrafficOverviewReports(reports);
@@ -83,8 +98,8 @@ const CostCalculator = () => {
   );
 
   return (
-    <div className="cost-calculator w-full">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-slate-200 px-4 py-3">
+    <div className="cost-calculator relative w-full">
+      <div className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-2 border-b-2 border-slate-200 bg-white px-4 py-3">
         <h2 className="text-xl font-semibold lg:text-3xl">Cost Calculator</h2>
         <div className="bg-default/40 rounded-full px-3 py-1 text-base">
           Credits: <b className="font-semibold">${totalCreditsCost}</b>
@@ -122,6 +137,26 @@ const CostCalculator = () => {
             <Slider
               value={kwSuggestionsReports}
               onChange={handleKWSuggestionsReportsChange}
+              minValue={0}
+              label="Reports"
+              maxValue={1000}
+              step={1}
+              showTooltip
+              size="md"
+            ></Slider>
+          </div>
+        </div>
+        <div className="flex flex-col gap-3 border-t-2 border-slate-200 p-4">
+          <h3 className="flex items-center justify-between font-medium">
+            <span>Keyword Ideas (250 Rows)</span>
+            <div className="bg-default/40 rounded-full px-3 py-1 text-sm">
+              <b className="font-medium">${kwIdeasCreditsCost}</b>
+            </div>
+          </h3>
+          <div className="w-full px-2">
+            <Slider
+              value={kwIdeasReports}
+              onChange={handleKWIdeasReportsChange}
               minValue={0}
               label="Reports"
               maxValue={1000}

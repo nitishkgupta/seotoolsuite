@@ -31,6 +31,7 @@ import {
   DatabaseZapIcon,
   GaugeIcon,
   InfoIcon,
+  LightbulbIcon,
   LinkIcon,
   LoaderPinwheelIcon,
   NavigationIcon,
@@ -48,6 +49,7 @@ import SearchVolumeTrendChart from "@/components/charts/SearchVolumeTrendChart";
 import GenderDistributionChart from "@/components/charts/GenderDistributionChart";
 import AgeDistributionChart from "@/components/charts/AgeDistributionChart";
 import { getLocalDateTimeFromISOString } from "@/utils/date";
+import { ReportTabs, ReportTabsItem } from "@/components/ReportTabs";
 
 type KeywordOverviewData = {
   keyword: string;
@@ -108,8 +110,11 @@ const KeywordOverviewTool = ({
   const dfsSandboxEnabled =
     getLocalStorageItem("DATAFORSEO_SANDBOX") === "true";
   const cachingEnabled = getLocalStorageItem("CACHING_ENABLED") === "true";
-  const cachingDuration: number =
-    Number(getLocalStorageItem("KW_OVERVIEW_CACHING_DURATION")) ?? 30;
+  const cachingDuration: number = getLocalStorageItem(
+    "KW_OVERVIEW_CACHING_DURATION",
+  )
+    ? Number(getLocalStorageItem("KW_OVERVIEW_CACHING_DURATION"))
+    : 30;
 
   const locations = getDataForSEOLocations();
   const languages = getDataForSEOLanguages();
@@ -439,6 +444,9 @@ const KeywordOverviewTool = ({
                   isDisabled={isLoading}
                   value={selectedKeyword}
                   onValueChange={setSelectedKeyword}
+                  classNames={{
+                    inputWrapper: "shadow-none",
+                  }}
                   autoFocus
                   isRequired
                 />
@@ -449,6 +457,7 @@ const KeywordOverviewTool = ({
                   isDisabled={isLoading}
                   isRequired
                   value={selectedLocationKey}
+                  className="autocomplete-input"
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
                   }
@@ -478,6 +487,7 @@ const KeywordOverviewTool = ({
                   isDisabled={isLoading}
                   isRequired
                   value={selectedLanguageKey}
+                  className="autocomplete-input"
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
                   }
@@ -505,30 +515,32 @@ const KeywordOverviewTool = ({
         {formInput.keyword &&
           formInput.location_code &&
           formInput.language_code && (
-            <div className="mt-4 w-full">
-              <div className="flex w-full flex-col flex-wrap items-start gap-2 rounded-md border border-b-2 border-slate-200 p-3 text-sm md:w-fit md:flex-row md:items-center">
-                <div className="mr-1 flex items-center gap-1 border-slate-200 text-sm font-medium text-black/80 transition">
-                  Other Reports:
-                </div>
-                <Link
-                  prefetch={false}
-                  href={`/tool/keyword-research/suggestions?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                  target="_blank"
-                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
-                >
-                  <TextSearchIcon size={16} /> Keyword Suggestions
-                </Link>
-                <div className="hidden text-slate-200 md:block">|</div>
-                <Link
-                  prefetch={false}
-                  href={`/tool/keyword-research/autocomplete?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
-                  target="_blank"
-                  className="flex items-center gap-1 border-slate-200 text-black/80 transition hover:text-black"
-                >
-                  <LoaderPinwheelIcon size={16} /> Keyword Autocomplete
-                </Link>
-              </div>
-            </div>
+            <ReportTabs className="mt-4">
+              <ReportTabsItem
+                startContent={<BookOpenTextIcon size={16} />}
+                active={true}
+              >
+                Keyword Overview
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<TextSearchIcon size={16} />}
+                href={`/tool/keyword-research/suggestions?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Keyword Suggestions
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<LightbulbIcon size={16} />}
+                href={`/tool/keyword-research/ideas?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Keyword Ideas
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<LoaderPinwheelIcon size={16} />}
+                href={`/tool/keyword-research/autocomplete?keyword=${formInput.keyword}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Keyword Autocomplete
+              </ReportTabsItem>
+            </ReportTabs>
           )}
       </div>
       {isLoading && (

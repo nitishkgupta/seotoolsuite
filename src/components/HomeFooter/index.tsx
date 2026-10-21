@@ -27,7 +27,7 @@ export const HomeFooter = () => {
       <div className="mt-4 w-full border-t-2 border-slate-200 py-3 text-center text-base">
         Powered by{" "}
         <Link
-          href="https://dataforseo.com/?aff=44560"
+          href="https://dataforseo.com/?aff=4d6a573c-0675-4d96-add0-f864b53b7c11"
           rel="nofollow"
           target="_blank"
           className="underline"

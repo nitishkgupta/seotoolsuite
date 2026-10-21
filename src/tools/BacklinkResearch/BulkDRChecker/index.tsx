@@ -134,7 +134,7 @@ const BulkDRCheckerTool = () => {
     };
   }, []);
 
-  const tableColumns: GridColDef[] = useMemo(
+  const tableColumns: GridColDef<DomainRatingItem>[] = useMemo(
     () => [
       {
         field: "id",
@@ -177,7 +177,7 @@ const BulkDRCheckerTool = () => {
                 <span className="relative z-20">{params.value}</span>
                 <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/20">
                   <div
-                    className="scale-x-anim h-1 bg-sky-950"
+                    className="scale-x-anim h-1 origin-left bg-sky-950"
                     style={{
                       width: `${params.value}%`,
                     }}
@@ -251,6 +251,9 @@ const BulkDRCheckerTool = () => {
                 label="Domains"
                 isDisabled={isLoading}
                 value={selectedTargets}
+                classNames={{
+                  inputWrapper: "shadow-none",
+                }}
                 onValueChange={setSelectedTargets}
                 placeholder="example.com"
                 autoFocus
