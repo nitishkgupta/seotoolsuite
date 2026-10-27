@@ -44,5 +44,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/features/keyword-ideas`,
       lastModified: new Date(),
     },
+    {
+      url: `${baseUrl}/features/top-pages`,
+      lastModified: new Date(),
+    },
   ];
 }

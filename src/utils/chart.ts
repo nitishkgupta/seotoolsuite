@@ -23,11 +23,11 @@ export const formatNumberToWord = (
 export const getHistoricalRankTrendChartLabel = (name: any) => {
   switch (name) {
     case "metrics.organic.etv":
-      return "Monthly Organic Traffic";
+      return "Monthly Traffic";
     case "metrics.organic.count":
-      return "Ranked Keywords";
+      return "Keywords";
     case "metrics.organic.estimated_paid_traffic_cost":
-      return "Est. Traffic Cost ($)";
+      return "Traffic Cost ($)";
     case "metrics.organic.is_new":
       return "(+) New Keywords";
     case "metrics.organic.is_up":
@@ -61,11 +61,11 @@ export const getHistoricalRankTrendChartLabel = (name: any) => {
     case "metrics.organic.pos_91_100":
       return "Position 91-100";
     case "metrics.paid.etv":
-      return "Monthly Paid Traffic";
+      return "Monthly Traffic";
     case "metrics.paid.count":
-      return "Paid Keywords";
+      return "Keywords";
     case "metrics.paid.estimated_paid_traffic_cost":
-      return "Est. Traffic Cost ($)";
+      return "Traffic Cost ($)";
     case "metrics.paid.is_new":
       return "(+) New Keywords";
     case "metrics.paid.is_lost":

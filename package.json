@@ -1,7 +1,7 @@
 {
   "name": "seotoolsuite",
   "type": "module",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -38,5 +38,9 @@
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.1.18",
     "typescript": "^6.0.2"
+  },
+  "allowScripts": {
+    "@heroui/shared-utils@2.1.12": true,
+    "unrs-resolver@1.12.2": true
   }
 }

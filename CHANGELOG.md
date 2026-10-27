@@ -1,5 +1,18 @@
 # SEOToolSuite Changelog
 
+## v8.0.0
+
+- Added a new **Top Pages** tool. Get the top-performing organic pages of a website.
+- Added **Progressive Web App (PWA)** support.
+- Added a new **Copy URL** option to the actions dropdown.
+- Added a new UI element for indicating **paid competition level** (low, medium, high).
+- Updated metric names for better consistency.
+- UI improvements and changes for better consistency and design.
+- Updated **Reports Tabs** target to the same tab.
+- Updated **Cached At Timestamp** for better readability.
+- Minor bug fixes.
+- Updated packages.
+
 ## v7.0.0
 
 - Added a new **Keyword Ideas** tool. Get keyword ideas that are related to the seed keyword.

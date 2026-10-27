@@ -4,6 +4,7 @@ import {
   BinocularsIcon,
   BookOpenTextIcon,
   FaceSlightlySmilingPlusIcon,
+  FilesIcon,
   LightbulbIcon,
   LinkIcon,
   LoaderPinwheelIcon,
@@ -39,7 +40,7 @@ const Sidebar = () => {
         {responsiveOpen ? <XIcon size={20} /> : <MenuIcon size={20} />}
       </button>
       <div
-        className={`seotoolsuite-sidebar absolute z-50 hidden min-h-[calc(100dvh-62px)] w-full shrink-0 flex-col gap-2 overflow-y-auto border-b-2 border-slate-200 bg-white py-3 opacity-0 lg:relative lg:flex lg:min-h-auto lg:max-w-60 lg:border-r-2 lg:border-b-0 lg:opacity-100 starting:opacity-0 lg:starting:opacity-100 ${responsiveOpen ? "flex! opacity-100" : ""}`}
+        className={`seotoolsuite-sidebar lg:max-h-auto absolute z-50 hidden max-h-[calc(100dvh-62px)] min-h-[calc(100dvh-62px)] w-full shrink-0 flex-col gap-2 overflow-y-auto border-b-2 border-slate-200 bg-white py-3 opacity-0 lg:relative lg:flex lg:min-h-auto lg:max-w-60 lg:border-r-2 lg:border-b-0 lg:opacity-100 starting:opacity-0 lg:starting:opacity-100 ${responsiveOpen ? "flex! opacity-100" : ""}`}
         style={{
           transition: "all 0.3s ease allow-discrete",
         }}
@@ -111,6 +112,13 @@ const Sidebar = () => {
               onClick={() => setResponsiveOpen(false)}
             >
               <TextSearchIcon size={18} /> <span>Keywords</span>
+            </Link>
+            <Link
+              href="/tool/competitive-research/pages"
+              className={`relative ml-3 flex items-center gap-2 rounded-l-md px-3 py-2 text-sm transition hover:bg-slate-100 ${isToolActive("competitive-research/pages") ? "bg-slate-100!" : ""}`}
+              onClick={() => setResponsiveOpen(false)}
+            >
+              <FilesIcon size={18} /> <span>Pages</span>
             </Link>
           </div>
         </div>

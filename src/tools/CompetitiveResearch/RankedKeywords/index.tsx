@@ -40,6 +40,7 @@ import {
   CircleStarIcon,
   DatabaseZapIcon,
   DiffIcon,
+  FilesIcon,
   InfoIcon,
   NavigationIcon,
   PlusIcon,
@@ -793,7 +794,7 @@ const RankedKeywordsTool = ({
       {
         field: "estimatedTraffic",
         headerName: "Traffic",
-        description: "Estimated Traffic",
+        description: "Monthly Traffic",
         type: "number",
         display: "flex",
         flex: 1,
@@ -977,7 +978,21 @@ const RankedKeywordsTool = ({
             {typeof params?.value !== "number" ? (
               <div>N/A</div>
             ) : (
-              <div>{Math.round(params.value * 100)}</div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span>{Math.round(params.value * 100)}</span>
+                {params?.row?.keyword_data?.keyword_info?.competition_level ===
+                  "LOW" && (
+                  <div className="h-1.5 w-1.5 rounded-full bg-[#1ba005]"></div>
+                )}
+                {params?.row?.keyword_data?.keyword_info?.competition_level ===
+                  "MEDIUM" && (
+                  <div className="h-1.5 w-1.5 rounded-full bg-[#ef7a24]"></div>
+                )}
+                {params?.row?.keyword_data?.keyword_info?.competition_level ===
+                  "HIGH" && (
+                  <div className="h-1.5 w-1.5 rounded-full bg-[red]"></div>
+                )}
+              </div>
             )}
           </>
         ),
@@ -1126,8 +1141,8 @@ const RankedKeywordsTool = ({
                   name="target"
                   variant="flat"
                   type="text"
-                  label="Target"
-                  placeholder="example.com or https://example.com/page"
+                  label="Domain / Subdomain / URL"
+                  placeholder="example.com"
                   isDisabled={isLoading}
                   value={selectedTarget}
                   classNames={{
@@ -1145,6 +1160,9 @@ const RankedKeywordsTool = ({
                   isRequired
                   value={selectedLocationKey}
                   className="autocomplete-input"
+                  classNames={{
+                    popoverContent: "border border-slate-200 border-b-2",
+                  }}
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
                   }
@@ -1175,6 +1193,9 @@ const RankedKeywordsTool = ({
                   isRequired
                   value={selectedLanguageKey}
                   className="autocomplete-input"
+                  classNames={{
+                    popoverContent: "border border-slate-200 border-b-2",
+                  }}
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
                   }
@@ -1221,6 +1242,12 @@ const RankedKeywordsTool = ({
               >
                 Ranked Keywords
               </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<FilesIcon size={16} />}
+                href={`/tool/competitive-research/pages?target=${formInput.target}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Top Pages
+              </ReportTabsItem>
             </ReportTabs>
           )}
       </div>
@@ -1238,7 +1265,7 @@ const RankedKeywordsTool = ({
           <div className="flex flex-row flex-wrap items-stretch justify-between gap-3 border-b-2 border-slate-200 px-4 py-3">
             <div className="flex items-center gap-2">
               <BookOpenTextIcon size={20} />
-              <span className="text-base lg:text-lg">Ranked Overview</span>
+              <span className="text-base lg:text-lg">Organic Overview</span>
             </div>
             <div className="flex items-center gap-2">
               {isCachedData && (
@@ -1265,7 +1292,7 @@ const RankedKeywordsTool = ({
             <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
               <div className="flex items-center gap-2">
                 <TrendingUpIcon size={18} />
-                Monthly Organic Traffic
+                Monthly Traffic
               </div>
               <div className="mt-4 flex flex-wrap items-center gap-1">
                 <span className="text-xl lg:text-3xl">
@@ -1278,7 +1305,7 @@ const RankedKeywordsTool = ({
             <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
               <div className="flex items-center gap-2">
                 <TextSearchIcon size={18} />
-                Ranked Keywords
+                Keywords
               </div>
               <div className="mt-4 flex flex-wrap items-center gap-1">
                 <span className="text-xl lg:text-3xl">
@@ -1291,7 +1318,7 @@ const RankedKeywordsTool = ({
             <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
               <div className="flex items-center gap-2">
                 <BadgeDollarSignIcon size={18} />
-                Est. Traffic Cost
+                Traffic Cost
               </div>
               <div className="mt-4 flex flex-wrap items-center gap-1">
                 <div className="text-xl lg:text-3xl">

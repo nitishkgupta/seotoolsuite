@@ -458,6 +458,9 @@ const KeywordOverviewTool = ({
                   isRequired
                   value={selectedLocationKey}
                   className="autocomplete-input"
+                  classNames={{
+                    popoverContent: "border border-slate-200 border-b-2",
+                  }}
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
                   }
@@ -488,6 +491,9 @@ const KeywordOverviewTool = ({
                   isRequired
                   value={selectedLanguageKey}
                   className="autocomplete-input"
+                  classNames={{
+                    popoverContent: "border border-slate-200 border-b-2",
+                  }}
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
                   }
@@ -731,10 +737,19 @@ const KeywordOverviewTool = ({
                 <TargetIcon size={18} />
                 PPC
               </div>
-              <div className="mt-4 text-xl lg:text-3xl">
+              <div className="mt-4 flex flex-wrap items-center gap-2 text-xl lg:text-3xl">
                 {typeof data.ppc === "number"
                   ? Math.round(data.ppc * 100)
                   : "N/A"}
+                {data.ppcLevel === "LOW" && (
+                  <div className="h-2 w-2 rounded-full bg-[#1ba005]"></div>
+                )}
+                {data.ppcLevel === "MEDIUM" && (
+                  <div className="h-2 w-2 rounded-full bg-[#ef7a24]"></div>
+                )}
+                {data.ppcLevel === "HIGH" && (
+                  <div className="h-2 w-2 rounded-full bg-[red]"></div>
+                )}
               </div>
             </div>
             <div className="flex flex-col justify-between border-slate-200 p-4">

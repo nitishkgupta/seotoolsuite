@@ -19,7 +19,7 @@ export interface KeywordIdeasItem {
     se_type: string;
     last_updated_time: string;
     competition: number;
-    competition_level: string;
+    competition_level?: "LOW" | "MEDIUM" | "HIGH";
     cpc: number;
     search_volume: number;
     low_top_of_page_bid: number;

@@ -13,12 +13,13 @@ export function getLocalDateTimeFromISOString(dateISOString: string): string {
   const date = new Date(dateISOString);
   return date
     .toLocaleString(navigator.language, {
-      day: "2-digit",
-      month: "2-digit",
+      day: "numeric",
+      month: "short",
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
     })
-    .toUpperCase();
+    .replace("am", "AM")
+    .replace("pm", "PM");
 }

@@ -42,7 +42,6 @@ const ReportTabsItem = memo(
           <Link
             prefetch={false}
             href={href}
-            target="_blank"
             className={`flex min-h-9 items-center gap-1 rounded-md px-2 py-1.5 text-sm transition hover:bg-black/4 ${active ? "border border-b-2 border-slate-200 bg-white!" : ""}`}
           >
             {startContent} {children}

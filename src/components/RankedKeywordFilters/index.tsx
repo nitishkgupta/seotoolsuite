@@ -487,7 +487,7 @@ const RankedKeywordFilters = ({
             <div>
               <div className="flex items-center gap-1 text-sm">
                 <TrendingUpIcon size={16} />
-                Estimated Traffic
+                Monthly Traffic
               </div>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <NumberInput

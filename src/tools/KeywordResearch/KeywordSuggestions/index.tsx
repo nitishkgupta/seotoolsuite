@@ -778,7 +778,18 @@ const KeywordSuggestionsTool = ({
             {typeof params?.value !== "number" ? (
               <div>N/A</div>
             ) : (
-              <div>{Math.round(params.value * 100)}</div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span>{Math.round(params.value * 100)}</span>
+                {params?.row?.keyword_info?.competition_level === "LOW" && (
+                  <div className="h-1.5 w-1.5 rounded-full bg-[#1ba005]"></div>
+                )}
+                {params?.row?.keyword_info?.competition_level === "MEDIUM" && (
+                  <div className="h-1.5 w-1.5 rounded-full bg-[#ef7a24]"></div>
+                )}
+                {params?.row?.keyword_info?.competition_level === "HIGH" && (
+                  <div className="h-1.5 w-1.5 rounded-full bg-[red]"></div>
+                )}
+              </div>
             )}
           </>
         ),
@@ -927,6 +938,9 @@ const KeywordSuggestionsTool = ({
                   isRequired
                   value={selectedLocationKey}
                   className="autocomplete-input"
+                  classNames={{
+                    popoverContent: "border border-slate-200 border-b-2",
+                  }}
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
                   }
@@ -957,6 +971,9 @@ const KeywordSuggestionsTool = ({
                   isRequired
                   value={selectedLanguageKey}
                   className="autocomplete-input"
+                  classNames={{
+                    popoverContent: "border border-slate-200 border-b-2",
+                  }}
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
                   }

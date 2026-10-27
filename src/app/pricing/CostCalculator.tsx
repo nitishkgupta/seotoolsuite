@@ -19,6 +19,11 @@ const CostCalculator = () => {
     Number(0.042 * kwIdeasReports).toFixed(4),
   );
 
+  const [topPagesReports, setTopPagesReports] = useState<number>(50);
+  const topPagesCreditsCost: number = parseFloat(
+    Number(0.042 * topPagesReports).toFixed(4),
+  );
+
   const dateFromFormatted = "2020-10-01";
   const dateFrom = new Date(dateFromFormatted);
   const currentDate = new Date();
@@ -45,20 +50,23 @@ const CostCalculator = () => {
     kwSuggestionsReports +
     kwIdeasReports +
     trafficOverviewReports +
-    rankedKeywordsReports;
+    rankedKeywordsReports +
+    topPagesReports;
   const totalRows: number =
     kwOverviewReports +
     kwSuggestionsReports * 250 +
     kwIdeasReports * 250 +
     trafficOverviewReports +
-    rankedKeywordsReports * 250;
+    rankedKeywordsReports * 250 +
+    topPagesReports * 250;
   const totalCreditsCost: number = parseFloat(
     Number(
       kwOverviewCreditsCost +
         kwSuggestionsCreditsCost +
         kwIdeasCreditsCost +
         trafficOverviewCreditsCost +
-        rankedKeywordsCreditsCost,
+        rankedKeywordsCreditsCost +
+        topPagesCreditsCost,
     ).toFixed(4),
   );
 
@@ -79,6 +87,13 @@ const CostCalculator = () => {
   const handleKWIdeasReportsChange = useCallback(
     (reports: number | number[]) => {
       if (typeof reports === "number") setKwIdeasReports(reports);
+    },
+    [],
+  );
+
+  const handleTopPagesReportsChange = useCallback(
+    (reports: number | number[]) => {
+      if (typeof reports === "number") setTopPagesReports(reports);
     },
     [],
   );
@@ -197,6 +212,26 @@ const CostCalculator = () => {
             <Slider
               value={rankedKeywordsReports}
               onChange={handleRankedKeywordsReportsChange}
+              minValue={0}
+              label="Reports"
+              maxValue={1000}
+              step={1}
+              showTooltip
+              size="md"
+            ></Slider>
+          </div>
+        </div>
+        <div className="flex flex-col gap-3 border-t-2 border-slate-200 p-4">
+          <h3 className="flex items-center justify-between font-medium">
+            <span>Top Pages (250 Rows)</span>
+            <div className="bg-default/40 rounded-full px-3 py-1 text-sm">
+              <b className="font-medium">${topPagesCreditsCost}</b>
+            </div>
+          </h3>
+          <div className="w-full px-2">
+            <Slider
+              value={topPagesReports}
+              onChange={handleTopPagesReportsChange}
               minValue={0}
               label="Reports"
               maxValue={1000}

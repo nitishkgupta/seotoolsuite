@@ -31,6 +31,7 @@ import {
   CircleStarIcon,
   DatabaseZapIcon,
   DiffIcon,
+  FilesIcon,
   MegaphoneIcon,
   MinusIcon,
   PlusIcon,
@@ -287,7 +288,7 @@ const TrafficOverviewTool = ({
         setSelectedLocationKey(location_code);
         setSelectedLanguageKey(language_code);
         setFormInput({
-          target,
+          target: targetDomain,
           location_code,
           language_code,
         });
@@ -422,6 +423,9 @@ const TrafficOverviewTool = ({
                   isRequired
                   value={selectedLocationKey}
                   className="autocomplete-input"
+                  classNames={{
+                    popoverContent: "border border-slate-200 border-b-2",
+                  }}
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
                   }
@@ -452,6 +456,9 @@ const TrafficOverviewTool = ({
                   isRequired
                   value={selectedLanguageKey}
                   className="autocomplete-input"
+                  classNames={{
+                    popoverContent: "border border-slate-200 border-b-2",
+                  }}
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
                   }
@@ -491,6 +498,12 @@ const TrafficOverviewTool = ({
                 href={`/tool/competitive-research/keywords?target=${formInput.target}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
               >
                 Ranked Keywords
+              </ReportTabsItem>
+              <ReportTabsItem
+                startContent={<FilesIcon size={16} />}
+                href={`/tool/competitive-research/pages?target=${formInput.target}&location_code=${formInput.location_code}&language_code=${formInput.language_code}`}
+              >
+                Top Pages
               </ReportTabsItem>
             </ReportTabs>
           )}
@@ -540,7 +553,7 @@ const TrafficOverviewTool = ({
               <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
                 <div className="flex items-center gap-2">
                   <TrendingUpIcon size={18} />
-                  Monthly Organic Traffic
+                  Monthly Traffic
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-1">
                   <span className="text-xl lg:text-3xl">
@@ -575,7 +588,7 @@ const TrafficOverviewTool = ({
               <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
                 <div className="flex items-center gap-2">
                   <TextSearchIcon size={18} />
-                  Ranked Keywords
+                  Keywords
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-1">
                   <span className="text-xl lg:text-3xl">
@@ -611,7 +624,7 @@ const TrafficOverviewTool = ({
               <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
                 <div className="flex items-center gap-2">
                   <BadgeDollarSignIcon size={18} />
-                  Est. Traffic Cost
+                  Traffic Cost
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-1">
                   <div className="text-xl lg:text-3xl">
@@ -843,7 +856,7 @@ const TrafficOverviewTool = ({
               <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
                 <div className="flex items-center gap-2">
                   <TrendingUpIcon size={18} />
-                  Monthly Paid Traffic
+                  Monthly Traffic
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-1">
                   <span className="text-xl lg:text-3xl">
@@ -878,7 +891,7 @@ const TrafficOverviewTool = ({
               <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
                 <div className="flex items-center gap-2">
                   <TextSearchIcon size={18} />
-                  Paid Keywords
+                  Keywords
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-1">
                   <span className="text-xl lg:text-3xl">
@@ -913,7 +926,7 @@ const TrafficOverviewTool = ({
               <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
                 <div className="flex items-center gap-2">
                   <BadgeDollarSignIcon size={18} />
-                  Est. Traffic Cost
+                  Traffic Cost
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-1">
                   <div className="text-xl lg:text-3xl">

@@ -45,9 +45,19 @@ const KeywordActionsDropdown = ({
     }
   }, []);
 
+  const handleUrlClipboardCopy = useCallback(async (url: string) => {
+    if ("clipboard" in navigator) {
+      await navigator.clipboard.writeText(url);
+      addToast({
+        title: "URL copied to clipboard.",
+        color: "default",
+      });
+    }
+  }, []);
+
   return (
     <div className="keyword-actions-dropdown-container">
-      <Dropdown>
+      <Dropdown className="border border-b-2 border-slate-200">
         <DropdownTrigger>
           <Button size="sm" isIconOnly variant="flat">
             <EllipsisIcon size={16} />
@@ -61,6 +71,14 @@ const KeywordActionsDropdown = ({
               startContent={<ClipboardCopyIcon size={16} />}
             >
               Copy Keyword
+            </DropdownItem>
+            <DropdownItem
+              key="url-copy"
+              hidden={!target}
+              onPress={() => handleUrlClipboardCopy(target ?? "")}
+              startContent={<ClipboardCopyIcon size={16} />}
+            >
+              Copy URL
             </DropdownItem>
             <DropdownItem
               key="keyword-details"

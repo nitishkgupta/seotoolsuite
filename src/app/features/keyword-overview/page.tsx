@@ -123,11 +123,11 @@ export default function KeywordOverviewFeaturePage() {
         </div>
 
         {/* Hero Screenshot Frame */}
-        <div className="group r relative order-1 mx-auto mt-8 max-h-70 max-w-300 overflow-hidden rounded-t-md border-t-2 border-r-2 border-l-2 border-slate-200 bg-slate-100 p-4 lg:order-2 lg:max-h-129">
+        <div className="group r relative order-1 mx-auto mt-8 max-h-70 max-w-300 overflow-hidden rounded-t-md border-t-2 border-r-2 border-l-2 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-129">
           <Image
             src="/assets/images/keyword-overview-screenshot.png"
             alt="Keyword Overview Tool"
-            className="w-full rounded-md border-2 border-sky-950/10 transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+248px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+248px)] lg:group-hover:translate-y-[calc(-100%+484px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+484px)]"
+            className="w-full rounded-md border-sky-950/10 transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+248px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+248px)] lg:group-hover:translate-y-[calc(-100%+484px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+484px)]"
             width={1200}
             height={1164}
             quality={100}

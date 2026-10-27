@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import {
   BinocularsIcon,
   BookOpenTextIcon,
+  FilesIcon,
   LightbulbIcon,
   LinkIcon,
   LoaderPinwheelIcon,
@@ -186,6 +187,28 @@ export default function ToolsPage() {
                 </span>
                 <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
                   Get the keywords that a domain or page ranks for.
+                </span>
+              </div>
+            </Link>
+            <Link
+              href="/tool/competitive-research/pages"
+              className={`group flex h-full flex-row items-center rounded-md border-2 border-b-3 border-slate-200 text-lg font-medium transition hover:bg-slate-50 active:scale-95 active:duration-75`}
+            >
+              <div
+                className={`flex h-full items-center justify-center px-4 md:px-5`}
+              >
+                <FilesIcon size={24} className="text-black/80 md:hidden" />
+                <FilesIcon
+                  size={46}
+                  className="hidden text-black/80 md:block"
+                />
+              </div>
+              <div className="flex flex-col py-4 pr-4">
+                <span className="text-lg text-black/80 md:text-xl">
+                  Top Pages
+                </span>
+                <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
+                  Get the top-performing organic pages of a website.
                 </span>
               </div>
             </Link>

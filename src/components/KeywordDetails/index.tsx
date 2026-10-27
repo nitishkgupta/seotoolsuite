@@ -311,10 +311,21 @@ const KeywordDetails = ({
               <Target size={20} />
               <span className="text-base">PPC</span>
             </div>
-            <div className="overflow-auto p-4">
-              {typeof keywordData?.keyword_info?.competition === "number"
-                ? Math.round(keywordData.keyword_info.competition * 100)
-                : "N/A"}
+            <div className="flex flex-wrap items-center gap-2 overflow-auto p-4">
+              <span>
+                {typeof keywordData?.keyword_info?.competition === "number"
+                  ? Math.round(keywordData.keyword_info.competition * 100)
+                  : "N/A"}
+              </span>
+              {keywordData?.keyword_info?.competition_level === "LOW" && (
+                <div className="h-2 w-2 rounded-full bg-[#1ba005]"></div>
+              )}
+              {keywordData?.keyword_info?.competition_level === "MEDIUM" && (
+                <div className="h-2 w-2 rounded-full bg-[#ef7a24]"></div>
+              )}
+              {keywordData?.keyword_info?.competition_level === "HIGH" && (
+                <div className="h-2 w-2 rounded-full bg-[red]"></div>
+              )}
             </div>
           </div>
         </div>

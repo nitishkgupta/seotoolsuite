@@ -2,6 +2,7 @@ import {
   BinocularsIcon,
   BookOpenTextIcon,
   DatabaseZapIcon,
+  FilesIcon,
   InfinityIcon,
   LightbulbIcon,
   LinkIcon,
@@ -46,10 +47,10 @@ export default function HomePage() {
           <h1 className="bg-linear-to-r from-sky-950 to-sky-700 bg-clip-text text-center text-4xl font-semibold text-pretty text-transparent capitalize lg:text-6xl">
             SEO Tools For Everyone
           </h1>
-          <p className="mt-4 max-w-200 text-center text-base font-medium text-balance text-black/60 lg:text-xl">
-            SEOToolSuite provides{" "}
-            <b className="font-semibold text-sky-950">open-source</b> SEO tools
-            for everyone.
+          <p className="mt-4 max-w-250 text-center text-base font-medium text-balance text-black/60 lg:text-xl">
+            <b className="font-semibold text-sky-950">Open-source</b> SEO tools
+            for everyone, powered by{" "}
+            <b className="font-semibold text-sky-950">DataForSEO</b>.
             <span className="mt-1 hidden lg:block"></span>
             <span className="ml-1 lg:ml-0">
               Pay only for{" "}
@@ -115,13 +116,14 @@ export default function HomePage() {
             GitHub
           </Link>
         </div>
-        <div className="relative mx-auto mt-8 w-fit rounded-t-md border-t-2 border-r-2 border-l-2 border-slate-200 bg-slate-100 px-4 pt-4">
+        <div className="relative mx-auto mt-8 w-fit rounded-t-md border-t-2 border-r-2 border-l-2 border-slate-200 bg-slate-100 px-2 pt-2 lg:px-4 lg:pt-4">
           <video
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
+            controls
             className="mx-auto w-full max-w-300 rounded-t-md border-t-2 border-r-2 border-l-2 border-slate-200"
           >
             <source
@@ -338,11 +340,11 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-100">
+            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-100">
               <Image
                 src="/assets/images/keyword-overview-screenshot.png"
                 alt="Keyword Overview Tool"
-                className="w-full rounded-md border-2 border-sky-950/10 transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                className="w-full rounded-md border-slate-200 transition duration-1500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
                 width={1200}
                 height={1164}
                 quality={100}
@@ -402,11 +404,11 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-100">
+            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-100">
               <Image
                 src="/assets/images/keyword-suggestions-screenshot.png"
                 alt="Keyword Suggestions Tool"
-                className="w-full rounded-md border-2 border-sky-950/10 transition duration-3000 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                className="w-full rounded-md border-slate-200 transition duration-3000 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
                 width={1200}
                 height={1164}
                 quality={100}
@@ -465,11 +467,11 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-100">
+            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-100">
               <Image
                 src="/assets/images/keyword-ideas-screenshot.png"
                 alt="Keyword Ideas Tool"
-                className="w-full rounded-md border-2 border-sky-950/10 transition duration-3000 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                className="w-full rounded-md border-slate-200 transition duration-3000 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
                 width={1200}
                 height={1164}
                 quality={100}
@@ -528,11 +530,11 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-100">
+            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-100">
               <Image
                 src="/assets/images/keyword-autocomplete-screenshot.png"
                 alt="Keyword Autocomplete Tool"
-                className="w-full rounded-md border-2 border-sky-950/10 transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                className="w-full rounded-md border-slate-200 transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
                 width={1200}
                 height={1164}
                 quality={100}
@@ -602,11 +604,11 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-100">
+            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-100">
               <Image
                 src="/assets/images/traffic-overview-screenshot.png"
                 alt="Traffic Overview Tool"
-                className="w-full rounded-md border-2 border-sky-950/10 transition duration-3000 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                className="w-full rounded-md border-slate-200 transition duration-3000 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
                 width={1200}
                 height={1164}
                 quality={100}
@@ -666,11 +668,75 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-100">
+            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-100">
               <Image
                 src="/assets/images/ranked-keywords-screenshot.png"
                 alt="Ranked Keywords Tool"
-                className="w-full rounded-md border-2 border-sky-950/10 transition duration-3500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                className="w-full rounded-md border-slate-200 transition duration-3500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                width={1200}
+                height={1164}
+                quality={100}
+              />
+              <div className="absolute bottom-0 left-0 z-20 flex h-12.5 w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
+                <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-chevron-down-icon lucide-chevron-down"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="mx-auto mt-12 h-0.5 w-3/4 rounded-md bg-slate-200"></div>
+          <div className="mt-12 flex w-full flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:gap-0">
+            <div className="order-2 lg:order-1 lg:pt-12">
+              <h3 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-3xl">
+                <FilesIcon
+                  size={48}
+                  className="rounded-md bg-sky-950 p-3 text-white"
+                />
+                Top Pages
+              </h3>
+              <p className="mt-4 block max-w-125 p-2 text-base text-black/80 lg:text-lg">
+                The Top Pages tool identifies a website’s best-performing pages
+                based on organic traffic. It provides insights into traffic,
+                ranking keywords, ranking changes, and estimated traffic cost to
+                help you analyze competitors and discover high-performing
+                content opportunities.
+              </p>
+              <div className="mt-1 mb-2 px-2 text-sm font-semibold text-black/70">
+                - DataForSEO API Required.
+              </div>
+              <div className="mt-0 flex items-center gap-3 p-2">
+                <Link
+                  href="/tool/competitive-research/pages"
+                  className="block w-fit rounded-md border-2 border-b-3 border-black/80 bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
+                >
+                  Access Tool
+                </Link>
+                <Link
+                  href="/features/top-pages"
+                  className="flex items-center gap-1 rounded-md border-2 border-b-3 border-sky-950 bg-white px-4 py-2 text-sm font-medium text-sky-950 transition hover:scale-105 active:scale-95 lg:text-base"
+                >
+                  Learn More
+                </Link>
+              </div>
+            </div>
+            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-100">
+              <Image
+                src="/assets/images/top-pages-screenshot.png"
+                alt="Top Pages Tool"
+                className="w-full rounded-md border-slate-200 transition duration-3500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
                 width={1200}
                 height={1164}
                 quality={100}
@@ -739,11 +805,11 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-sky-950/10 bg-sky-950/5 p-4 lg:order-2 lg:max-h-100">
+            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-100">
               <Image
                 src="/assets/images/bulk-dr-checker-screenshot.png"
                 alt="Bulk DR Checker Tool"
-                className="w-full rounded-md border-2 border-sky-950/10 transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                className="w-full rounded-md border-slate-200 transition duration-2500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
                 width={1200}
                 height={1164}
                 quality={100}

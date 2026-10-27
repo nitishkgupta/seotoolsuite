@@ -26,6 +26,7 @@ import {
   BoxIcon,
   DatabaseIcon,
   DatabaseZapIcon,
+  FilesIcon,
   LifeBuoyIcon,
   LightbulbIcon,
   LockIcon,
@@ -68,6 +69,9 @@ function SettingsComponent() {
     useState<number>(30);
   const [rankedKeywordsMaxRows, setRankedKeywordsMaxRows] =
     useState<number>(250);
+  const [topPagesCachingDuration, setTopPagesCachingDuration] =
+    useState<number>(30);
+  const [topPagesMaxRows, setTopPagesMaxRows] = useState<number>(250);
 
   const [dfsTutorialShown, setDFSTutorialShown] = useState<boolean>(false);
   const [upstashTutorialShown, setUpstashTutorialShown] =
@@ -246,6 +250,23 @@ function SettingsComponent() {
     [],
   );
 
+  const handleTopPagesCachingDurationChange = useCallback(
+    (duration: number | number[]) => {
+      if (typeof duration === "number") {
+        setTopPagesCachingDuration(duration);
+        setLocalStorageItem("TOP_PAGES_CACHING_DURATION", duration.toString());
+      }
+    },
+    [],
+  );
+
+  const handleTopPagesMaxRowsChange = useCallback((rows: number | number[]) => {
+    if (typeof rows === "number") {
+      setTopPagesMaxRows(rows);
+      setLocalStorageItem("TOP_PAGES_MAX_ROWS", rows.toString());
+    }
+  }, []);
+
   const handleDefaultLocationKeyChange = useCallback((key: string) => {
     setDefaultLocationKey(key);
     setLocalStorageItem("DEFAULT_LOCATION_KEY", key);
@@ -284,6 +305,12 @@ function SettingsComponent() {
     );
     setRankedKeywordsMaxRows(
       Number(getLocalStorageItem("RANKED_KWS_MAX_ROWS") ?? 250),
+    );
+    setTopPagesCachingDuration(
+      Number(getLocalStorageItem("TOP_PAGES_CACHING_DURATION") ?? 30),
+    );
+    setTopPagesMaxRows(
+      Number(getLocalStorageItem("TOP_PAGES_MAX_ROWS") ?? 250),
     );
   }, []);
 
@@ -547,6 +574,59 @@ function SettingsComponent() {
                   </div>
                 </div>
               </AccordionItem>
+              <AccordionItem
+                key="top-pages"
+                aria-label="Top Pages"
+                title={<span className="text-base md:text-lg">Top Pages</span>}
+                startContent={
+                  <div className="flex items-center gap-1.5">
+                    <BinocularsIcon className="w-5 scale-90" />
+                    <div className="h-4 w-0.5 bg-black"></div>
+                    <FilesIcon className="w-4" />
+                  </div>
+                }
+              >
+                <div className="flex flex-col gap-2 pb-2">
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <Rows4Icon size={16} />
+                      <div className="text-sm md:text-base">
+                        Max. Rows Per Report
+                      </div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={topPagesMaxRows}
+                        onChange={handleTopPagesMaxRowsChange}
+                        minValue={1}
+                        maxValue={1000}
+                        step={1}
+                        showTooltip
+                        label="Rows"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <DatabaseZapIcon size={16} />
+                      <div className="text-sm md:text-base">Cache Duration</div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={topPagesCachingDuration}
+                        onChange={handleTopPagesCachingDurationChange}
+                        minValue={0}
+                        maxValue={365}
+                        step={1}
+                        showTooltip
+                        label="Days"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                </div>
+              </AccordionItem>
             </Accordion>
           </div>
           <div className="w-full px-4 pb-4">
@@ -558,6 +638,9 @@ function SettingsComponent() {
                 label="Location"
                 isRequired
                 className="autocomplete-input"
+                classNames={{
+                  popoverContent: "border border-slate-200 border-b-2",
+                }}
                 value={defaultLocationKey}
                 onChange={(key: any) =>
                   handleDefaultLocationKeyChange(key.target.value)
@@ -591,6 +674,9 @@ function SettingsComponent() {
                 variant="flat"
                 label="Language"
                 className="autocomplete-input"
+                classNames={{
+                  popoverContent: "border border-slate-200 border-b-2",
+                }}
                 isRequired
                 value={defaultLanguageKey}
                 onChange={(key: any) =>

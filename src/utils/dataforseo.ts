@@ -52,6 +52,28 @@ export type DataForSEORankedKeywordFilters = {
   maxEstimatedTraffic?: number;
 };
 
+export type DataForSEORelevantPagesFilters = {
+  minTraffic?: number;
+  maxTraffic?: number;
+  minKeywords?: number;
+  maxKeywords?: number;
+  minTrafficCost?: number;
+  maxTrafficCost?: number;
+  includePageAddress?: string;
+  excludePageAddress?: string;
+};
+
+export interface FormattedRankPositionDistributionData {
+  label: string;
+  Keywords: number;
+}
+
+export interface FormattedMonthlySearches extends MonthlySearches {
+  "Monthly Searches": number;
+  monthLabel: string;
+  monthWithYearLabel: string;
+}
+
 /**
  * Get DataForSEO locations.
  */
@@ -194,12 +216,6 @@ export function buildDataForSEOKeywordFilters(
   }
 
   return [];
-}
-
-export interface FormattedMonthlySearches extends MonthlySearches {
-  "Monthly Searches": number;
-  monthLabel: string;
-  monthWithYearLabel: string;
 }
 
 /**
@@ -385,14 +401,71 @@ export function buildDataForSEORankedKeywordFilters(
   return [];
 }
 
-export interface FormattedRankPositionDistributionData {
-  label: string;
-  Keywords: number;
+/**
+ * Build DataForSEO relevant pages filters input.
+ */
+export function buildDataForSEORelevantPagesFilters(
+  filters: DataForSEORelevantPagesFilters,
+): Array<any> {
+  if (Object.keys(filters).length > 0) {
+    const dfsFilters: any[] = [];
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (key === "minTraffic" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["metrics.organic.etv", ">=", value]);
+      }
+
+      if (key === "maxTraffic" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["metrics.organic.etv", "<=", value]);
+      }
+
+      if (key === "minKeywords" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["metrics.organic.count", ">=", value]);
+      }
+
+      if (key === "maxKeywords" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["metrics.organic.count", "<=", value]);
+      }
+
+      if (key === "minTrafficCost" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "metrics.organic.estimated_paid_traffic_cost",
+          ">=",
+          value,
+        ]);
+      }
+
+      if (key === "maxTrafficCost" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push([
+          "metrics.organic.estimated_paid_traffic_cost",
+          "<=",
+          value,
+        ]);
+      }
+
+      if (key === "includePageAddress" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["page_address", "like", `%${value}%`]);
+      }
+
+      if (key === "excludePageAddress" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["page_address", "not_like", `%${value}%`]);
+      }
+    }
+
+    return dfsFilters;
+  }
+
+  return [];
 }
 
-/**
- * Format ranked keywords position distribution.
- */
 export function formatRankPositionDistribution(
   data: RankedKeywordsMetricsData,
 ): FormattedRankPositionDistributionData[] {

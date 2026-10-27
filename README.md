@@ -77,11 +77,21 @@ The Keyword Autocomplete tool generates long-tail keyword ideas using Google aut
 
 The Traffic Overview tool analyzes a website’s organic and paid search performance. It provides insights such as estimated traffic, ranked keywords, traffic cost, ranking changes, and historical trends - helping you understand competitor performance and identify SEO opportunities.
 
+**- DataForSEO API Required.**
+
 #### Ranked Keywords
 
 ![Ranked Keywords Tool](docs/assets/ranked-keywords-screenshot.png)
 
 The Ranked Keywords tool shows the keywords a domain or page ranks for in search results. It provides insights such as rankings, search volume, estimated traffic, CPC, competition, and keyword difficulty - helping you analyze competitor SEO performance and discover ranking opportunities.
+
+**- DataForSEO API Required.**
+
+#### Top Pages
+
+![Top Pages Tool](docs/assets/top-pages-screenshot.png)
+
+The Top Pages tool identifies a website’s best-performing pages based on organic traffic. It provides insights into traffic, ranking keywords, ranking changes, and estimated traffic cost to help you analyze competitors and discover high-performing content opportunities.
 
 **- DataForSEO API Required.**
 

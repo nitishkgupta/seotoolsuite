@@ -62,19 +62,19 @@ const HistoricalRankTrendChart = ({
         >
           {sourceType === "organic" && (
             <>
-              <Radio value="metrics.organic.etv">Monthly Organic Traffic</Radio>
-              <Radio value="metrics.organic.count">Ranked Keywords</Radio>
+              <Radio value="metrics.organic.etv">Monthly Traffic</Radio>
+              <Radio value="metrics.organic.count">Keywords</Radio>
               <Radio value="metrics.organic.estimated_paid_traffic_cost">
-                Est. Traffic Cost
+                Traffic Cost
               </Radio>
             </>
           )}
           {sourceType === "paid" && (
             <>
-              <Radio value="metrics.paid.etv">Monthly Paid Traffic</Radio>
-              <Radio value="metrics.paid.count">Paid Keywords</Radio>
+              <Radio value="metrics.paid.etv">Monthly Traffic</Radio>
+              <Radio value="metrics.paid.count">Keywords</Radio>
               <Radio value="metrics.paid.estimated_paid_traffic_cost">
-                Est. Traffic Cost
+                Traffic Cost
               </Radio>
             </>
           )}

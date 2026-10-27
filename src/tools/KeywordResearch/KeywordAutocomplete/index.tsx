@@ -496,6 +496,9 @@ const KeywordAutocompleteTool = ({
                 isRequired
                 value={selectedLocationKey}
                 className="autocomplete-input"
+                classNames={{
+                  popoverContent: "border border-slate-200 border-b-2",
+                }}
                 onChange={(key: any) =>
                   setSelectedLocationKey(key.target.value)
                 }
@@ -526,6 +529,9 @@ const KeywordAutocompleteTool = ({
                 isRequired
                 value={selectedLanguageKey}
                 className="autocomplete-input"
+                classNames={{
+                  popoverContent: "border border-slate-200 border-b-2",
+                }}
                 onChange={(key: any) =>
                   setSelectedLanguageKey(key.target.value)
                 }

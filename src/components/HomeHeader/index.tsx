@@ -14,6 +14,7 @@ import {
   BookOpenTextIcon,
   ChevronDownIcon,
   ExternalLinkIcon,
+  FilesIcon,
   LightbulbIcon,
   LoaderPinwheelIcon,
   MenuIcon,
@@ -63,7 +64,10 @@ const HomeHeader = () => {
         <div
           className={`absolute top-full left-0 z-20 hidden w-full flex-col gap-4 border-t-2 border-b-2 border-slate-200 bg-white p-4 md:relative md:ml-7 md:flex md:w-fit md:flex-row md:items-center md:border-none md:p-0 ${isMobileMenuOpen ? "flex!" : ""}`}
         >
-          <Dropdown className="w-full border-2 border-slate-200 shadow-none md:w-auto">
+          <Dropdown
+            placement="bottom-start"
+            className="w-full border-2 border-b-3 border-slate-200 md:w-auto"
+          >
             <DropdownTrigger>
               <button
                 className={`flex cursor-pointer items-center gap-1 ${isFeaturesPage ? "font-medium!" : ""}`}
@@ -72,17 +76,24 @@ const HomeHeader = () => {
                 <ChevronDownIcon size={18} />
               </button>
             </DropdownTrigger>
-            <DropdownMenu className="min-w-64">
+            <DropdownMenu
+              className="max-h-[calc(100dvh-140px)] min-w-64 overflow-y-auto pt-2 lg:max-h-[calc(100dvh-80px)]"
+              classNames={{
+                list: "grid grid-cols-1 lg:grid-cols-3 lg:gap-2",
+              }}
+            >
               <DropdownSection
-                showDivider
-                title="KEYWORD RESEARCH"
-                className="font-medium"
+                title="Keyword Research"
+                classNames={{
+                  heading: "text-small font-medium",
+                  base: "lg:mb-0",
+                }}
               >
                 <DropdownItem
                   key="keyword-overview"
                   href="/features/keyword-overview"
                   startContent={<BookOpenTextIcon size={18} />}
-                  className={`p-2 hover:bg-slate-100! ${isFeaturesPageActive("keyword-overview") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("keyword-overview") ? "bg-slate-100!" : ""}`}
                 >
                   Keyword Overview
                 </DropdownItem>
@@ -90,7 +101,7 @@ const HomeHeader = () => {
                   key="keyword-suggestions"
                   href="/features/keyword-suggestions"
                   startContent={<TextSearchIcon size={18} />}
-                  className={`p-2 hover:bg-slate-100! ${isFeaturesPageActive("keyword-suggestions") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("keyword-suggestions") ? "bg-slate-100!" : ""}`}
                 >
                   Keyword Suggestions
                 </DropdownItem>
@@ -98,7 +109,7 @@ const HomeHeader = () => {
                   key="keyword-ideas"
                   href="/features/keyword-ideas"
                   startContent={<LightbulbIcon size={18} />}
-                  className={`p-2 hover:bg-slate-100! ${isFeaturesPageActive("keyword-ideas") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("keyword-ideas") ? "bg-slate-100!" : ""}`}
                 >
                   Keyword Ideas
                 </DropdownItem>
@@ -106,21 +117,22 @@ const HomeHeader = () => {
                   key="keyword-autocomplete"
                   href="/features/keyword-autocomplete"
                   startContent={<LoaderPinwheelIcon size={18} />}
-                  className={`p-2 hover:bg-slate-100! ${isFeaturesPageActive("keyword-autocomplete") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("keyword-autocomplete") ? "bg-slate-100!" : ""}`}
                 >
                   Keyword Autocomplete
                 </DropdownItem>
               </DropdownSection>
               <DropdownSection
-                showDivider
-                title="COMPETITIVE RESEARCH"
-                className="font-medium"
+                title="Competitive Research"
+                classNames={{
+                  heading: "text-small font-medium",
+                }}
               >
                 <DropdownItem
                   key="traffic-overview"
                   href="/features/traffic-overview"
                   startContent={<BookOpenTextIcon size={18} />}
-                  className={`p-2 hover:bg-slate-100! ${isFeaturesPageActive("traffic-overview") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("traffic-overview") ? "bg-slate-100!" : ""}`}
                 >
                   Traffic Overview
                 </DropdownItem>
@@ -128,27 +140,40 @@ const HomeHeader = () => {
                   key="ranked-keywords"
                   href="/features/ranked-keywords"
                   startContent={<TextSearchIcon size={18} />}
-                  className={`p-2 hover:bg-slate-100! ${isFeaturesPageActive("ranked-keywords") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("ranked-keywords") ? "bg-slate-100!" : ""}`}
                 >
                   Ranked Keywords
                 </DropdownItem>
+                <DropdownItem
+                  key="top-pages"
+                  href="/features/top-pages"
+                  startContent={<FilesIcon size={18} />}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("top-pages") ? "bg-slate-100!" : ""}`}
+                >
+                  Top Pages
+                </DropdownItem>
               </DropdownSection>
               <DropdownSection
-                title="BACKLINK RESEARCH"
-                className="font-medium"
+                title="Backlink Research"
+                classNames={{
+                  heading: "text-small font-medium",
+                }}
               >
                 <DropdownItem
                   key="bulk-dr-checker"
                   href="/features/bulk-dr-checker"
                   startContent={<StarIcon size={18} />}
-                  className={`p-2 hover:bg-slate-100! ${isFeaturesPageActive("bulk-dr-checker") ? "bg-slate-100!" : ""}`}
+                  className={`p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("bulk-dr-checker") ? "bg-slate-100!" : ""}`}
                 >
                   Bulk DR Checker
                 </DropdownItem>
               </DropdownSection>
             </DropdownMenu>
           </Dropdown>
-          <Dropdown className="border-2 border-slate-200 shadow-none">
+          <Dropdown
+            placement="bottom-start"
+            className="border-2 border-b-3 border-slate-200"
+          >
             <DropdownTrigger>
               <button className="flex cursor-pointer items-center gap-1">
                 <span>Resources</span>
@@ -210,7 +235,7 @@ const HomeHeader = () => {
           </Link>
           <Link
             href="/tools"
-            className="block rounded-md border-2 border-b-3 border-black/80 bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-base"
+            className="block rounded-md border-2 border-b-3 border-black/80 bg-sky-950 px-3 py-1.5 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:px-4 lg:py-2 lg:text-base"
           >
             Get Started
           </Link>
