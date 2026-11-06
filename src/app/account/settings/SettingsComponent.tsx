@@ -27,8 +27,10 @@ import {
   DatabaseIcon,
   DatabaseZapIcon,
   FilesIcon,
+  GraphStarIcon,
   LifeBuoyIcon,
   LightbulbIcon,
+  LinkIcon,
   LockIcon,
   Rows4Icon,
   TelescopeIcon,
@@ -72,6 +74,10 @@ function SettingsComponent() {
   const [topPagesCachingDuration, setTopPagesCachingDuration] =
     useState<number>(30);
   const [topPagesMaxRows, setTopPagesMaxRows] = useState<number>(250);
+  const [backlinkCheckerCachingDuration, setBacklinkCheckerCachingDuration] =
+    useState<number>(30);
+  const [backlinkCheckerMaxRows, setBacklinkCheckerMaxRows] =
+    useState<number>(250);
 
   const [dfsTutorialShown, setDFSTutorialShown] = useState<boolean>(false);
   const [upstashTutorialShown, setUpstashTutorialShown] =
@@ -267,6 +273,29 @@ function SettingsComponent() {
     }
   }, []);
 
+  const handleBacklinkCheckerCachingDurationChange = useCallback(
+    (duration: number | number[]) => {
+      if (typeof duration === "number") {
+        setBacklinkCheckerCachingDuration(duration);
+        setLocalStorageItem(
+          "BACKLINK_CHECKER_CACHING_DURATION",
+          duration.toString(),
+        );
+      }
+    },
+    [],
+  );
+
+  const handleBacklinkCheckerMaxRowsChange = useCallback(
+    (rows: number | number[]) => {
+      if (typeof rows === "number") {
+        setBacklinkCheckerMaxRows(rows);
+        setLocalStorageItem("BACKLINK_CHECKER_MAX_ROWS", rows.toString());
+      }
+    },
+    [],
+  );
+
   const handleDefaultLocationKeyChange = useCallback((key: string) => {
     setDefaultLocationKey(key);
     setLocalStorageItem("DEFAULT_LOCATION_KEY", key);
@@ -311,6 +340,12 @@ function SettingsComponent() {
     );
     setTopPagesMaxRows(
       Number(getLocalStorageItem("TOP_PAGES_MAX_ROWS") ?? 250),
+    );
+    setBacklinkCheckerCachingDuration(
+      Number(getLocalStorageItem("BACKLINK_CHECKER_CACHING_DURATION") ?? 30),
+    );
+    setBacklinkCheckerMaxRows(
+      Number(getLocalStorageItem("BACKLINK_CHECKER_MAX_ROWS") ?? 250),
     );
   }, []);
 
@@ -616,6 +651,61 @@ function SettingsComponent() {
                       <Slider
                         value={topPagesCachingDuration}
                         onChange={handleTopPagesCachingDurationChange}
+                        minValue={0}
+                        maxValue={365}
+                        step={1}
+                        showTooltip
+                        label="Days"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                </div>
+              </AccordionItem>
+              <AccordionItem
+                key="backlink-checker"
+                aria-label="Backlink Checker"
+                title={
+                  <span className="text-base md:text-lg">Backlink Checker</span>
+                }
+                startContent={
+                  <div className="flex items-center gap-1.5">
+                    <LinkIcon className="w-5 scale-90" />
+                    <div className="h-4 w-0.5 bg-black"></div>
+                    <GraphStarIcon className="w-4" />
+                  </div>
+                }
+              >
+                <div className="flex flex-col gap-2 pb-2">
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <Rows4Icon size={16} />
+                      <div className="text-sm md:text-base">
+                        Max. Rows Per Report
+                      </div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={backlinkCheckerMaxRows}
+                        onChange={handleBacklinkCheckerMaxRowsChange}
+                        minValue={1}
+                        maxValue={1000}
+                        step={1}
+                        showTooltip
+                        label="Rows"
+                        size="sm"
+                      ></Slider>
+                    </div>
+                  </div>
+                  <div className="px-2">
+                    <div className="flex items-center gap-1.5">
+                      <DatabaseZapIcon size={16} />
+                      <div className="text-sm md:text-base">Cache Duration</div>
+                    </div>
+                    <div className="mt-2.5 px-4">
+                      <Slider
+                        value={backlinkCheckerCachingDuration}
+                        onChange={handleBacklinkCheckerCachingDurationChange}
                         minValue={0}
                         maxValue={365}
                         step={1}

@@ -4,6 +4,7 @@ import {
   BinocularsIcon,
   BookOpenTextIcon,
   FilesIcon,
+  GraphStarIcon,
   LightbulbIcon,
   LinkIcon,
   LoaderPinwheelIcon,
@@ -220,6 +221,28 @@ export default function ToolsPage() {
             <span>Backlink Research</span>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+            <Link
+              href="/tool/backlink-research/backlinks"
+              className={`group flex h-full flex-row items-center rounded-md border-2 border-b-3 border-slate-200 text-lg font-medium transition hover:bg-slate-50 active:scale-95 active:duration-75`}
+            >
+              <div
+                className={`flex h-full items-center justify-center px-4 md:px-5`}
+              >
+                <GraphStarIcon size={24} className="text-black/80 md:hidden" />
+                <GraphStarIcon
+                  size={46}
+                  className="hidden text-black/80 md:block"
+                />
+              </div>
+              <div className="flex flex-col py-4 pr-4">
+                <span className="text-lg text-black/80 md:text-xl">
+                  Backlink Checker
+                </span>
+                <span className="mt-1 text-sm leading-tight text-pretty text-black/60 md:text-base">
+                  Analyze backlinks pointing to any domain, subdomain, or URL.
+                </span>
+              </div>
+            </Link>
             <Link
               href="/tool/backlink-research/bulk-dr-checker"
               className={`group relative flex h-full flex-row items-center rounded-md border-2 border-b-3 border-slate-200 text-lg font-medium transition hover:bg-slate-50 active:scale-95 active:duration-75`}

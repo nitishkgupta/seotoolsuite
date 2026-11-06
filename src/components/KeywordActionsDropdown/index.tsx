@@ -13,6 +13,7 @@ import {
   ClipboardCopyIcon,
   EllipsisIcon,
   ExternalLinkIcon,
+  GraphStarIcon,
   InfoIcon,
   LightbulbIcon,
   LoaderPinwheelIcon,
@@ -146,6 +147,19 @@ const KeywordActionsDropdown = ({
               }
             >
               Keywords
+            </DropdownItem>
+          </DropdownSection>
+          <DropdownSection title="Backlink Research" hidden={!target}>
+            <DropdownItem
+              key="backlink-checker"
+              href={`/tool/backlink-research/backlinks?target=${target}`}
+              target="_blank"
+              startContent={<GraphStarIcon size={18} />}
+              endContent={
+                <ExternalLinkIcon size={14} className="text-black/80" />
+              }
+            >
+              Backlinks
             </DropdownItem>
           </DropdownSection>
         </DropdownMenu>

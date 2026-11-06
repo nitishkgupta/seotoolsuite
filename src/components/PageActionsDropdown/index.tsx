@@ -13,6 +13,7 @@ import {
   ClipboardCopyIcon,
   EllipsisIcon,
   ExternalLinkIcon,
+  GraphStarIcon,
   InfoIcon,
   TextSearchIcon,
 } from "lucide-react";
@@ -78,6 +79,19 @@ const PageActionsDropdown = ({
               }
             >
               Keywords
+            </DropdownItem>
+          </DropdownSection>
+          <DropdownSection title="Backlink Research">
+            <DropdownItem
+              key="backlink-checker"
+              href={`/tool/backlink-research/backlinks?target=${pageAddress}`}
+              target="_blank"
+              startContent={<GraphStarIcon size={18} />}
+              endContent={
+                <ExternalLinkIcon size={14} className="text-black/80" />
+              }
+            >
+              Backlinks
             </DropdownItem>
           </DropdownSection>
         </DropdownMenu>

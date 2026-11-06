@@ -5,6 +5,7 @@ import {
   BookOpenTextIcon,
   FaceSlightlySmilingPlusIcon,
   FilesIcon,
+  GraphStarIcon,
   LightbulbIcon,
   LinkIcon,
   LoaderPinwheelIcon,
@@ -133,6 +134,13 @@ const Sidebar = () => {
             <span>Backlink Research</span>
           </Link>
           <div className="flex flex-col gap-1">
+            <Link
+              href="/tool/backlink-research/backlinks"
+              className={`relative ml-3 flex items-center gap-2 rounded-l-md px-3 py-2 text-sm transition hover:bg-slate-100 ${isToolActive("backlink-research/backlinks") ? "bg-slate-100!" : ""}`}
+              onClick={() => setResponsiveOpen(false)}
+            >
+              <GraphStarIcon size={18} /> <span>Backlinks</span>
+            </Link>
             <Link
               href="/tool/backlink-research/bulk-dr-checker"
               className={`relative ml-3 flex items-center gap-2 rounded-l-md px-3 py-2 text-sm transition hover:bg-slate-100 ${isToolActive("backlink-research/bulk-dr-checker") ? "bg-slate-100!" : ""}`}

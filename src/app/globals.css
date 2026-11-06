@@ -75,3 +75,6 @@ div[role="tooltip"] > div {
 .autocomplete-input div[data-slot="input-wrapper"] {
   box-shadow: none !important;
 }
+.select-input button[data-slot="trigger"] {
+  box-shadow: none !important;
+}

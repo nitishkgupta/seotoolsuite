@@ -648,6 +648,100 @@ class DataForSEO {
       throw error;
     }
   }
+
+  /**
+   * Get backlinks.
+   */
+  async getBacklinks(
+    target: string,
+    mode: "as_is" | "one_per_domain" | "one_per_anchor" = "one_per_domain",
+    backlinks_status_type: "all" | "live" | "lost" = "live",
+    include_subdomains: boolean = true,
+    filters: Array<any> = [],
+    limit: number = 50,
+    offset: number = 0,
+    cachingDuration: number = this.defaultCachingDuration,
+    refreshData: boolean = false,
+  ) {
+    if (
+      !this.sandboxEnabled &&
+      this.enableCaching &&
+      this.upstashRedis &&
+      !refreshData
+    ) {
+      let cachedData;
+      try {
+        cachedData = await this.upstashRedis.getData(
+          btoa(
+            `backlinks-${target}-${mode}-${backlinks_status_type}-${include_subdomains.toString()}-${JSON.stringify(filters)}-${limit}-${offset}`,
+          ),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+
+      if (cachedData) {
+        cachedData = JSON.parse(cachedData);
+        cachedData.isCachedData = true;
+        return cachedData;
+      }
+    }
+
+    try {
+      const apiResponse = await axios.post(
+        `${this.API_BASE_URL}/backlinks/backlinks/live`,
+        [
+          {
+            target,
+            mode,
+            backlinks_status_type,
+            include_subdomains,
+            ...(filters && filters.length > 0 ? { filters } : {}),
+            limit,
+            offset,
+            rank_scale: "one_hundred ",
+            order_by: ["domain_from_rank,desc"],
+          },
+        ],
+        {
+          headers: {
+            Authorization: `Basic ${Buffer.from(
+              `${this.USERNAME}:${this.PASSWORD}`,
+            ).toString("base64")}`,
+          },
+        },
+      );
+
+      const taskStatusCode = apiResponse?.data?.tasks[0]?.status_code ?? null;
+
+      if (
+        !this.sandboxEnabled &&
+        this.enableCaching &&
+        this.upstashRedis &&
+        cachingDuration > 0 &&
+        taskStatusCode === 20000
+      ) {
+        try {
+          this.upstashRedis.setData(
+            btoa(
+              `backlinks-${target}-${mode}-${backlinks_status_type}-${include_subdomains.toString()}-${JSON.stringify(filters)}-${limit}-${offset}`,
+            ),
+            JSON.stringify({
+              ...apiResponse.data,
+              cachedAt: getCurrentDateTimeUTC(),
+            }),
+            60 * 60 * 24 * cachingDuration,
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      return apiResponse.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default DataForSEO;

@@ -23,3 +23,15 @@ export function getLocalDateTimeFromISOString(dateISOString: string): string {
     .replace("am", "AM")
     .replace("pm", "PM");
 }
+
+/**
+ * Get local date from ISO string.
+ */
+export function getLocalDateFromISOString(dateISOString: string): string {
+  const date = new Date(dateISOString);
+  return date.toLocaleDateString(navigator.language, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}

@@ -1,5 +1,11 @@
 # SEOToolSuite Changelog
 
+## v9.0.0
+
+- Added a new **Backlink Checker** tool. Analyze backlinks pointing to any domain, subdomain, or URL.
+- Added new columns "New Keywords, Keywords Moved Up, Keywords Moved Down" to the **Top Pages** data grid.
+- Updated packages.
+
 ## v8.0.0
 
 - Added a new **Top Pages** tool. Get the top-performing organic pages of a website.

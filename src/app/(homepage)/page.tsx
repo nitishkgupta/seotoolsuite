@@ -3,6 +3,7 @@ import {
   BookOpenTextIcon,
   DatabaseZapIcon,
   FilesIcon,
+  GraphStarIcon,
   InfinityIcon,
   LightbulbIcon,
   LinkIcon,
@@ -772,6 +773,70 @@ export default function HomePage() {
             />
             Backlink Research Tools
           </h2>
+          <div className="mt-12 flex w-full flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:gap-0">
+            <div className="order-2 lg:order-1 lg:pt-12">
+              <h3 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-3xl">
+                <GraphStarIcon
+                  size={48}
+                  className="rounded-md bg-sky-950 p-3 text-white"
+                />
+                Backlink Checker
+              </h3>
+              <p className="mt-4 block max-w-125 p-2 text-base text-black/80 lg:text-lg">
+                The Backlink Checker tool analyzes backlinks pointing to any
+                domain, subdomain, or URL. It provides insights into referring
+                pages, target URLs, Domain Rank (DR), Page Rank (PR), spam
+                score, and link status to help evaluate backlink profiles and
+                identify link-building opportunities.
+              </p>
+              <div className="mt-1 mb-2 px-2 text-sm font-semibold text-black/70">
+                - DataForSEO API Required.
+              </div>
+              <div className="mt-0 flex items-center gap-3 p-2">
+                <Link
+                  href="/tool/backlink-research/backlinks"
+                  className="block w-fit rounded-md border-2 border-b-3 border-black/80 bg-sky-950 px-4 py-2 text-sm font-medium text-white transition hover:scale-105 active:scale-95 lg:text-lg"
+                >
+                  Access Tool
+                </Link>
+                <Link
+                  href="/features/backlink-checker"
+                  className="flex items-center gap-1 rounded-md border-2 border-b-3 border-sky-950 bg-white px-4 py-2 text-sm font-medium text-sky-950 transition hover:scale-105 active:scale-95 lg:text-base"
+                >
+                  Learn More
+                </Link>
+              </div>
+            </div>
+            <div className="group relative order-1 mt-4 max-h-50 max-w-200 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-gray-100 p-2 lg:order-2 lg:max-h-100">
+              <Image
+                src="/assets/images/backlink-checker-screenshot.png"
+                alt="Backlink Checker Tool"
+                className="w-full rounded-md border-slate-200 transition duration-3500 ease-linear group-hover:translate-y-[calc(-100%+168px)] group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+168px)] lg:group-hover:translate-y-[calc(-100%+368px)] lg:group-[:has(.tool-card-arrow:focus)]:translate-y-[calc(-100%+368px)]"
+                width={1200}
+                height={1164}
+                quality={100}
+              />
+              <div className="absolute bottom-0 left-0 z-20 flex h-12.5 w-full items-end justify-center bg-linear-to-t from-black/20 to-transparent pb-1 text-black transition-all duration-300 group-hover:opacity-0 has-[.tool-card-arrow:focus]:opacity-0 lg:pb-2">
+                <button className="tool-card-arrow flex h-8 w-8 scale-80 animate-bounce items-center justify-center rounded-full bg-white text-black md:scale-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-chevron-down-icon lucide-chevron-down"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="mx-auto mt-12 h-0.5 w-3/4 rounded-md bg-slate-200"></div>
           <div className="mt-12 flex w-full flex-col items-start justify-between gap-8 px-4 lg:flex-row lg:gap-0">
             <div className="order-2 lg:order-1 lg:pt-12">
               <h3 className="flex items-center gap-3 text-xl font-semibold text-sky-950 lg:text-3xl">

@@ -1,7 +1,7 @@
 import DataForSEOLocationsData from "@/data/dataforseo-locations-data.json";
 import DataForSEOLanguagesData from "@/data/dataforseo-languages-data.json";
 import { MONTH_NAMES } from "@/constants";
-import { MonthlySearches } from "@/types/DFS/common";
+import { BacklinkType, MonthlySearches } from "@/types/DFS/common";
 import { HistoricalRankOverviewItem } from "@/types/DFS/HistoricalRankOverview";
 import { RankedKeywordsMetricsData } from "@/types/DFS/RankedKeywords";
 
@@ -457,6 +457,80 @@ export function buildDataForSEORelevantPagesFilters(
       if (key === "excludePageAddress" && typeof value === "string") {
         if (dfsFilters.length > 0) dfsFilters.push("and");
         dfsFilters.push(["page_address", "not_like", `%${value}%`]);
+      }
+    }
+
+    return dfsFilters;
+  }
+
+  return [];
+}
+
+export type DataForSEOBacklinksFilters = {
+  includeSource?: string;
+  excludeSource?: string;
+  includeTarget?: string;
+  excludeTarget?: string;
+  minSourceDR?: number;
+  maxSourceDR?: number;
+  minSourcePR?: number;
+  maxSourcePR?: number;
+  backlinkTypes?: Array<BacklinkType>;
+};
+
+/**
+ * Build DataForSEO backlinks filters input.
+ */
+export function buildDataForSEOBacklinksFilters(
+  filters: DataForSEOBacklinksFilters,
+): Array<any> {
+  if (Object.keys(filters).length > 0) {
+    const dfsFilters: any[] = [];
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (key === "includeSource" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["url_from", "like", `%${value}%`]);
+      }
+
+      if (key === "excludeSource" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["url_from", "not_like", `%${value}%`]);
+      }
+
+      if (key === "includeTarget" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["url_to", "like", `%${value}%`]);
+      }
+
+      if (key === "excludeTarget" && typeof value === "string") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["url_to", "not_like", `%${value}%`]);
+      }
+
+      if (key === "minSourceDR" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["domain_from_rank", ">=", value]);
+      }
+
+      if (key === "maxSourceDR" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["domain_from_rank", "<=", value]);
+      }
+
+      if (key === "minSourcePR" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["page_from_rank", ">=", value]);
+      }
+
+      if (key === "maxSourcePR" && typeof value === "number") {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["page_from_rank", "<=", value]);
+      }
+
+      if (key === "backlinkTypes" && Array.isArray(value) && value.length > 0) {
+        if (dfsFilters.length > 0) dfsFilters.push("and");
+        dfsFilters.push(["item_type", "in", value]);
       }
     }
 

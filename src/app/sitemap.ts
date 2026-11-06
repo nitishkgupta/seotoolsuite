@@ -48,5 +48,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/features/top-pages`,
       lastModified: new Date(),
     },
+    {
+      url: `${baseUrl}/features/backlink-checker`,
+      lastModified: new Date(),
+    },
   ];
 }

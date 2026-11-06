@@ -15,6 +15,7 @@ import {
   ChevronDownIcon,
   ExternalLinkIcon,
   FilesIcon,
+  GraphStarIcon,
   LightbulbIcon,
   LoaderPinwheelIcon,
   MenuIcon,
@@ -160,10 +161,18 @@ const HomeHeader = () => {
                 }}
               >
                 <DropdownItem
+                  key="backlink-checker"
+                  href="/features/backlink-checker"
+                  startContent={<GraphStarIcon size={18} />}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("backlink-checker") ? "bg-slate-100!" : ""}`}
+                >
+                  Backlink Checker
+                </DropdownItem>
+                <DropdownItem
                   key="bulk-dr-checker"
                   href="/features/bulk-dr-checker"
                   startContent={<StarIcon size={18} />}
-                  className={`p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("bulk-dr-checker") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("bulk-dr-checker") ? "bg-slate-100!" : ""}`}
                 >
                   Bulk DR Checker
                 </DropdownItem>

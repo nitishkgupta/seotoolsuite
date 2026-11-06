@@ -372,7 +372,11 @@ const TopPagesTool = ({
   const getMUIRowHeight = useCallback(() => "auto", []);
 
   const getTogglableColumns = useCallback((columns: GridColDef[]) => {
-    const hiddenColumns: Array<string> = [];
+    const hiddenColumns: Array<string> = [
+      "newKeywords",
+      "keywordsMovedUp",
+      "keywordsMovedDown",
+    ];
     return columns
       .filter((column) => !hiddenColumns.includes(column.field))
       .map((column) => column.field);
@@ -403,6 +407,13 @@ const TopPagesTool = ({
     return {
       pagination: {
         paginationModel: { page: 0, pageSize: 25 },
+      },
+      columns: {
+        columnVisibilityModel: {
+          newKeywords: false,
+          keywordsMovedUp: false,
+          keywordsMovedDown: false,
+        },
       },
     };
   }, []);
@@ -502,6 +513,33 @@ const TopPagesTool = ({
               : "N/A"}
           </div>
         ),
+      },
+      {
+        field: "newKeywords",
+        headerName: "New Keywords",
+        type: "number",
+        valueGetter: (_, row) =>
+          typeof row?.metrics?.organic?.is_new === "number"
+            ? Number(row?.metrics?.organic?.is_new)
+            : null,
+      },
+      {
+        field: "keywordsMovedUp",
+        headerName: "Keywords Moved Up",
+        type: "number",
+        valueGetter: (_, row) =>
+          typeof row?.metrics?.organic?.is_up === "number"
+            ? Number(row?.metrics?.organic?.is_up)
+            : null,
+      },
+      {
+        field: "keywordsMovedDown",
+        headerName: "Keywords Moved Down",
+        type: "number",
+        valueGetter: (_, row) =>
+          typeof row?.metrics?.organic?.is_down === "number"
+            ? Number(row?.metrics?.organic?.is_down)
+            : null,
       },
       {
         field: "rankingChanges",
