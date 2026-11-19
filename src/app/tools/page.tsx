@@ -25,7 +25,7 @@ export default function ToolsPage() {
     <div className="seotoolsuite-tools">
       <Header />
       <div className="seotoolsuite-tools-content flex h-full w-full flex-col overflow-auto bg-gray-100 px-4 py-4 md:px-8 md:py-8">
-        <div className="flex w-full flex-col rounded-md border-2 border-b-3 border-slate-200 bg-white px-6 py-6">
+        <div className="flex w-full flex-col rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
           <h1 className="w-fit bg-linear-to-r from-sky-950 to-sky-700 bg-clip-text text-2xl font-semibold text-transparent md:text-4xl">
             SEO Tools
           </h1>

@@ -101,7 +101,7 @@ The Top Pages tool identifies a website’s best-performing pages based on organ
 
 ![Backlink Checker Tool](docs/assets/backlink-checker-screenshot.png)
 
-The Backlink Checker tool analyzes backlinks pointing to any domain, subdomain, or URL. It provides insights into referring pages, target URLs, Domain Rank (DR), Page Rank (PR), spam score, and link status to help evaluate backlink profiles and identify link-building opportunities.
+The Backlink Checker tool analyzes backlinks pointing to any domain, subdomain, or URL. It provides insights into referring pages, target URLs, Domain Strength (DS), Page Strength (PS), spam score, and link status to help evaluate backlink profiles and identify link-building opportunities.
 
 **- DataForSEO API Required.**
 

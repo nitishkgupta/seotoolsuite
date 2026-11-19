@@ -5,7 +5,7 @@ import { Skeleton } from "@heroui/react";
 export default function Loading() {
   return (
     <div className="relative flex w-full flex-col px-4 py-4 lg:px-8 lg:py-8">
-      <Skeleton className="block h-75.5 w-full rounded-md" />
+      <Skeleton className="block h-70 w-full rounded-md" />
     </div>
   );
 }

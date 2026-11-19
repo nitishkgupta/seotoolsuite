@@ -174,7 +174,7 @@ const BacklinkCheckerFilters = ({
             <div>
               <div className="flex items-center gap-1 text-sm">
                 <StarIcon size={16} />
-                Source Domain Rank
+                Source Domain Strength
               </div>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <NumberInput
@@ -220,7 +220,7 @@ const BacklinkCheckerFilters = ({
             <div>
               <div className="flex items-center gap-1 text-sm">
                 <StarIcon size={16} />
-                Source Page Rank
+                Source Page Strength
               </div>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <NumberInput

@@ -52,7 +52,7 @@ export default function KeywordAutocompleteFeaturePage() {
           <h1 className="mt-4 text-center text-3xl font-semibold text-sky-950 capitalize sm:text-4xl lg:text-6xl">
             Keyword Autocomplete
           </h1>
-          <p className="mt-4 max-w-225 text-center text-base font-medium text-black/60 sm:text-lg lg:text-xl">
+          <p className="mt-4 max-w-225 text-center text-base font-medium text-balance text-black/60 sm:text-lg lg:text-xl">
             Uncover hundreds of real-time{" "}
             <b className="font-semibold text-sky-950">
               long-tail search queries
@@ -67,7 +67,7 @@ export default function KeywordAutocompleteFeaturePage() {
 
         {/* Feature Badges */}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 px-2 sm:px-4">
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-emerald-950/10">
               <GiftIcon size={20} className="text-sky-950" />
             </div>
@@ -75,7 +75,7 @@ export default function KeywordAutocompleteFeaturePage() {
               Free To Use (No API Needed)
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <SearchIcon size={20} className="text-sky-950" />
             </div>
@@ -83,7 +83,7 @@ export default function KeywordAutocompleteFeaturePage() {
               Real-Time Google Autocomplete
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <LightbulbIcon size={20} className="text-sky-950" />
             </div>
@@ -91,7 +91,7 @@ export default function KeywordAutocompleteFeaturePage() {
               Alphabetical & Question Expansion
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <ZapIcon size={20} className="text-sky-950" />
             </div>

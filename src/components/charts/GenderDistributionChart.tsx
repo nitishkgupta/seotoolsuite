@@ -1,6 +1,7 @@
 import { GenderDistribution } from "@/types/DFS/common";
 import Image from "next/image";
 import { memo } from "react";
+import ObserverAnimate from "@/components/ObserverAnimate";
 
 const GenderDistributionChart = ({ data }: { data: GenderDistribution }) => {
   return (
@@ -16,14 +17,16 @@ const GenderDistributionChart = ({ data }: { data: GenderDistribution }) => {
               alt="Male"
             />
             <div
-              className={`relative h-2 w-full shrink overflow-hidden rounded-full ${!data.male && !data.female ? "bg-slate-200" : "bg-pink-400"}`}
+              className={`relative h-3 w-full shrink overflow-hidden rounded-full ${!data.male && !data.female ? "bg-slate-200" : "bg-pink-400"}`}
             >
-              <div
-                className={`h-full border-white bg-blue-400 transition-all duration-500 ${data.male > 0 && data.male < 100 ? "border-r-2" : ""}`}
-                style={{
-                  width: `${data.male ?? 0}%`,
-                }}
-              ></div>
+              <ObserverAnimate className="h-full">
+                <div
+                  className={`scale-x-visible-anim h-full origin-left border-white bg-blue-400 transition-all duration-500 ${data.male > 0 && data.male < 100 ? "border-r-2" : ""}`}
+                  style={{
+                    width: `${data.male ?? 0}%`,
+                  }}
+                ></div>
+              </ObserverAnimate>
             </div>
             <Image
               src="/assets/icons/woman.svg"

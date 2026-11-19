@@ -1,6 +1,7 @@
 "use client";
 
 import { getDomainRatingFree } from "@/actions/ahrefs";
+import ObserverAnimate from "@/components/ObserverAnimate";
 import { trackUmamiEvent } from "@/utils/umami";
 import { addToast, Button, Form, Progress, Textarea } from "@heroui/react";
 import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
@@ -176,12 +177,14 @@ const BulkDRCheckerTool = () => {
               <div className="relative flex h-9 w-12 flex-col items-center justify-center rounded-md border border-b-2 border-sky-950/50 bg-sky-950/10 text-center font-medium text-sky-950">
                 <span className="relative z-20">{params.value}</span>
                 <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/20">
-                  <div
-                    className="scale-x-anim h-1 origin-left bg-sky-950"
-                    style={{
-                      width: `${params.value}%`,
-                    }}
-                  ></div>
+                  <ObserverAnimate className="w-full">
+                    <div
+                      className="scale-x-visible-anim h-1 origin-left bg-sky-950"
+                      style={{
+                        width: `${params.value}%`,
+                      }}
+                    ></div>
+                  </ObserverAnimate>
                 </div>
               </div>
             )}

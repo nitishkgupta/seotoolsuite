@@ -53,7 +53,7 @@ export default function TrafficOverviewFeaturePage() {
           <h1 className="mt-4 text-center text-3xl font-semibold text-sky-950 capitalize sm:text-4xl lg:text-6xl">
             Traffic Overview
           </h1>
-          <p className="mt-4 max-w-225 text-center text-base font-medium text-black/60 sm:text-lg lg:text-xl">
+          <p className="mt-4 max-w-225 text-center text-base font-medium text-balance text-black/60 sm:text-lg lg:text-xl">
             Analyze any website&apos;s organic and paid search performance. Get
             deep insights into{" "}
             <b className="font-semibold text-sky-950">
@@ -72,7 +72,7 @@ export default function TrafficOverviewFeaturePage() {
 
         {/* Feature Badges */}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 px-2 sm:px-4">
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <UsersIcon size={20} className="text-sky-950" />
             </div>
@@ -80,7 +80,7 @@ export default function TrafficOverviewFeaturePage() {
               Organic & Paid Visitor Estimates
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <CoinsIcon size={20} className="text-sky-950" />
             </div>
@@ -88,7 +88,7 @@ export default function TrafficOverviewFeaturePage() {
               Traffic Cost Valuation
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <BarChart3Icon size={20} className="text-sky-950" />
             </div>
@@ -96,7 +96,7 @@ export default function TrafficOverviewFeaturePage() {
               Ranked Keywords Count
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <LineChartIcon size={20} className="text-sky-950" />
             </div>

@@ -54,7 +54,7 @@ export default function TopPagesFeaturePage() {
           <h1 className="mt-4 text-center text-3xl font-semibold text-sky-950 capitalize sm:text-4xl lg:text-6xl">
             Top Pages
           </h1>
-          <p className="mt-4 max-w-225 text-center text-base font-medium text-black/60 sm:text-lg lg:text-xl">
+          <p className="mt-4 max-w-225 text-center text-base font-medium text-balance text-black/60 sm:text-lg lg:text-xl">
             Identify your competitors&apos; highest-performing content. Reveal
             every top organic URL driving search traffic, complete with{" "}
             <b className="font-semibold text-sky-950">
@@ -76,7 +76,7 @@ export default function TopPagesFeaturePage() {
 
         {/* Feature Badges */}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 px-2 sm:px-4">
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <FilesIcon size={20} className="text-sky-950" />
             </div>
@@ -84,7 +84,7 @@ export default function TopPagesFeaturePage() {
               Top Organic URLs
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <TrendingUpIcon size={20} className="text-sky-950" />
             </div>
@@ -92,7 +92,7 @@ export default function TopPagesFeaturePage() {
               Monthly Traffic
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <TextSearchIcon size={20} className="text-sky-950" />
             </div>
@@ -100,7 +100,7 @@ export default function TopPagesFeaturePage() {
               Ranked Keyword Counts
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <FilterIcon size={20} className="text-sky-950" />
             </div>
@@ -108,7 +108,7 @@ export default function TopPagesFeaturePage() {
               Path &amp; Metric Filters
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <BadgeDollarSignIcon size={20} className="text-sky-950" />
             </div>

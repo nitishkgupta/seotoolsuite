@@ -59,9 +59,12 @@ div[role="tooltip"] > div {
   background-color: #fff;
 }
 
-/* Width Animation */
+/* Custom Animations */
 .scale-x-anim {
-  transform-origin: left;
+  animation: scalexanim 0.5s ease;
+}
+
+.visible .scale-x-visible-anim {
   animation: scalexanim 0.5s ease;
 }
 

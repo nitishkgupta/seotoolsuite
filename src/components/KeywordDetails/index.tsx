@@ -385,27 +385,33 @@ const KeywordDetails = ({
                   : "N/A"}
               </div>
               <div>
-                Avg. PageRank:{" "}
+                Avg. Page Strength:{" "}
                 {avgPageRank ? (
-                  <span
-                    className="font-medium"
-                    style={{ color: getDifficultyColor(avgPageRank) }}
-                  >
-                    {avgPageRank}
-                  </span>
+                  <div className="inline-flex items-center gap-1.5">
+                    <span>{avgPageRank}</span>
+                    <div
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{
+                        backgroundColor: getDifficultyColor(avgPageRank),
+                      }}
+                    ></div>
+                  </div>
                 ) : (
                   "N/A"
                 )}
               </div>
               <div>
-                Avg. DomainRank:{" "}
+                Avg. Domain Strength:{" "}
                 {avgDomainRank ? (
-                  <span
-                    className="font-medium"
-                    style={{ color: getDifficultyColor(avgDomainRank) }}
-                  >
-                    {avgDomainRank}
-                  </span>
+                  <div className="inline-flex items-center gap-1.5">
+                    <span>{avgDomainRank}</span>
+                    <div
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{
+                        backgroundColor: getDifficultyColor(avgDomainRank),
+                      }}
+                    ></div>
+                  </div>
                 ) : (
                   "N/A"
                 )}

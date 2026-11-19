@@ -549,8 +549,8 @@ const TrafficOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 lg:grid-cols-4">
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 md:grid-cols-2 xl:grid-cols-4">
+              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 xl:border-b-0">
                 <div className="flex items-center gap-2">
                   <TrendingUpIcon size={18} />
                   Monthly Traffic
@@ -585,7 +585,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 xl:border-r-2 xl:border-b-0">
                 <div className="flex items-center gap-2">
                   <TextSearchIcon size={18} />
                   Keywords
@@ -621,7 +621,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 md:border-b-0">
                 <div className="flex items-center gap-2">
                   <BadgeDollarSignIcon size={18} />
                   Traffic Cost
@@ -852,8 +852,8 @@ const TrafficOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 lg:grid-cols-4">
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 md:grid-cols-2 xl:grid-cols-4">
+              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 xl:border-b-0">
                 <div className="flex items-center gap-2">
                   <TrendingUpIcon size={18} />
                   Monthly Traffic
@@ -888,7 +888,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 xl:border-r-2 xl:border-b-0">
                 <div className="flex items-center gap-2">
                   <TextSearchIcon size={18} />
                   Keywords
@@ -923,7 +923,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 md:border-b-0">
                 <div className="flex items-center gap-2">
                   <BadgeDollarSignIcon size={18} />
                   Traffic Cost

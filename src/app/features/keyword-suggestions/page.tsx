@@ -55,7 +55,7 @@ export default function KeywordSuggestionsFeaturePage() {
           <h1 className="mt-4 text-center text-3xl font-semibold text-sky-950 capitalize sm:text-4xl lg:text-6xl">
             Keyword Suggestions
           </h1>
-          <p className="mt-4 max-w-225 text-center text-base font-medium text-black/60 sm:text-lg lg:text-xl">
+          <p className="mt-4 max-w-225 text-center text-base font-medium text-balance text-black/60 sm:text-lg lg:text-xl">
             Generate thousands of high-converting keyword suggestions from a
             single seed keyword. Analyze{" "}
             <b className="font-semibold text-sky-950">search volume</b>,{" "}
@@ -69,7 +69,7 @@ export default function KeywordSuggestionsFeaturePage() {
 
         {/* Feature Badges */}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 px-2 sm:px-4">
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <LightbulbIcon size={20} className="text-sky-950" />
             </div>
@@ -77,7 +77,7 @@ export default function KeywordSuggestionsFeaturePage() {
               Suggestions Generator
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <FilterIcon size={20} className="text-sky-950" />
             </div>
@@ -85,7 +85,7 @@ export default function KeywordSuggestionsFeaturePage() {
               Advanced DataGrid Filtering
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <CircleQuestionMarkIcon size={20} className="text-sky-950" />
             </div>
@@ -93,7 +93,7 @@ export default function KeywordSuggestionsFeaturePage() {
               Search Intent Badges
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <BadgeDollarSignIcon size={20} className="text-sky-950" />
             </div>
@@ -101,7 +101,7 @@ export default function KeywordSuggestionsFeaturePage() {
               CPC & Bidding Rates
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <GaugeIcon size={20} className="text-sky-950" />
             </div>

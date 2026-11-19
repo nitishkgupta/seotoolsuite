@@ -129,10 +129,10 @@ const CostCalculator = () => {
   );
 
   return (
-    <div className="cost-calculator relative w-full">
-      <div className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-2 border-b-2 border-slate-200 bg-white px-4 py-3">
+    <div className="cost-calculator relative w-full overflow-hidden rounded-t-md">
+      <div className="flex flex-col flex-wrap justify-between gap-2 border-b-2 border-slate-200 bg-white px-4 py-3 sm:flex-row sm:items-center">
         <h2 className="text-xl font-semibold lg:text-3xl">Cost Calculator</h2>
-        <div className="bg-default/40 rounded-full px-3 py-1 text-base">
+        <div className="bg-default/40 w-fit rounded-full px-3 py-1 text-base">
           Credits: <b className="font-semibold">${totalCreditsCost}</b>
         </div>
       </div>

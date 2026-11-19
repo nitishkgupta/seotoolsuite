@@ -70,7 +70,7 @@ export default function HomePage() {
           </p>
         </div>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 px-4">
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-2">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-2 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <TelescopeIcon size={20} className="text-sky-950" />
             </div>
@@ -78,7 +78,7 @@ export default function HomePage() {
               Keyword Research
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-2">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-2 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <BinocularsIcon size={20} className="text-sky-950" />
             </div>
@@ -86,7 +86,7 @@ export default function HomePage() {
               Competitive Research
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-2">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-2 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <LinkIcon size={20} className="text-sky-950" />
             </div>
@@ -785,9 +785,9 @@ export default function HomePage() {
               <p className="mt-4 block max-w-125 p-2 text-base text-black/80 lg:text-lg">
                 The Backlink Checker tool analyzes backlinks pointing to any
                 domain, subdomain, or URL. It provides insights into referring
-                pages, target URLs, Domain Rank (DR), Page Rank (PR), spam
-                score, and link status to help evaluate backlink profiles and
-                identify link-building opportunities.
+                pages, target URLs, Domain Strength (DS), Page Strength (PS),
+                spam score, and link status to help evaluate backlink profiles
+                and identify link-building opportunities.
               </p>
               <div className="mt-1 mb-2 px-2 text-sm font-semibold text-black/70">
                 - DataForSEO API Required.

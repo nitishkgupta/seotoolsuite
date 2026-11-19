@@ -562,8 +562,8 @@ const KeywordOverviewTool = ({
               <BookOpenTextIcon size={20} />
               <span className="text-base lg:text-lg">Keyword Overview</span>
             </div>
-            <div className="flex items-center gap-2">
-              {isCachedData && (
+            {isCachedData && (
+              <div className="flex items-center gap-2">
                 <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
                   <Tooltip
                     content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
@@ -580,11 +580,11 @@ const KeywordOverviewTool = ({
                     </button>
                   </Tooltip>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
-          <div className="grid grid-cols-1 items-stretch lg:grid-cols-5">
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+          <div className="grid grid-cols-1 items-stretch md:grid-cols-6 xl:grid-cols-5">
+            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:col-span-2 md:border-r-2 xl:col-span-1 xl:border-b-0">
               <div className="flex items-center gap-2">
                 <TrendingUpIcon size={18} />
                 Volume
@@ -610,7 +610,7 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:col-span-2 md:border-r-2 xl:col-span-1 xl:border-b-0">
               <div className="flex items-center gap-2">
                 <BadgeQuestionMarkIcon size={18} />
                 Intent
@@ -686,7 +686,7 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:col-span-2 xl:col-span-1 xl:border-r-2 xl:border-b-0">
               <div className="flex items-center gap-2">
                 <BadgeDollarSignIcon size={18} />
                 CPC
@@ -732,7 +732,7 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:col-span-3 md:border-r-2 md:border-b-0 xl:col-span-1">
               <div className="flex items-center gap-2">
                 <TargetIcon size={18} />
                 PPC
@@ -752,7 +752,7 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col justify-between border-slate-200 p-4">
+            <div className="flex flex-col justify-between border-slate-200 p-4 md:col-span-3 xl:col-span-1">
               <div className="flex items-center gap-2">
                 <GaugeIcon size={18} />
                 SEO Difficulty
@@ -833,23 +833,60 @@ const KeywordOverviewTool = ({
                         : "N/A"}
                     </div>
                     <div>
-                      Avg. PageRank:{" "}
-                      {data.avgBacklinksData.pageRank
-                        ? Math.round(
-                            Math.sin(data.avgBacklinksData.pageRank / 636.62) *
-                              100,
-                          )
-                        : "N/A"}
+                      Avg. Page Strength:{" "}
+                      {data.avgBacklinksData.pageRank ? (
+                        <div className="inline-flex items-center gap-1.5">
+                          <span>
+                            {Math.round(
+                              Math.sin(
+                                data.avgBacklinksData.pageRank / 636.62,
+                              ) * 100,
+                            )}
+                          </span>
+                          <div
+                            className="h-2 w-2 rounded-full"
+                            style={{
+                              backgroundColor: getDifficultyColor(
+                                Math.round(
+                                  Math.sin(
+                                    data.avgBacklinksData.pageRank / 636.62,
+                                  ) * 100,
+                                ),
+                              ),
+                            }}
+                          ></div>
+                        </div>
+                      ) : (
+                        "N/A"
+                      )}
                     </div>
                     <div>
-                      Avg. DomainRank:{" "}
-                      {data.avgBacklinksData.domainRank
-                        ? Math.round(
-                            Math.sin(
-                              data.avgBacklinksData.domainRank / 636.62,
-                            ) * 100,
-                          )
-                        : "N/A"}
+                      Avg. Domain Strength:{" "}
+                      {data.avgBacklinksData.domainRank ? (
+                        <div className="inline-flex items-center gap-1.5">
+                          <span>
+                            {Math.round(
+                              Math.sin(
+                                data.avgBacklinksData.domainRank / 636.62,
+                              ) * 100,
+                            )}
+                          </span>
+                          <div
+                            className="h-2 w-2 rounded-full"
+                            style={{
+                              backgroundColor: getDifficultyColor(
+                                Math.round(
+                                  Math.sin(
+                                    data.avgBacklinksData.domainRank / 636.62,
+                                  ) * 100,
+                                ),
+                              ),
+                            }}
+                          ></div>
+                        </div>
+                      ) : (
+                        "N/A"
+                      )}
                     </div>
                   </div>
                 ) : (

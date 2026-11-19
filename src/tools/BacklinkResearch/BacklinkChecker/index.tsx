@@ -47,6 +47,7 @@ import {
   getLocalDateTimeFromISOString,
   getLocalDateFromISOString,
 } from "@/utils/date";
+import ObserverAnimate from "@/components/ObserverAnimate";
 
 type BacklinksTableItem = BacklinksItem & {
   id: number;
@@ -673,9 +674,9 @@ const BacklinkCheckerTool = ({
         valueFormatter: (_, row) => (row.is_broken ? "Yes" : "No"),
       },
       {
-        field: "domainRank",
-        headerName: "DR",
-        description: "Source Domain Rank",
+        field: "domainStrength",
+        headerName: "DS",
+        description: "Source Domain Strength",
         type: "number",
         display: "flex",
         flex: 1,
@@ -693,12 +694,14 @@ const BacklinkCheckerTool = ({
               <div className="relative flex h-9 w-12 flex-col items-center justify-center rounded-md border border-b-2 border-sky-950/50 bg-sky-950/10 text-center font-medium text-sky-950">
                 <span className="relative z-20">{params.value}</span>
                 <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/20">
-                  <div
-                    className="scale-x-anim h-1 origin-left bg-sky-950"
-                    style={{
-                      width: `${params.value}%`,
-                    }}
-                  ></div>
+                  <ObserverAnimate className="w-full">
+                    <div
+                      className="scale-x-visible-anim h-1 origin-left bg-sky-950"
+                      style={{
+                        width: `${params.value}%`,
+                      }}
+                    ></div>
+                  </ObserverAnimate>
                 </div>
               </div>
             )}
@@ -706,9 +709,9 @@ const BacklinkCheckerTool = ({
         ),
       },
       {
-        field: "pageRank",
-        headerName: "PR",
-        description: "Source Page Rank",
+        field: "pageStrength",
+        headerName: "PS",
+        description: "Source Page Strength",
         type: "number",
         display: "flex",
         flex: 1,
@@ -726,12 +729,14 @@ const BacklinkCheckerTool = ({
               <div className="relative flex h-9 w-12 flex-col items-center justify-center rounded-md border border-b-2 border-sky-950/50 bg-sky-950/10 text-center font-medium text-sky-950">
                 <span className="relative z-20">{params.value}</span>
                 <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/20">
-                  <div
-                    className="scale-x-anim h-1 origin-left bg-sky-950"
-                    style={{
-                      width: `${params.value}%`,
-                    }}
-                  ></div>
+                  <ObserverAnimate className="w-full">
+                    <div
+                      className="scale-x-visible-anim h-1 origin-left bg-sky-950"
+                      style={{
+                        width: `${params.value}%`,
+                      }}
+                    ></div>
+                  </ObserverAnimate>
                 </div>
               </div>
             )}
@@ -910,6 +915,7 @@ const BacklinkCheckerTool = ({
                   value={selectedTarget}
                   classNames={{
                     inputWrapper: "shadow-none",
+                    label: "text-nowrap",
                   }}
                   onValueChange={setSelectedTarget}
                   autoFocus

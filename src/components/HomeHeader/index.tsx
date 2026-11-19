@@ -40,11 +40,11 @@ const HomeHeader = () => {
   };
 
   return (
-    <div className="header-container border-b-2 border-slate-200 bg-white">
+    <div className="header-container sticky top-0 z-40 border-b-2 border-slate-200 bg-white shadow-md shadow-black/5">
       <header className="header relative mx-auto flex w-full max-w-358 flex-row items-center justify-start px-4 py-3">
         <div className="mr-2 md:hidden">
           <button
-            className={`cursor-pointer rounded-md p-2 ${isMobileMenuOpen ? "bg-slate-200" : ""}`}
+            className={`cursor-pointer rounded-md p-2 transition ${isMobileMenuOpen ? "bg-slate-200" : ""}`}
             onClick={toggleMobileMenu}
           >
             <MenuIcon size={18} />
@@ -63,7 +63,7 @@ const HomeHeader = () => {
           </Link>
         </div>
         <div
-          className={`absolute top-full left-0 z-20 hidden w-full flex-col gap-4 border-t-2 border-b-2 border-slate-200 bg-white p-4 md:relative md:ml-7 md:flex md:w-fit md:flex-row md:items-center md:border-none md:p-0 ${isMobileMenuOpen ? "flex!" : ""}`}
+          className={`absolute top-full left-0 z-20 hidden w-full flex-col gap-4 border-t-2 border-b-2 border-slate-200 bg-white p-4 shadow-md shadow-black/5 md:relative md:ml-7 md:flex md:w-fit md:flex-row md:items-center md:border-none md:p-0 md:shadow-none ${isMobileMenuOpen ? "flex!" : ""}`}
         >
           <Dropdown
             placement="bottom-start"
@@ -94,7 +94,7 @@ const HomeHeader = () => {
                   key="keyword-overview"
                   href="/features/keyword-overview"
                   startContent={<BookOpenTextIcon size={18} />}
-                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("keyword-overview") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! active:scale-95 ${isFeaturesPageActive("keyword-overview") ? "bg-slate-100!" : ""}`}
                 >
                   Keyword Overview
                 </DropdownItem>
@@ -102,7 +102,7 @@ const HomeHeader = () => {
                   key="keyword-suggestions"
                   href="/features/keyword-suggestions"
                   startContent={<TextSearchIcon size={18} />}
-                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("keyword-suggestions") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! active:scale-95 ${isFeaturesPageActive("keyword-suggestions") ? "bg-slate-100!" : ""}`}
                 >
                   Keyword Suggestions
                 </DropdownItem>
@@ -110,7 +110,7 @@ const HomeHeader = () => {
                   key="keyword-ideas"
                   href="/features/keyword-ideas"
                   startContent={<LightbulbIcon size={18} />}
-                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("keyword-ideas") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! active:scale-95 ${isFeaturesPageActive("keyword-ideas") ? "bg-slate-100!" : ""}`}
                 >
                   Keyword Ideas
                 </DropdownItem>
@@ -118,7 +118,7 @@ const HomeHeader = () => {
                   key="keyword-autocomplete"
                   href="/features/keyword-autocomplete"
                   startContent={<LoaderPinwheelIcon size={18} />}
-                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("keyword-autocomplete") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! active:scale-95 ${isFeaturesPageActive("keyword-autocomplete") ? "bg-slate-100!" : ""}`}
                 >
                   Keyword Autocomplete
                 </DropdownItem>
@@ -133,7 +133,7 @@ const HomeHeader = () => {
                   key="traffic-overview"
                   href="/features/traffic-overview"
                   startContent={<BookOpenTextIcon size={18} />}
-                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("traffic-overview") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! active:scale-95 ${isFeaturesPageActive("traffic-overview") ? "bg-slate-100!" : ""}`}
                 >
                   Traffic Overview
                 </DropdownItem>
@@ -141,7 +141,7 @@ const HomeHeader = () => {
                   key="ranked-keywords"
                   href="/features/ranked-keywords"
                   startContent={<TextSearchIcon size={18} />}
-                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("ranked-keywords") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! active:scale-95 ${isFeaturesPageActive("ranked-keywords") ? "bg-slate-100!" : ""}`}
                 >
                   Ranked Keywords
                 </DropdownItem>
@@ -149,7 +149,7 @@ const HomeHeader = () => {
                   key="top-pages"
                   href="/features/top-pages"
                   startContent={<FilesIcon size={18} />}
-                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("top-pages") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! active:scale-95 ${isFeaturesPageActive("top-pages") ? "bg-slate-100!" : ""}`}
                 >
                   Top Pages
                 </DropdownItem>
@@ -164,7 +164,7 @@ const HomeHeader = () => {
                   key="backlink-checker"
                   href="/features/backlink-checker"
                   startContent={<GraphStarIcon size={18} />}
-                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("backlink-checker") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! active:scale-95 ${isFeaturesPageActive("backlink-checker") ? "bg-slate-100!" : ""}`}
                 >
                   Backlink Checker
                 </DropdownItem>
@@ -172,7 +172,7 @@ const HomeHeader = () => {
                   key="bulk-dr-checker"
                   href="/features/bulk-dr-checker"
                   startContent={<StarIcon size={18} />}
-                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! ${isFeaturesPageActive("bulk-dr-checker") ? "bg-slate-100!" : ""}`}
+                  className={`my-1 p-2 transition duration-300 hover:bg-slate-100! active:scale-95 ${isFeaturesPageActive("bulk-dr-checker") ? "bg-slate-100!" : ""}`}
                 >
                   Bulk DR Checker
                 </DropdownItem>
@@ -195,7 +195,7 @@ const HomeHeader = () => {
                 href="https://github.com/nitishkgupta/seotoolsuite"
                 target="_blank"
                 endContent={<ExternalLinkIcon size={18} />}
-                className="hover:bg-slate-100!"
+                className="transition hover:bg-slate-100! active:scale-95"
               >
                 GitHub
               </DropdownItem>
@@ -205,7 +205,7 @@ const HomeHeader = () => {
                 endContent={<ExternalLinkIcon size={18} />}
                 rel="nofollow"
                 target="_blank"
-                className="hover:bg-slate-100!"
+                className="transition hover:bg-slate-100! active:scale-95"
               >
                 Discord
               </DropdownItem>
@@ -215,7 +215,7 @@ const HomeHeader = () => {
                 endContent={<ExternalLinkIcon size={18} />}
                 target="_blank"
                 rel="nofollow"
-                className="hover:bg-slate-100!"
+                className="transition hover:bg-slate-100! active:scale-95"
               >
                 DataForSEO
               </DropdownItem>

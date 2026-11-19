@@ -1,5 +1,13 @@
 # SEOToolSuite Changelog
 
+## v9.1.0
+
+- Improved the design and animations of **AgeDistributionChart** and **GenderDistributionChart**.
+- Responsive design fixes and changes.
+- Renamed Domain Rank to Domain Strength and Page Rank to Page Strength.
+- Other minor UI fixes and changes.
+- Updated packages.
+
 ## v9.0.0
 
 - Added a new **Backlink Checker** tool. Analyze backlinks pointing to any domain, subdomain, or URL.

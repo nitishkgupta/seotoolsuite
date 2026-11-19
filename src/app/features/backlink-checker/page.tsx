@@ -25,12 +25,12 @@ import { HomeFooter } from "@/components/HomeFooter";
 export const metadata: Metadata = {
   title: "Backlink Checker | SEOToolSuite",
   description:
-    "The Backlink Checker tool reveals every inbound link pointing to any domain or URL. It provides insights into source domain rank, page rank, spam score, follow type, backlink type, and link status to help you audit link profiles and uncover link building opportunities.",
+    "The Backlink Checker tool reveals every inbound link pointing to any domain or URL. It provides insights into source domain strength, page strength, spam score, follow type, backlink type, and link status to help you audit link profiles and uncover link building opportunities.",
   openGraph: {
     type: "website",
     title: "Backlink Checker | SEOToolSuite",
     description:
-      "The Backlink Checker tool reveals every inbound link pointing to any domain or URL. It provides insights into source domain rank, page rank, spam score, follow type, backlink type, and link status to help you audit link profiles and uncover link building opportunities.",
+      "The Backlink Checker tool reveals every inbound link pointing to any domain or URL. It provides insights into source domain strength, page strength, spam score, follow type, backlink type, and link status to help you audit link profiles and uncover link building opportunities.",
     images: [
       {
         url: "/assets/images/backlink-checker-screenshot.png",
@@ -55,11 +55,11 @@ export default function BacklinkCheckerFeaturePage() {
           <h1 className="mt-4 text-center text-3xl font-semibold text-sky-950 capitalize sm:text-4xl lg:text-6xl">
             Backlink Checker
           </h1>
-          <p className="mt-4 max-w-225 text-center text-base font-medium text-black/60 sm:text-lg lg:text-xl">
+          <p className="mt-4 max-w-225 text-center text-base font-medium text-balance text-black/60 sm:text-lg lg:text-xl">
             Reveal every inbound link pointing to any domain or URL. Audit full
             link profiles with{" "}
             <b className="font-semibold text-sky-950">
-              source domain &amp; page rank
+              source domain &amp; page strength
             </b>
             , <b className="font-semibold text-sky-950">spam scores</b>,{" "}
             <b className="font-semibold text-sky-950">
@@ -73,7 +73,7 @@ export default function BacklinkCheckerFeaturePage() {
 
         {/* Feature Badges */}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 px-2 sm:px-4">
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <Link2Icon size={20} className="text-sky-950" />
             </div>
@@ -81,15 +81,15 @@ export default function BacklinkCheckerFeaturePage() {
               Full Link Profiles
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <StarIcon size={20} className="text-sky-950" />
             </div>
             <span className="text-xs font-medium text-sky-950 sm:text-sm md:text-base">
-              Domain &amp; Page Rank
+              Domain &amp; Page Strength
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <ShieldCheckIcon size={20} className="text-sky-950" />
             </div>
@@ -97,7 +97,7 @@ export default function BacklinkCheckerFeaturePage() {
               Spam Score
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <FilterIcon size={20} className="text-sky-950" />
             </div>
@@ -105,7 +105,7 @@ export default function BacklinkCheckerFeaturePage() {
               Advanced Filters
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <Link2OffIcon size={20} className="text-sky-950" />
             </div>
@@ -200,13 +200,13 @@ export default function BacklinkCheckerFeaturePage() {
                     <StarIcon size={24} />
                   </div>
                   <h3 className="text-lg font-semibold lg:text-xl">
-                    Domain &amp; Page Rank
+                    Domain &amp; Page Strength
                   </h3>
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-black/75 lg:text-base">
                   Evaluate the authority of each referring source with Domain
-                  Rank (DR) and Page Rank (PR) scores displayed per backlink
-                  row.
+                  Strength (DS) and Page Strength (PS) scores displayed per
+                  backlink row.
                 </p>
               </div>
               <div className="mt-4 flex items-center gap-1.5 text-xs font-semibold text-sky-950">
@@ -269,7 +269,7 @@ export default function BacklinkCheckerFeaturePage() {
                   </h3>
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-black/75 lg:text-base">
-                  Narrow results by source or target URL substring, DR and PR
+                  Narrow results by source or target URL substring, DS and PS
                   ranges, backlink type (anchor, image, redirect, meta,
                   canonical, alternate), and broken status.
                 </p>
@@ -418,7 +418,7 @@ export default function BacklinkCheckerFeaturePage() {
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-black/75">
                 Queries DataForSEO&apos;s index to pull all inbound links with
-                DR, PR, spam scores, follow type, and anchor text.
+                DS, PS, spam scores, follow type, and anchor text.
               </p>
             </div>
 

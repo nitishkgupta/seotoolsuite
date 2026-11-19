@@ -51,7 +51,7 @@ export default function BulkDRCheckerFeaturePage() {
           <h1 className="mt-4 text-center text-3xl font-semibold text-sky-950 capitalize sm:text-4xl lg:text-6xl">
             Bulk Ahrefs DR Checker
           </h1>
-          <p className="mt-4 max-w-225 text-center text-base font-medium text-black/60 sm:text-lg lg:text-xl">
+          <p className="mt-4 max-w-225 text-center text-base font-medium text-balance text-black/60 sm:text-lg lg:text-xl">
             Check{" "}
             <b className="font-semibold text-sky-950">
               Ahrefs Domain Rating (DR)
@@ -63,7 +63,7 @@ export default function BulkDRCheckerFeaturePage() {
 
         {/* Feature Badges */}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 px-2 sm:px-4">
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-emerald-950/10">
               <GiftIcon size={20} className="text-sky-950" />
             </div>
@@ -71,7 +71,7 @@ export default function BulkDRCheckerFeaturePage() {
               Free to Use (No API Needed)
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <LayersIcon size={20} className="text-sky-950" />
             </div>
@@ -79,7 +79,7 @@ export default function BulkDRCheckerFeaturePage() {
               Bulk Multi-Domain Batch Queries
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <ShieldCheckIcon size={20} className="text-sky-950" />
             </div>
@@ -87,7 +87,7 @@ export default function BulkDRCheckerFeaturePage() {
               Ahrefs Domain Rating (DR)
             </span>
           </div>
-          <div className="flex items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3">
+          <div className="flex w-full items-center gap-2 overflow-hidden rounded-md border-2 border-b-3 border-slate-200 bg-white pr-3 md:w-fit">
             <div className="flex h-10 w-10 items-center justify-center bg-sky-950/10">
               <FileSpreadsheetIcon size={20} className="text-sky-950" />
             </div>
