@@ -638,15 +638,15 @@ const TopPagesTool = ({
 
   return (
     <div className="top-pages-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
-      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
+      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] p-5">
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
-            <Chip size="md" variant="flat">
+            <Chip size="md" variant="flat" className="bg-sky-950/10 text-black">
               ${parseFloat(Number(0.012 + MAX_ROWS * 0.00012).toFixed(4))}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {dfsSandboxEnabled && (
             <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
@@ -656,7 +656,7 @@ const TopPagesTool = ({
             </Tooltip>
           )}
           {dfsSandboxEnabled && cachingEnabled && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {cachingEnabled && (
             <Tooltip content="Caching Enabled" placement="bottom-end">
@@ -673,7 +673,7 @@ const TopPagesTool = ({
               className="animate-appearance-in scale-90 text-white"
             />
             <div
-              className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
+              className="animate-appearance-in h-6 w-px rounded-md bg-white"
               style={{ animationDelay: "100ms" }}
             ></div>
             <FilesIcon
@@ -686,7 +686,7 @@ const TopPagesTool = ({
             <div className="text-xl font-medium text-sky-950 md:leading-none">
               Top Pages
             </div>
-            <div className="text-base font-medium text-slate-500">
+            <div className="text-base font-medium text-sky-950/80">
               Get the top-performing organic pages of a website.
             </div>
           </div>
@@ -729,7 +729,8 @@ const TopPagesTool = ({
                   isDisabled={isLoading}
                   value={selectedTarget}
                   classNames={{
-                    inputWrapper: "shadow-none",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   onValueChange={setSelectedTarget}
                   autoFocus
@@ -744,7 +745,8 @@ const TopPagesTool = ({
                   value={selectedLocationKey}
                   className="autocomplete-input"
                   classNames={{
-                    popoverContent: "border border-slate-200 border-b-2",
+                    popoverContent:
+                      "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                   }}
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
@@ -755,7 +757,7 @@ const TopPagesTool = ({
                       key={location.location_code}
                       startContent={
                         <Image
-                          className="h-auto w-6 rounded-xs border border-slate-400"
+                          className="h-auto w-6 rounded-xs border border-sky-950/40"
                           src={getFlagImageUrl(location.country_iso_code)}
                           loading="lazy"
                           width={24}
@@ -777,7 +779,8 @@ const TopPagesTool = ({
                   value={selectedLanguageKey}
                   className="autocomplete-input"
                   classNames={{
-                    popoverContent: "border border-slate-200 border-b-2",
+                    popoverContent:
+                      "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                   }}
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
@@ -840,10 +843,10 @@ const TopPagesTool = ({
       {!isLoading && !error && data && (
         <div className="tool-results-container mt-4 flex w-full flex-col gap-8 md:gap-4 lg:mt-8 lg:flex-row">
           <div
-            className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-slate-200 bg-white lg:scroll-m-8"
+            className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] lg:scroll-m-8"
             id="top-pages-table"
           >
-            <div className="header flex w-full items-center justify-between gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
+            <div className="header flex w-full items-center justify-between gap-2 border-b-2 border-sky-950/40 px-4 py-3 text-base md:text-lg">
               <div className="flex items-center gap-2">
                 <FilesIcon size={20} />
                 <span>
@@ -852,13 +855,13 @@ const TopPagesTool = ({
               </div>
               <div className="flex items-center gap-2">
                 {isCachedData && (
-                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border border-b-2 border-sky-950/40 p-2">
                     <Tooltip
                       content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
                     >
                       <DatabaseZapIcon size={18} />
                     </Tooltip>
-                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <div className="w-px shrink-0 rounded-full bg-sky-950/40"></div>
                     <Tooltip content="Refresh Data">
                       <button
                         className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
@@ -912,11 +915,11 @@ const TopPagesTool = ({
         isOpen={pageDetailsModalOpen}
         onOpenChange={setPageDetailsModalOpen}
       >
-        <ModalContent className="rounded-md">
-          <ModalHeader className="border-b-2 border-slate-200">
+        <ModalContent className="rounded-md bg-[#cdd5db]">
+          <ModalHeader className="border-b-2 border-sky-950/40">
             Page Details
           </ModalHeader>
-          <ModalBody className="gap-0 rounded-b-md bg-gray-100 p-0">
+          <ModalBody className="gap-0 rounded-b-md bg-[#cdd5db] p-0">
             <PageDetails
               pageItem={activePageItem}
               locationCode={formInput.location_code!}

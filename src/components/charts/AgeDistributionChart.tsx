@@ -12,7 +12,7 @@ const AgeDistributionChart = ({ data }: { data: AgeDistribution }) => {
         <div className="flex flex-row items-center gap-2" key={key}>
           <div className="min-w-12 shrink-0 text-base">{key}</div>
           <div className="shrink-0">|</div>
-          <ObserverAnimate className="h-3 w-full shrink overflow-hidden rounded-full bg-slate-200">
+          <ObserverAnimate className="h-3 w-full shrink overflow-hidden rounded-full bg-sky-950/15">
             <div
               className="scale-x-visible-anim h-full origin-left bg-sky-950 transition-all duration-500"
               style={{

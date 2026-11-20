@@ -174,9 +174,9 @@ const BulkDRCheckerTool = () => {
             {typeof params.value !== "number" ? (
               <div className="w-full px-2.5 text-center">N/A</div>
             ) : (
-              <div className="relative flex h-9 w-12 flex-col items-center justify-center rounded-md border border-b-2 border-sky-950/50 bg-sky-950/10 text-center font-medium text-sky-950">
+              <div className="relative flex h-9 w-12 flex-col items-center justify-center rounded-md border border-b-2 border-sky-950/40 bg-sky-950/10 text-center font-medium text-sky-950">
                 <span className="relative z-20">{params.value}</span>
-                <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/20">
+                <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/15">
                   <ObserverAnimate className="w-full">
                     <div
                       className="scale-x-visible-anim h-1 origin-left bg-sky-950"
@@ -205,7 +205,7 @@ const BulkDRCheckerTool = () => {
 
   return (
     <div className="bulk-dr-checker-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
-      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
+      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] p-5">
         {isLoading && (
           <div className="absolute top-0 left-0 z-20 w-full overflow-hidden rounded-t-md">
             <Progress
@@ -215,6 +215,9 @@ const BulkDRCheckerTool = () => {
               radius="none"
               color="primary"
               value={bulkDRCheckerProgress}
+              classNames={{
+                track: "bg-sky-950/15",
+              }}
             />
           </div>
         )}
@@ -222,7 +225,7 @@ const BulkDRCheckerTool = () => {
           <div className="flex items-center gap-2 rounded-md border bg-sky-950 p-2 md:p-3">
             <LinkIcon size={26} className="animate-appearance-in text-white" />
             <div
-              className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
+              className="animate-appearance-in h-6 w-px rounded-md bg-white"
               style={{ animationDelay: "100ms" }}
             ></div>
             <StarIcon
@@ -235,7 +238,7 @@ const BulkDRCheckerTool = () => {
             <div className="text-xl font-medium text-sky-950 md:leading-none">
               Bulk DR Checker
             </div>
-            <div className="text-base font-medium text-slate-500">
+            <div className="text-base font-medium text-sky-950/80">
               Check Ahrefs domain rating for multiple domains at once.
             </div>
           </div>
@@ -255,7 +258,8 @@ const BulkDRCheckerTool = () => {
                 isDisabled={isLoading}
                 value={selectedTargets}
                 classNames={{
-                  inputWrapper: "shadow-none",
+                  inputWrapper:
+                    "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                 }}
                 onValueChange={setSelectedTargets}
                 placeholder="example.com"
@@ -294,10 +298,10 @@ const BulkDRCheckerTool = () => {
         <>
           <div className="tool-results-container mt-4 flex w-full flex-col gap-8 md:gap-4 lg:mt-8 lg:flex-row">
             <div
-              className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-slate-200 bg-white lg:scroll-m-8"
+              className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] lg:scroll-m-8"
               id="domain-ratings-table"
             >
-              <div className="header relative flex w-full items-center gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
+              <div className="header relative flex w-full items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3 text-base md:text-lg">
                 {isLoading && (
                   <div className="absolute top-0 left-0 z-20 w-full overflow-hidden rounded-t-md">
                     <Progress
@@ -307,6 +311,9 @@ const BulkDRCheckerTool = () => {
                       radius="none"
                       color="primary"
                       value={bulkDRCheckerProgress}
+                      classNames={{
+                        track: "bg-sky-950/15",
+                      }}
                     />
                   </div>
                 )}

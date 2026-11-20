@@ -354,10 +354,10 @@ function SettingsComponent() {
       <h1 className="mb-4 w-fit text-2xl font-semibold text-sky-950 md:mb-8 md:text-4xl">
         Settings
       </h1>
-      <div className="w-full rounded-md border-2 border-b-3 border-slate-200 bg-white">
+      <div className="w-full rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
         <div className="flex flex-col">
           <div
-            className={`flex items-center gap-2 border-b-2 border-slate-200 px-4 py-3`}
+            className={`flex items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3`}
           >
             <div className="flex w-full flex-wrap items-center justify-between gap-4">
               <h2 className="flex items-center gap-2 text-lg font-medium lg:text-2xl">
@@ -370,7 +370,7 @@ function SettingsComponent() {
             <Accordion
               variant="bordered"
               selectionMode="multiple"
-              className="border-slate-200"
+              className="border border-b-2 border-sky-950/40 bg-sky-950/10"
             >
               <AccordionItem
                 key="keyword-overview"
@@ -402,6 +402,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Days"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -441,6 +444,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Rows"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -459,6 +465,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Days"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -496,6 +505,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Rows"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -514,6 +526,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Days"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -549,6 +564,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Days"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -586,6 +604,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Rows"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -604,6 +625,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Days"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -639,6 +663,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Rows"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -657,6 +684,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Days"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -694,6 +724,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Rows"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -712,6 +745,9 @@ function SettingsComponent() {
                         showTooltip
                         label="Days"
                         size="sm"
+                        classNames={{
+                          track: "bg-sky-950/15",
+                        }}
                       ></Slider>
                     </div>
                   </div>
@@ -729,7 +765,8 @@ function SettingsComponent() {
                 isRequired
                 className="autocomplete-input"
                 classNames={{
-                  popoverContent: "border border-slate-200 border-b-2",
+                  popoverContent:
+                    "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                 }}
                 value={defaultLocationKey}
                 onChange={(key: any) =>
@@ -741,7 +778,7 @@ function SettingsComponent() {
                     key={location.location_code}
                     startContent={
                       <Image
-                        className="h-auto w-6 rounded-xs border border-slate-400"
+                        className="h-auto w-6 rounded-xs border border-sky-950/40"
                         src={getFlagImageUrl(location.country_iso_code)}
                         loading="lazy"
                         width={24}
@@ -765,7 +802,8 @@ function SettingsComponent() {
                 label="Language"
                 className="autocomplete-input"
                 classNames={{
-                  popoverContent: "border border-slate-200 border-b-2",
+                  popoverContent:
+                    "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                 }}
                 isRequired
                 value={defaultLanguageKey}
@@ -783,9 +821,9 @@ function SettingsComponent() {
           </div>
         </div>
       </div>
-      <div className="mt-4 w-full rounded-md border-2 border-b-3 border-slate-200 bg-white">
+      <div className="mt-4 w-full rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
         <div className="flex flex-col">
-          <div className="flex items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+          <div className="flex items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
             <div className="flex w-full flex-wrap items-center justify-between gap-4">
               <h2 className="flex items-center gap-2 text-lg font-medium lg:text-2xl">
                 <DatabaseIcon size={24} />
@@ -795,7 +833,7 @@ function SettingsComponent() {
                 <Tooltip content="Tutorial">
                   <button
                     onClick={() => setDFSTutorialShown(!dfsTutorialShown)}
-                    className={`cursor-pointer rounded-md border-2 border-b-3 border-slate-200 bg-white p-2 transition hover:bg-slate-50 active:scale-95 active:duration-75 ${dfsTutorialShown ? "bg-slate-200!" : ""}`}
+                    className={`cursor-pointer rounded-md border border-b-2 border-sky-950/40 bg-[#e7eaed] p-2 transition hover:bg-sky-950/10 active:scale-95 active:duration-75 ${dfsTutorialShown ? "bg-sky-950/10!" : ""}`}
                   >
                     <LifeBuoyIcon size={20} />
                   </button>
@@ -811,7 +849,7 @@ function SettingsComponent() {
           </div>
           <div className="w-full p-4">
             <div
-              className={`mb-6 w-full rounded-md border-2 border-b-3 border-slate-200 bg-slate-50/50 p-4 ${!dfsTutorialShown ? "hidden" : ""}`}
+              className={`mb-6 w-full rounded-md border border-b-2 border-sky-950/40 bg-sky-950/10 p-4 ${!dfsTutorialShown ? "hidden" : ""}`}
             >
               <h3 className="flex items-center gap-1 text-lg font-medium md:text-xl">
                 <LifeBuoyIcon size={20} />
@@ -873,7 +911,8 @@ function SettingsComponent() {
                   label="API Login"
                   placeholder="test@example.com"
                   classNames={{
-                    inputWrapper: "shadow-none",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   defaultValue={
                     getLocalStorageItem("DATAFORSEO_USERNAME") ?? ""
@@ -886,7 +925,8 @@ function SettingsComponent() {
                   type="password"
                   label="API Password"
                   classNames={{
-                    inputWrapper: "shadow-none",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   defaultValue={
                     getLocalStorageItem("DATAFORSEO_PASSWORD") ?? ""
@@ -919,8 +959,8 @@ function SettingsComponent() {
               </Link>
             </div>
             <Tooltip content="Turn on the API sandbox mode to use free, dummy data. Ideal for testing and development.">
-              <div className="mt-6 flex w-fit items-stretch rounded-md border-2 border-b-3 border-slate-200">
-                <div className="border-r-2 border-slate-200 p-2">
+              <div className="mt-6 flex w-fit items-stretch rounded-md border border-b-2 border-sky-950/40">
+                <div className="border-r border-sky-950/40 p-2">
                   <BoxIcon size={22} />
                 </div>
                 <div className="flex items-center px-2">
@@ -928,6 +968,9 @@ function SettingsComponent() {
                     isSelected={dfsSandboxEnabled}
                     onValueChange={handleDFSSandboxChange}
                     size="sm"
+                    classNames={{
+                      wrapper: "bg-sky-950/15",
+                    }}
                   >
                     Sandbox Mode
                   </Switch>
@@ -937,10 +980,10 @@ function SettingsComponent() {
           </div>
         </div>
       </div>
-      <div className="mt-4 w-full rounded-md border-2 border-b-3 border-slate-200 bg-white">
+      <div className="mt-4 w-full rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
         <div className="flex flex-col">
           <div
-            className={`flex items-center gap-2 border-slate-200 px-4 py-3 ${cachingEnabled ? "border-b-2" : ""}`}
+            className={`flex items-center gap-2 border-sky-950/40 px-4 py-3 ${cachingEnabled ? "border-b-2" : ""}`}
           >
             <div className="flex w-full flex-wrap items-center justify-between gap-4">
               <h2 className="flex items-center gap-2 text-lg font-medium lg:text-2xl">
@@ -954,7 +997,7 @@ function SettingsComponent() {
                       handleCachingEnabledChange(true);
                       setUpstashTutorialShown(!upstashTutorialShown);
                     }}
-                    className={`cursor-pointer rounded-md border-2 border-b-3 border-slate-200 bg-white p-2 transition hover:bg-slate-50 active:scale-95 active:duration-75 ${upstashTutorialShown ? "bg-slate-200!" : ""}`}
+                    className={`cursor-pointer rounded-md border border-b-2 border-sky-950/40 bg-[#e7eaed] p-2 transition hover:bg-sky-950/10 active:scale-95 active:duration-75 ${upstashTutorialShown ? "bg-sky-950/10!" : ""}`}
                   >
                     <LifeBuoyIcon size={20} />
                   </button>
@@ -969,13 +1012,16 @@ function SettingsComponent() {
                   isSelected={cachingEnabled}
                   onValueChange={handleCachingEnabledChange}
                   aria-label="Enable caching"
+                  classNames={{
+                    wrapper: "bg-sky-950/15",
+                  }}
                 ></Switch>
               </div>
             </div>
           </div>
           <div className={`w-full p-4 ${!cachingEnabled ? "hidden" : ""}`}>
             <div
-              className={`mb-6 w-full rounded-md border-2 border-b-3 border-slate-200 bg-slate-50/50 p-4 ${!upstashTutorialShown ? "hidden" : ""}`}
+              className={`mb-6 w-full rounded-md border border-b-2 border-sky-950/40 bg-sky-950/10 p-4 ${!upstashTutorialShown ? "hidden" : ""}`}
             >
               <h3 className="flex items-center gap-1 text-lg font-medium md:text-xl">
                 <LifeBuoyIcon size={20} />
@@ -1054,7 +1100,8 @@ function SettingsComponent() {
                   label="Redis REST URL"
                   placeholder="https://xxxxxxxx.upstash.io"
                   classNames={{
-                    inputWrapper: "shadow-none",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   defaultValue={
                     getLocalStorageItem("UPSTASH_REDIS_REST_URL") ?? ""
@@ -1067,7 +1114,8 @@ function SettingsComponent() {
                   type="password"
                   label="Redis REST Token"
                   classNames={{
-                    inputWrapper: "shadow-none",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   defaultValue={
                     getLocalStorageItem("UPSTASH_REDIS_REST_TOKEN") ?? ""

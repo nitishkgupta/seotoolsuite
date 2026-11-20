@@ -51,19 +51,19 @@ const KeywordDetails = ({
 
   return keywordData ? (
     <>
-      <div className="flex w-full flex-wrap items-center gap-2 border-b-2 border-slate-200 bg-white p-4">
-        <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-base font-normal">
+      <div className="flex w-full flex-wrap items-center gap-2 border-b-2 border-sky-950/40 bg-[#e7eaed] p-4">
+        <div className="flex w-fit items-center gap-1 rounded-md bg-sky-950/10 px-2 py-1 text-base font-normal">
           <SearchIcon size={14} />
           {keywordData.keyword}
         </div>
-        <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-base font-normal">
+        <div className="flex w-fit items-center gap-1 rounded-md bg-sky-950/10 px-2 py-1 text-base font-normal">
           <MapPinIcon size={14} />
           {
             getDataForSEOLocationFromCode(Number(keywordData.location_code!))
               ?.location_name
           }
         </div>
-        <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-base font-normal">
+        <div className="flex w-fit items-center gap-1 rounded-md bg-sky-950/10 px-2 py-1 text-base font-normal">
           <LanguagesIcon size={14} />
           {
             getDataForSEOLanguageFromCode(keywordData.language_code)
@@ -72,8 +72,8 @@ const KeywordDetails = ({
         </div>
       </div>
       <div className="flex w-full flex-col gap-4 p-4">
-        <div className="rounded-md border-2 border-b-3 border-slate-200 bg-white">
-          <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+        <div className="rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
+          <div className="flex flex-row items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
             <Gauge size={20} />
             <span className="text-base md:text-lg">SEO Difficulty</span>
           </div>
@@ -104,7 +104,7 @@ const KeywordDetails = ({
                   </span>
                 </div>
                 <div
-                  className="rounded-b-md border border-t-0 border-b-2 border-slate-200 px-4 py-1.5 text-center"
+                  className="rounded-b-md border border-t-0 border-b-2 border-sky-950/40 px-4 py-1.5 text-center"
                   style={{
                     borderColor: getDifficultyColor(
                       keywordData.keyword_properties.keyword_difficulty,
@@ -131,8 +131,8 @@ const KeywordDetails = ({
           </div>
         </div>
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="w-full rounded-md border-2 border-b-3 border-slate-200 bg-white">
-            <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+          <div className="w-full rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
+            <div className="flex flex-row items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
               <TrendingUp size={20} />
               <span className="text-base">Volume</span>
             </div>
@@ -165,8 +165,8 @@ const KeywordDetails = ({
               )}
             </div>
           </div>
-          <div className="w-full rounded-md border-2 border-b-3 border-slate-200 bg-white">
-            <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+          <div className="w-full rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
+            <div className="flex flex-row items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
               <BadgeQuestionMark size={20} />
               <span className="text-base">Intent</span>
             </div>
@@ -248,8 +248,8 @@ const KeywordDetails = ({
           </div>
         </div>
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="w-full rounded-md border-2 border-b-3 border-slate-200 bg-white">
-            <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+          <div className="w-full rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
+            <div className="flex flex-row items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
               <BadgeDollarSignIcon size={20} />
               <span className="text-base">CPC</span>
             </div>
@@ -306,8 +306,8 @@ const KeywordDetails = ({
               )}
             </div>
           </div>
-          <div className="w-full rounded-md border-2 border-b-3 border-slate-200 bg-white">
-            <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+          <div className="w-full rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
+            <div className="flex flex-row items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
               <Target size={20} />
               <span className="text-base">PPC</span>
             </div>
@@ -330,8 +330,8 @@ const KeywordDetails = ({
           </div>
         </div>
         {keywordData?.keyword_info?.monthly_searches ? (
-          <div className="rounded-md border-2 border-b-3 border-slate-200 bg-white">
-            <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+          <div className="rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
+            <div className="flex flex-row items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
               <ChartNoAxesCombined size={20} />
               <span className="text-base md:text-lg">Search Volume Trend</span>
             </div>
@@ -346,8 +346,8 @@ const KeywordDetails = ({
           </div>
         ) : null}
         {keywordData?.avg_backlinks_info ? (
-          <div className="rounded-md border-2 border-b-3 border-slate-200 bg-white">
-            <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+          <div className="rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
+            <div className="flex flex-row items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
               <LinkIcon size={20} />
               <span className="text-base md:text-lg">SERP Backlinks Data</span>
             </div>

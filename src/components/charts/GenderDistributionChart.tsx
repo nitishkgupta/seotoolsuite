@@ -17,7 +17,7 @@ const GenderDistributionChart = ({ data }: { data: GenderDistribution }) => {
               alt="Male"
             />
             <div
-              className={`relative h-3 w-full shrink overflow-hidden rounded-full ${!data.male && !data.female ? "bg-slate-200" : "bg-pink-400"}`}
+              className={`relative h-3 w-full shrink overflow-hidden rounded-full ${!data.male && !data.female ? "bg-sky-950/15" : "bg-pink-400"}`}
             >
               <ObserverAnimate className="h-full">
                 <div

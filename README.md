@@ -21,7 +21,7 @@ Get access to SEO data with no limits. No limit on the number of rows you can ac
 
 Cache results to save costs and get faster responses.
 
-### 100% Open Source
+### 100% Open-Source
 
 Codebase completely open-sourced under the MIT license.
 

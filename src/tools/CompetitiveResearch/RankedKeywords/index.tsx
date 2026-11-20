@@ -510,7 +510,7 @@ const RankedKeywordsTool = ({
                   </div>
                   {params.row.ranked_serp_element.serp_item.backlinks_info && (
                     <>
-                      <div className="my-1 h-px w-full bg-slate-200"></div>
+                      <div className="my-1 h-px w-full bg-sky-950/40"></div>
                       <div className="flex flex-col gap-0.5 text-xs leading-normal">
                         <span>
                           <b className="font-medium">Domain Strength:</b>{" "}
@@ -628,7 +628,7 @@ const RankedKeywordsTool = ({
             {typeof params.value !== "string" ? (
               <div>N/A</div>
             ) : (
-              <div className="search-intent-badge flex w-full min-w-8 items-center justify-center rounded-md border border-b-2 border-slate-200 bg-black/1 px-3 py-2">
+              <div className="search-intent-badge flex w-full min-w-8 items-center justify-center rounded-md border border-b-2 border-sky-950/40 px-3 py-2">
                 {params.value === "informational" && (
                   <Tooltip
                     content={
@@ -1055,15 +1055,15 @@ const RankedKeywordsTool = ({
 
   return (
     <div className="ranked-keywords-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
-      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
+      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] p-5">
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
-            <Chip size="md" variant="flat">
+            <Chip size="md" variant="flat" className="bg-sky-950/10 text-black">
               ${parseFloat(Number(0.012 + MAX_ROWS * 0.00012).toFixed(4))}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {dfsSandboxEnabled && (
             <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
@@ -1073,7 +1073,7 @@ const RankedKeywordsTool = ({
             </Tooltip>
           )}
           {dfsSandboxEnabled && cachingEnabled && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {cachingEnabled && (
             <Tooltip content="Caching Enabled" placement="bottom-end">
@@ -1090,7 +1090,7 @@ const RankedKeywordsTool = ({
               className="animate-appearance-in scale-90 text-white"
             />
             <div
-              className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
+              className="animate-appearance-in h-6 w-px rounded-md bg-white"
               style={{ animationDelay: "100ms" }}
             ></div>
             <TextSearchIcon
@@ -1103,7 +1103,7 @@ const RankedKeywordsTool = ({
             <div className="text-xl font-medium text-sky-950 md:leading-none">
               Ranked Keywords
             </div>
-            <div className="text-base font-medium text-slate-500">
+            <div className="text-base font-medium text-sky-950/80">
               Get the keywords that a domain or page ranks for.
             </div>
           </div>
@@ -1146,7 +1146,8 @@ const RankedKeywordsTool = ({
                   isDisabled={isLoading}
                   value={selectedTarget}
                   classNames={{
-                    inputWrapper: "shadow-none",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                     label: "text-nowrap",
                   }}
                   onValueChange={setSelectedTarget}
@@ -1162,7 +1163,8 @@ const RankedKeywordsTool = ({
                   value={selectedLocationKey}
                   className="autocomplete-input"
                   classNames={{
-                    popoverContent: "border border-slate-200 border-b-2",
+                    popoverContent:
+                      "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                   }}
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
@@ -1173,7 +1175,7 @@ const RankedKeywordsTool = ({
                       key={location.location_code}
                       startContent={
                         <Image
-                          className="h-auto w-6 rounded-xs border border-slate-400"
+                          className="h-auto w-6 rounded-xs border border-sky-950/40"
                           src={getFlagImageUrl(location.country_iso_code)}
                           loading="lazy"
                           width={24}
@@ -1195,7 +1197,8 @@ const RankedKeywordsTool = ({
                   value={selectedLanguageKey}
                   className="autocomplete-input"
                   classNames={{
-                    popoverContent: "border border-slate-200 border-b-2",
+                    popoverContent:
+                      "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                   }}
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
@@ -1260,23 +1263,23 @@ const RankedKeywordsTool = ({
       )}
       {!isLoading && !error && data && (
         <div
-          className="mt-4 w-full scroll-m-4 rounded-md border-2 border-b-3 border-slate-200 bg-white lg:mt-8 lg:scroll-m-8"
+          className="mt-4 w-full scroll-m-4 rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] lg:mt-8 lg:scroll-m-8"
           id="ranked-overview-data"
         >
-          <div className="flex flex-row flex-wrap items-stretch justify-between gap-3 border-b-2 border-slate-200 px-4 py-3">
+          <div className="flex flex-row flex-wrap items-stretch justify-between gap-3 border-b-2 border-sky-950/40 px-4 py-3">
             <div className="flex items-center gap-2">
               <BookOpenTextIcon size={20} />
               <span className="text-base lg:text-lg">Organic Overview</span>
             </div>
             <div className="flex items-center gap-2">
               {isCachedData && (
-                <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
+                <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border border-b-2 border-sky-950/40 p-2">
                   <Tooltip
                     content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
                   >
                     <DatabaseZapIcon size={18} />
                   </Tooltip>
-                  <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                  <div className="w-px shrink-0 rounded-full bg-sky-950/40"></div>
                   <Tooltip content="Refresh Data">
                     <button
                       className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
@@ -1289,8 +1292,8 @@ const RankedKeywordsTool = ({
               )}
             </div>
           </div>
-          <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 md:grid-cols-2 xl:grid-cols-4">
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 xl:border-b-0">
+          <div className="grid grid-cols-1 items-stretch border-b-2 border-sky-950/40 md:grid-cols-2 xl:grid-cols-4">
+            <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:border-r-2 xl:border-b-0">
               <div className="flex items-center gap-2">
                 <TrendingUpIcon size={18} />
                 Monthly Traffic
@@ -1303,7 +1306,7 @@ const RankedKeywordsTool = ({
                 </span>
               </div>
             </div>
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 xl:border-r-2 xl:border-b-0">
+            <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 xl:border-r-2 xl:border-b-0">
               <div className="flex items-center gap-2">
                 <TextSearchIcon size={18} />
                 Keywords
@@ -1316,7 +1319,7 @@ const RankedKeywordsTool = ({
                 </span>
               </div>
             </div>
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 md:border-b-0">
+            <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:border-r-2 md:border-b-0">
               <div className="flex items-center gap-2">
                 <BadgeDollarSignIcon size={18} />
                 Traffic Cost
@@ -1330,7 +1333,7 @@ const RankedKeywordsTool = ({
                 </div>
               </div>
             </div>
-            <div className="flex flex-col justify-between border-slate-200 p-4">
+            <div className="flex flex-col justify-between border-sky-950/40 p-4">
               <div className="flex items-center gap-2">
                 <DiffIcon size={18} />
                 Ranking Changes
@@ -1363,7 +1366,7 @@ const RankedKeywordsTool = ({
               </div>
             </div>
           </div>
-          <div className="flex w-full flex-col justify-between border-slate-200 p-4">
+          <div className="flex w-full flex-col justify-between border-sky-950/40 p-4">
             <div className="flex items-center gap-2">
               <CircleStarIcon size={18} />
               Ranking Position Distribution
@@ -1380,10 +1383,10 @@ const RankedKeywordsTool = ({
       {!isLoading && !error && data && (
         <div className="tool-results-container mt-4 flex w-full flex-col gap-8 md:gap-4 lg:mt-8 lg:flex-row">
           <div
-            className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-slate-200 bg-white lg:scroll-m-8"
+            className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] lg:scroll-m-8"
             id="keywords-table"
           >
-            <div className="header flex w-full items-center justify-between gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
+            <div className="header flex w-full items-center justify-between gap-2 border-b-2 border-sky-950/40 px-4 py-3 text-base md:text-lg">
               <div className="flex items-center gap-2">
                 <TextSearchIcon size={20} />
                 <span>
@@ -1393,13 +1396,13 @@ const RankedKeywordsTool = ({
               </div>
               <div className="flex items-center gap-2">
                 {isCachedData && (
-                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border border-b-2 border-sky-950/40 p-2">
                     <Tooltip
                       content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
                     >
                       <DatabaseZapIcon size={18} />
                     </Tooltip>
-                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <div className="w-px shrink-0 rounded-full bg-sky-950/40"></div>
                     <Tooltip content="Refresh Data">
                       <button
                         className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
@@ -1453,11 +1456,11 @@ const RankedKeywordsTool = ({
         isOpen={keywordDetailsModalOpen}
         onOpenChange={setKeywordDetailsModalOpen}
       >
-        <ModalContent className="rounded-md">
-          <ModalHeader className="border-b-2 border-slate-200">
+        <ModalContent className="rounded-md bg-[#cdd5db]">
+          <ModalHeader className="border-b-2 border-sky-950/40">
             Keyword Details
           </ModalHeader>
-          <ModalBody className="gap-0 rounded-b-md bg-gray-100 p-0">
+          <ModalBody className="gap-0 rounded-b-md bg-[#cdd5db] p-0">
             <KeywordDetails keywordData={activeKeywordData} />
           </ModalBody>
         </ModalContent>

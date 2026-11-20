@@ -318,15 +318,15 @@ const TrafficOverviewTool = ({
 
   return (
     <div className="traffic-overview-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
-      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
+      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] p-5">
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
-            <Chip size="md" variant="flat">
+            <Chip size="md" variant="flat" className="bg-sky-950/10 text-black">
               ${parseFloat(Number(0.12 + dataMonthsCount * 0.0012).toFixed(4))}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {dfsSandboxEnabled && (
             <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
@@ -336,7 +336,7 @@ const TrafficOverviewTool = ({
             </Tooltip>
           )}
           {dfsSandboxEnabled && cachingEnabled && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {cachingEnabled && (
             <Tooltip content="Caching Enabled" placement="bottom-end">
@@ -353,7 +353,7 @@ const TrafficOverviewTool = ({
               className="animate-appearance-in scale-90 text-white"
             />
             <div
-              className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
+              className="animate-appearance-in h-6 w-px rounded-md bg-white"
               style={{ animationDelay: "100ms" }}
             ></div>
             <BookOpenTextIcon
@@ -366,7 +366,7 @@ const TrafficOverviewTool = ({
             <div className="text-xl font-medium text-sky-950 md:leading-none">
               Traffic Overview
             </div>
-            <div className="text-base font-medium text-slate-500">
+            <div className="text-base font-medium text-sky-950/80">
               Analyze website traffic metrics with historical data.
             </div>
           </div>
@@ -408,7 +408,8 @@ const TrafficOverviewTool = ({
                   isDisabled={isLoading}
                   value={selectedTarget}
                   classNames={{
-                    inputWrapper: "shadow-none",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   onValueChange={setSelectedTarget}
                   placeholder="example.com"
@@ -424,7 +425,8 @@ const TrafficOverviewTool = ({
                   value={selectedLocationKey}
                   className="autocomplete-input"
                   classNames={{
-                    popoverContent: "border border-slate-200 border-b-2",
+                    popoverContent:
+                      "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                   }}
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
@@ -435,7 +437,7 @@ const TrafficOverviewTool = ({
                       key={location.location_code}
                       startContent={
                         <Image
-                          className="h-auto w-6 rounded-xs border border-slate-400"
+                          className="h-auto w-6 rounded-xs border border-sky-950/40"
                           src={getFlagImageUrl(location.country_iso_code)}
                           loading="lazy"
                           width={24}
@@ -457,7 +459,8 @@ const TrafficOverviewTool = ({
                   value={selectedLanguageKey}
                   className="autocomplete-input"
                   classNames={{
-                    popoverContent: "border border-slate-200 border-b-2",
+                    popoverContent:
+                      "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                   }}
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
@@ -520,23 +523,23 @@ const TrafficOverviewTool = ({
         latestRankOverviewData &&
         secondLatestRankOverviewData && (
           <div
-            className="mt-4 w-full scroll-m-4 rounded-md border-2 border-b-3 border-slate-200 bg-white lg:mt-8 lg:scroll-m-8"
+            className="mt-4 w-full scroll-m-4 rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] lg:mt-8 lg:scroll-m-8"
             id="traffic-overview-data"
           >
-            <div className="flex flex-row flex-wrap items-stretch justify-between gap-3 border-b-2 border-slate-200 px-4 py-3">
+            <div className="flex flex-row flex-wrap items-stretch justify-between gap-3 border-b-2 border-sky-950/40 px-4 py-3">
               <div className="flex items-center gap-2">
                 <BookOpenTextIcon size={20} />
                 <span className="text-base lg:text-lg">Organic Overview</span>
               </div>
               <div className="flex items-center gap-2">
                 {isCachedData && (
-                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border border-b-2 border-sky-950/40 p-2">
                     <Tooltip
                       content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
                     >
                       <DatabaseZapIcon size={18} />
                     </Tooltip>
-                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <div className="w-px shrink-0 rounded-full bg-sky-950/40"></div>
                     <Tooltip content="Refresh Data">
                       <button
                         className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
@@ -549,8 +552,8 @@ const TrafficOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 md:grid-cols-2 xl:grid-cols-4">
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 xl:border-b-0">
+            <div className="grid grid-cols-1 items-stretch border-b-2 border-sky-950/40 md:grid-cols-2 xl:grid-cols-4">
+              <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:border-r-2 xl:border-b-0">
                 <div className="flex items-center gap-2">
                   <TrendingUpIcon size={18} />
                   Monthly Traffic
@@ -585,7 +588,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 xl:border-r-2 xl:border-b-0">
+              <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 xl:border-r-2 xl:border-b-0">
                 <div className="flex items-center gap-2">
                   <TextSearchIcon size={18} />
                   Keywords
@@ -621,7 +624,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 md:border-b-0">
+              <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:border-r-2 md:border-b-0">
                 <div className="flex items-center gap-2">
                   <BadgeDollarSignIcon size={18} />
                   Traffic Cost
@@ -664,7 +667,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col justify-between border-slate-200 p-4">
+              <div className="flex flex-col justify-between border-sky-950/40 p-4">
                 <div className="flex items-center gap-2">
                   <DiffIcon size={18} />
                   Ranking Changes
@@ -707,7 +710,7 @@ const TrafficOverviewTool = ({
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200">
+            <div className="grid grid-cols-1 items-stretch border-b-2 border-sky-950/40">
               <div className="flex flex-col justify-between p-4 pb-1">
                 <div className="flex items-center gap-2">
                   <ChartNoAxesCombinedIcon size={18} />
@@ -731,7 +734,7 @@ const TrafficOverviewTool = ({
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200">
+            <div className="grid grid-cols-1 items-stretch border-b-2 border-sky-950/40">
               <div className="flex flex-col justify-between p-4 pb-1">
                 <div className="flex items-center gap-2">
                   <DiffIcon size={18} />
@@ -774,7 +777,7 @@ const TrafficOverviewTool = ({
                 </div>
               </div>
             </div>
-            <div className="flex w-full flex-col justify-between border-slate-200 p-4 pb-1">
+            <div className="flex w-full flex-col justify-between border-sky-950/40 p-4 pb-1">
               <div className="flex items-center gap-2">
                 <CircleStarIcon size={18} />
                 Ranking Position Trend
@@ -823,23 +826,23 @@ const TrafficOverviewTool = ({
         latestRankOverviewData &&
         secondLatestRankOverviewData && (
           <div
-            className="mt-4 w-full scroll-m-4 rounded-md border-2 border-b-3 border-slate-200 bg-white lg:mt-8 lg:scroll-m-8"
+            className="mt-4 w-full scroll-m-4 rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] lg:mt-8 lg:scroll-m-8"
             id="traffic-overview-data"
           >
-            <div className="flex flex-row flex-wrap items-stretch justify-between gap-3 border-b-2 border-slate-200 px-4 py-3">
+            <div className="flex flex-row flex-wrap items-stretch justify-between gap-3 border-b-2 border-sky-950/40 px-4 py-3">
               <div className="flex items-center gap-2">
                 <MegaphoneIcon size={20} />
                 <span className="text-base lg:text-lg">Paid Overview</span>
               </div>
               <div className="flex items-center gap-2">
                 {isCachedData && (
-                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border border-b-2 border-sky-950/40 p-2">
                     <Tooltip
                       content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
                     >
                       <DatabaseZapIcon size={18} />
                     </Tooltip>
-                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <div className="w-px shrink-0 rounded-full bg-sky-950/40"></div>
                     <Tooltip content="Refresh Data">
                       <button
                         className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
@@ -852,8 +855,8 @@ const TrafficOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200 md:grid-cols-2 xl:grid-cols-4">
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 xl:border-b-0">
+            <div className="grid grid-cols-1 items-stretch border-b-2 border-sky-950/40 md:grid-cols-2 xl:grid-cols-4">
+              <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:border-r-2 xl:border-b-0">
                 <div className="flex items-center gap-2">
                   <TrendingUpIcon size={18} />
                   Monthly Traffic
@@ -888,7 +891,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 xl:border-r-2 xl:border-b-0">
+              <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 xl:border-r-2 xl:border-b-0">
                 <div className="flex items-center gap-2">
                   <TextSearchIcon size={18} />
                   Keywords
@@ -923,7 +926,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:border-r-2 md:border-b-0">
+              <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:border-r-2 md:border-b-0">
                 <div className="flex items-center gap-2">
                   <BadgeDollarSignIcon size={18} />
                   Traffic Cost
@@ -966,7 +969,7 @@ const TrafficOverviewTool = ({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col border-slate-200 p-4">
+              <div className="flex flex-col border-sky-950/40 p-4">
                 <div className="flex items-center gap-2">
                   <DiffIcon size={18} />
                   Ranking Changes
@@ -991,7 +994,7 @@ const TrafficOverviewTool = ({
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-b-2 border-slate-200">
+            <div className="grid grid-cols-1 items-stretch border-b-2 border-sky-950/40">
               <div className="flex flex-col justify-between p-4 pb-1">
                 <div className="flex items-center gap-2">
                   <ChartNoAxesCombinedIcon size={18} />
@@ -1015,7 +1018,7 @@ const TrafficOverviewTool = ({
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 items-stretch border-slate-200">
+            <div className="grid grid-cols-1 items-stretch border-sky-950/40">
               <div className="flex flex-col justify-between p-4 pb-1">
                 <div className="flex items-center gap-2">
                   <DiffIcon size={18} />

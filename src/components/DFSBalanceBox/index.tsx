@@ -14,7 +14,7 @@ function DFSBalanceBox() {
   return (
     <>
       <Tooltip content="DataForSEO Balance">
-        <div className="flex items-center rounded-md border-2 border-b-3 border-slate-200">
+        <div className="flex items-center rounded-md border border-b-2 border-sky-950/40">
           <div className="flex h-full items-center border-slate-200 px-2">
             <WalletIcon size={22} />
           </div>
@@ -23,7 +23,7 @@ function DFSBalanceBox() {
           </div>
         </div>
       </Tooltip>
-      <div className="my-1 hidden w-0.5 bg-slate-200 lg:block"></div>
+      <div className="my-1 hidden w-px bg-sky-950/40 lg:block"></div>
     </>
   );
 }

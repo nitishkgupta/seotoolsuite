@@ -281,14 +281,14 @@ export default function BulkDRCheckerFeaturePage() {
         </div>
       </section>
 
-      {/* Why Choose Open Source Section */}
+      {/* Why Choose Open-Source Section */}
       <section className="w-full border-b-2 border-slate-200 bg-slate-50/50 py-10 lg:py-16">
         <div className="mx-auto flex w-full max-w-358 flex-col items-start px-4">
           <h2 className="text-2xl font-semibold text-sky-950 sm:text-3xl lg:text-4xl">
             Why Use SEOToolSuite&apos;s Bulk DR Checker?
           </h2>
           <p className="mt-3 max-w-225 text-base font-medium text-black/60 lg:text-lg">
-            Free, lightweight, and completely open source.
+            Free, lightweight, and completely open-source.
           </p>
 
           <div className="mt-8 grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
@@ -328,7 +328,7 @@ export default function BulkDRCheckerFeaturePage() {
             <div className="flex flex-col gap-3 rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
               <div className="flex items-center gap-2.5 text-sky-950">
                 <ScaleIcon size={28} className="shrink-0" />
-                <h3 className="text-lg font-semibold">100% Open Source</h3>
+                <h3 className="text-lg font-semibold">100% Open-Source</h3>
               </div>
               <p className="text-sm leading-relaxed text-black/75">
                 MIT-licensed codebase. Fully transparent code ready to customize

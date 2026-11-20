@@ -73,6 +73,9 @@ const SearchVolumeTrendChart = ({
               }}
               contentStyle={{
                 borderRadius: "8px",
+                backgroundColor: "#e7eaed",
+                borderBottomWidth: "2px",
+                borderColor: "#8d9fac",
               }}
               wrapperStyle={{
                 zIndex: 9999,
@@ -145,6 +148,9 @@ const SearchVolumeTrendChart = ({
               }}
               contentStyle={{
                 borderRadius: "8px",
+                backgroundColor: "#e7eaed",
+                borderBottomWidth: "2px",
+                borderColor: "#8d9fac",
               }}
               wrapperStyle={{
                 zIndex: 9999,

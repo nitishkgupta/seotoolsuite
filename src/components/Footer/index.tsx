@@ -4,7 +4,7 @@ import { memo } from "react";
 
 function Footer() {
   return (
-    <footer className="flex flex-col items-center border-t-2 border-slate-200 bg-white pt-4 text-base">
+    <footer className="flex flex-col items-center border-t-2 border-sky-950/40 bg-[#e7eaed] pt-4 text-base">
       <span>© 2026 SEOToolSuite.</span>
       <div className="mt-1 text-center">
         Made with ❤️ in{" "}
@@ -25,7 +25,7 @@ function Footer() {
         </Link>
         .
       </div>
-      <div className="mt-4 w-full border-t-2 border-slate-200 py-3 text-center text-base">
+      <div className="mt-4 w-full border-t-2 border-sky-950/40 py-3 text-center text-base">
         Powered by{" "}
         <Link
           href="https://dataforseo.com/?aff=4d6a573c-0675-4d96-add0-f864b53b7c11"

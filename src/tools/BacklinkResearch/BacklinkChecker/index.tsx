@@ -483,7 +483,7 @@ const BacklinkCheckerTool = ({
         renderCell: (params) => (
           <div className="flex w-full flex-row gap-2 py-2.5">
             <div className="flex shrink-0 translate-y-1 flex-col gap-2">
-              <div className="search-intent-badge rounded-md border border-b-2 border-slate-200 bg-black/1 p-1">
+              <div className="search-intent-badge rounded-md border border-b-2 border-sky-950/40 p-1">
                 <img
                   src={`https://www.google.com/s2/favicons?domain=${params.row.domain_from}&sz=128`}
                   loading="lazy"
@@ -516,32 +516,32 @@ const BacklinkCheckerTool = ({
               <div className="mt-1 flex flex-wrap items-center gap-1">
                 {params.row.is_new && (
                   <Tooltip content="New Backlink">
-                    <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-slate-200 bg-black/1 px-2 text-green-700">
+                    <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-sky-950/40 px-2 text-green-700">
                       <PlusIcon size={14} />
                     </div>
                   </Tooltip>
                 )}
                 {params.row.is_lost && (
                   <Tooltip content="Lost Backlink">
-                    <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-slate-200 bg-black/1 px-2 text-red-700">
+                    <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-sky-950/40 px-2 text-red-700">
                       <MinusIcon size={14} />
                     </div>
                   </Tooltip>
                 )}
                 {params.row.dofollow ? (
                   <Tooltip content="DoFollow">
-                    <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-slate-200 bg-black/1 px-2 text-xs font-semibold text-green-700">
+                    <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-sky-950/40 px-2 text-xs font-semibold text-green-700">
                       DF
                     </div>
                   </Tooltip>
                 ) : (
                   <Tooltip content="NoFollow">
-                    <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-slate-200 bg-black/1 px-2 text-xs font-semibold text-black/70">
+                    <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-sky-950/40 px-2 text-xs font-semibold text-black/70">
                       NF
                     </div>
                   </Tooltip>
                 )}
-                <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-slate-200 bg-black/1 px-2">
+                <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-sky-950/40 px-2">
                   {params.row.item_type === "anchor" && (
                     <Tooltip content="Backlink Type: Anchor">
                       <TypeIcon size={14} />
@@ -627,7 +627,7 @@ const BacklinkCheckerTool = ({
             {params.row.is_broken && (
               <div className="mt-1 flex flex-wrap items-center gap-1">
                 <Tooltip content="Broken Backlink">
-                  <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-slate-200 bg-black/1 px-2 text-red-700">
+                  <div className="search-intent-badge flex h-6 items-center justify-center rounded-md border border-b-2 border-sky-950/40 px-2 text-red-700">
                     <Link2OffIcon size={14} />
                   </div>
                 </Tooltip>
@@ -691,9 +691,9 @@ const BacklinkCheckerTool = ({
             {typeof params.value !== "number" ? (
               <div className="w-full px-2.5 text-center">N/A</div>
             ) : (
-              <div className="relative flex h-9 w-12 flex-col items-center justify-center rounded-md border border-b-2 border-sky-950/50 bg-sky-950/10 text-center font-medium text-sky-950">
+              <div className="relative flex h-9 w-12 flex-col items-center justify-center rounded-md border border-b-2 border-sky-950/40 bg-sky-950/10 text-center font-medium text-sky-950">
                 <span className="relative z-20">{params.value}</span>
-                <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/20">
+                <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/15">
                   <ObserverAnimate className="w-full">
                     <div
                       className="scale-x-visible-anim h-1 origin-left bg-sky-950"
@@ -726,9 +726,9 @@ const BacklinkCheckerTool = ({
             {typeof params.value !== "number" ? (
               <div className="w-full px-2.5 text-center">N/A</div>
             ) : (
-              <div className="relative flex h-9 w-12 flex-col items-center justify-center rounded-md border border-b-2 border-sky-950/50 bg-sky-950/10 text-center font-medium text-sky-950">
+              <div className="relative flex h-9 w-12 flex-col items-center justify-center rounded-md border border-b-2 border-sky-950/40 bg-sky-950/10 text-center font-medium text-sky-950">
                 <span className="relative z-20">{params.value}</span>
-                <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/20">
+                <div className="mx-auto w-8 overflow-hidden rounded-full bg-sky-950/15">
                   <ObserverAnimate className="w-full">
                     <div
                       className="scale-x-visible-anim h-1 origin-left bg-sky-950"
@@ -823,15 +823,15 @@ const BacklinkCheckerTool = ({
 
   return (
     <div className="backlink-checker-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
-      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
+      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] p-5">
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
-            <Chip size="md" variant="flat">
+            <Chip size="md" variant="flat" className="bg-sky-950/10 text-black">
               ${parseFloat(Number(0.024 + MAX_ROWS * 0.000036).toFixed(4))}
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {dfsSandboxEnabled && (
             <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
@@ -841,7 +841,7 @@ const BacklinkCheckerTool = ({
             </Tooltip>
           )}
           {dfsSandboxEnabled && cachingEnabled && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {cachingEnabled && (
             <Tooltip content="Caching Enabled" placement="bottom-end">
@@ -858,7 +858,7 @@ const BacklinkCheckerTool = ({
               className="animate-appearance-in scale-90 text-white"
             />
             <div
-              className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
+              className="animate-appearance-in h-6 w-px rounded-md bg-white"
               style={{ animationDelay: "100ms" }}
             ></div>
             <GraphStarIcon
@@ -871,7 +871,7 @@ const BacklinkCheckerTool = ({
             <div className="text-xl font-medium text-sky-950 md:leading-none">
               Backlink Checker
             </div>
-            <div className="text-base font-medium text-slate-500">
+            <div className="text-base font-medium text-sky-950/80">
               Analyze backlinks pointing to any domain, subdomain, or URL.
             </div>
           </div>
@@ -914,7 +914,8 @@ const BacklinkCheckerTool = ({
                   isDisabled={isLoading}
                   value={selectedTarget}
                   classNames={{
-                    inputWrapper: "shadow-none",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                     label: "text-nowrap",
                   }}
                   onValueChange={setSelectedTarget}
@@ -930,7 +931,8 @@ const BacklinkCheckerTool = ({
                   selectedKeys={[selectedBacklinksStatus]}
                   className="select-input"
                   classNames={{
-                    popoverContent: "border border-slate-200 border-b-2",
+                    popoverContent:
+                      "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                   }}
                   onSelectionChange={(keys) => {
                     const val = Array.from(keys)[0] as BacklinksStatusType;
@@ -959,6 +961,9 @@ const BacklinkCheckerTool = ({
                   onValueChange={setIncludeSubdomains}
                   isDisabled={isLoading}
                   size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
                 >
                   Include Subdomains
                 </Checkbox>
@@ -968,6 +973,9 @@ const BacklinkCheckerTool = ({
                   onValueChange={setOneLinkPerDomain}
                   isDisabled={isLoading}
                   size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
                 >
                   One Link Per Domain
                 </Checkbox>
@@ -977,6 +985,9 @@ const BacklinkCheckerTool = ({
                   onValueChange={setOnlyDofollow}
                   isDisabled={isLoading}
                   size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
                 >
                   Only DoFollow
                 </Checkbox>
@@ -986,6 +997,9 @@ const BacklinkCheckerTool = ({
                   onValueChange={setOnlyBroken}
                   isDisabled={isLoading}
                   size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
                 >
                   Only Broken
                 </Checkbox>
@@ -1008,10 +1022,10 @@ const BacklinkCheckerTool = ({
       {!isLoading && !error && data && (
         <div className="tool-results-container mt-4 flex w-full flex-col gap-8 md:gap-4 lg:mt-8 lg:flex-row">
           <div
-            className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-slate-200 bg-white lg:scroll-m-8"
+            className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] lg:scroll-m-8"
             id="backlinks-table"
           >
-            <div className="header flex w-full items-center justify-between gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
+            <div className="header flex w-full items-center justify-between gap-2 border-b-2 border-sky-950/40 px-4 py-3 text-base md:text-lg">
               <div className="flex items-center gap-2">
                 <GraphStarIcon size={20} />
                 <span>
@@ -1020,13 +1034,13 @@ const BacklinkCheckerTool = ({
               </div>
               <div className="flex items-center gap-2">
                 {isCachedData && (
-                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
+                  <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border border-b-2 border-sky-950/40 p-2">
                     <Tooltip
                       content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
                     >
                       <DatabaseZapIcon size={18} />
                     </Tooltip>
-                    <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                    <div className="w-px shrink-0 rounded-full bg-sky-950/40"></div>
                     <Tooltip content="Refresh Data">
                       <button
                         className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"

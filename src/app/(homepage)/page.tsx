@@ -23,14 +23,14 @@ import HomeHeader from "@/components/HomeHeader";
 import { HomeFooter } from "@/components/HomeFooter";
 
 export const metadata: Metadata = {
-  title: "SEOToolSuite | Open Source SEO Tools For Everyone",
+  title: "SEOToolSuite | Open-Source SEO Tools For Everyone",
   description:
-    "Open source SEO tools for everyone. Keyword research, competitive research, and backlink research, powered by DataForSEO.",
+    "Open-source SEO tools for everyone. Keyword research, competitive research, and backlink research, powered by DataForSEO.",
   openGraph: {
     type: "website",
-    title: "SEOToolSuite | Open Source SEO Tools For Everyone",
+    title: "SEOToolSuite | Open-Source SEO Tools For Everyone",
     description:
-      "Open source SEO tools for everyone. Keyword research, competitive research, and backlink research, powered by DataForSEO.",
+      "Open-source SEO tools for everyone. Keyword research, competitive research, and backlink research, powered by DataForSEO.",
     images: [
       {
         url: "/assets/images/seotoolsuite-homepage-screenshot.png",
@@ -210,7 +210,7 @@ export default function HomePage() {
                   />
                 </div>
                 <h3 className="text-base font-semibold lg:text-xl">
-                  100% Open Source
+                  100% Open-Source
                 </h3>
               </div>
               <div className="text-base text-pretty text-black/80">

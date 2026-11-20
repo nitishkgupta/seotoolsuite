@@ -429,7 +429,7 @@ const KeywordAutocompleteTool = ({
 
   return (
     <div className="keyword-autocomplete-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
-      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
+      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] p-5">
         {isLoading && (
           <div className="absolute top-0 left-0 z-20 w-full overflow-hidden rounded-t-md">
             <Progress
@@ -439,6 +439,9 @@ const KeywordAutocompleteTool = ({
               radius="none"
               color="primary"
               value={keywordAutocompleteProgress}
+              classNames={{
+                track: "bg-sky-950/15",
+              }}
             />
           </div>
         )}
@@ -449,7 +452,7 @@ const KeywordAutocompleteTool = ({
               className="animate-appearance-in text-white"
             />
             <div
-              className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
+              className="animate-appearance-in h-6 w-px rounded-md bg-white"
               style={{ animationDelay: "100ms" }}
             ></div>
             <LoaderPinwheelIcon
@@ -462,7 +465,7 @@ const KeywordAutocompleteTool = ({
             <div className="text-xl font-medium text-sky-950 md:leading-none">
               Keyword Autocomplete
             </div>
-            <div className="text-base font-medium text-slate-500">
+            <div className="text-base font-medium text-sky-950/80">
               Generate long-tail keywords using Google autocomplete.
             </div>
           </div>
@@ -482,7 +485,8 @@ const KeywordAutocompleteTool = ({
                 isDisabled={isLoading}
                 value={selectedKeyword}
                 classNames={{
-                  inputWrapper: "shadow-none",
+                  inputWrapper:
+                    "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                 }}
                 onValueChange={setSelectedKeyword}
                 autoFocus
@@ -497,7 +501,8 @@ const KeywordAutocompleteTool = ({
                 value={selectedLocationKey}
                 className="autocomplete-input"
                 classNames={{
-                  popoverContent: "border border-slate-200 border-b-2",
+                  popoverContent:
+                    "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                 }}
                 onChange={(key: any) =>
                   setSelectedLocationKey(key.target.value)
@@ -508,7 +513,7 @@ const KeywordAutocompleteTool = ({
                     key={location.location_code}
                     startContent={
                       <Image
-                        className="h-auto w-6 rounded-xs border border-slate-400"
+                        className="h-auto w-6 rounded-xs border border-sky-950/40"
                         src={getFlagImageUrl(location.country_iso_code)}
                         loading="lazy"
                         width={24}
@@ -530,7 +535,8 @@ const KeywordAutocompleteTool = ({
                 value={selectedLanguageKey}
                 className="autocomplete-input"
                 classNames={{
-                  popoverContent: "border border-slate-200 border-b-2",
+                  popoverContent:
+                    "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                 }}
                 onChange={(key: any) =>
                   setSelectedLanguageKey(key.target.value)
@@ -590,10 +596,10 @@ const KeywordAutocompleteTool = ({
         <>
           <div className="tool-results-container mt-4 flex w-full flex-col gap-8 md:gap-4 lg:mt-8 lg:flex-row">
             <div
-              className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-slate-200 bg-white lg:scroll-m-8"
+              className="tool-results-table-container h-fit w-full scroll-m-4 overflow-auto rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] lg:scroll-m-8"
               id="keywords-table"
             >
-              <div className="header relative flex w-full items-center gap-2 border-b-2 border-slate-200 px-4 py-3 text-base md:text-lg">
+              <div className="header relative flex w-full items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3 text-base md:text-lg">
                 {isLoading && (
                   <div className="absolute top-0 left-0 z-20 w-full overflow-hidden rounded-t-md">
                     <Progress
@@ -603,6 +609,9 @@ const KeywordAutocompleteTool = ({
                       radius="none"
                       color="primary"
                       value={keywordAutocompleteProgress}
+                      classNames={{
+                        track: "bg-sky-950/15",
+                      }}
                     />
                   </div>
                 )}

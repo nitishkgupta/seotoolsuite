@@ -58,7 +58,7 @@ const KeywordActionsDropdown = ({
 
   return (
     <div className="keyword-actions-dropdown-container">
-      <Dropdown className="border border-b-2 border-slate-200">
+      <Dropdown className="border border-b-2 border-sky-950/40 bg-[#e7eaed]">
         <DropdownTrigger>
           <Button size="sm" isIconOnly variant="flat">
             <EllipsisIcon size={16} />

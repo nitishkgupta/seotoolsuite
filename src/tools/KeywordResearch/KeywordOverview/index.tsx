@@ -354,15 +354,15 @@ const KeywordOverviewTool = ({
 
   return (
     <div className="keyword-overview-tool relative w-full px-4 py-4 lg:px-8 lg:py-8">
-      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200 bg-white p-5">
+      <div className="tool-form-container relative flex w-full flex-col items-start justify-start rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] p-5">
         <div className="absolute top-4 right-4 flex w-fit items-center gap-2">
           <Tooltip content="Credits Cost (Uncached)">
-            <Chip size="md" variant="flat">
+            <Chip size="md" variant="flat" className="bg-sky-950/10 text-black">
               $0.0241
             </Chip>
           </Tooltip>
           {(dfsSandboxEnabled || cachingEnabled) && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {dfsSandboxEnabled && (
             <Tooltip content="Sandbox Mode Enabled" placement="bottom-end">
@@ -372,7 +372,7 @@ const KeywordOverviewTool = ({
             </Tooltip>
           )}
           {dfsSandboxEnabled && cachingEnabled && (
-            <div className="h-6 w-0.5 rounded-md bg-slate-200"></div>
+            <div className="h-6 w-px rounded-md bg-sky-950/40"></div>
           )}
           {cachingEnabled && (
             <Tooltip content="Caching Enabled" placement="bottom-end">
@@ -389,7 +389,7 @@ const KeywordOverviewTool = ({
               className="animate-appearance-in text-white"
             />
             <div
-              className="animate-appearance-in h-6 w-0.5 rounded-md bg-white"
+              className="animate-appearance-in h-6 w-px rounded-md bg-white"
               style={{ animationDelay: "100ms" }}
             ></div>
             <BookOpenTextIcon
@@ -402,7 +402,7 @@ const KeywordOverviewTool = ({
             <div className="text-xl font-medium text-sky-950 md:leading-none">
               Keyword Overview
             </div>
-            <div className="text-base font-medium text-slate-500">
+            <div className="text-base font-medium text-sky-950/80">
               Analyze keyword metrics with clickstream data.
             </div>
           </div>
@@ -445,7 +445,8 @@ const KeywordOverviewTool = ({
                   value={selectedKeyword}
                   onValueChange={setSelectedKeyword}
                   classNames={{
-                    inputWrapper: "shadow-none",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   autoFocus
                   isRequired
@@ -459,7 +460,8 @@ const KeywordOverviewTool = ({
                   value={selectedLocationKey}
                   className="autocomplete-input"
                   classNames={{
-                    popoverContent: "border border-slate-200 border-b-2",
+                    popoverContent:
+                      "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                   }}
                   onChange={(key: any) =>
                     setSelectedLocationKey(key.target.value)
@@ -470,7 +472,7 @@ const KeywordOverviewTool = ({
                       key={location.location_code}
                       startContent={
                         <Image
-                          className="h-auto w-6 rounded-xs border border-slate-400"
+                          className="h-auto w-6 rounded-xs border border-sky-950/40"
                           src={getFlagImageUrl(location.country_iso_code)}
                           loading="lazy"
                           width={24}
@@ -492,7 +494,8 @@ const KeywordOverviewTool = ({
                   value={selectedLanguageKey}
                   className="autocomplete-input"
                   classNames={{
-                    popoverContent: "border border-slate-200 border-b-2",
+                    popoverContent:
+                      "border border-sky-950/40 border-b-2 bg-[#e7eaed]",
                   }}
                   onChange={(key: any) =>
                     setSelectedLanguageKey(key.target.value)
@@ -554,23 +557,23 @@ const KeywordOverviewTool = ({
       )}
       {!isLoading && !error && data && (
         <div
-          className="mt-4 w-full scroll-m-4 rounded-md border-2 border-b-3 border-slate-200 bg-white lg:mt-8 lg:scroll-m-8"
+          className="mt-4 w-full scroll-m-4 rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed] lg:mt-8 lg:scroll-m-8"
           id="keyword-overview-data"
         >
-          <div className="flex flex-col items-stretch justify-between gap-3 border-b-2 border-slate-200 px-4 py-3 lg:flex-row">
+          <div className="flex flex-col items-stretch justify-between gap-3 border-b-2 border-sky-950/40 px-4 py-3 lg:flex-row">
             <div className="flex items-center gap-2">
               <BookOpenTextIcon size={20} />
               <span className="text-base lg:text-lg">Keyword Overview</span>
             </div>
             {isCachedData && (
               <div className="flex items-center gap-2">
-                <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border-2 border-b-3 border-slate-200 p-2">
+                <div className="text-small text-default-700 relative flex items-stretch gap-2 rounded-full border border-b-2 border-sky-950/40 p-2">
                   <Tooltip
                     content={`Cached Data ${dataCachedAt ? `(${getLocalDateTimeFromISOString(dataCachedAt)})` : ""}`}
                   >
                     <DatabaseZapIcon size={18} />
                   </Tooltip>
-                  <div className="w-0.5 shrink-0 rounded-full bg-slate-200"></div>
+                  <div className="w-px shrink-0 rounded-full bg-sky-950/40"></div>
                   <Tooltip content="Refresh Data">
                     <button
                       className="cursor-pointer transition hover:rotate-90 active:scale-95 active:duration-75"
@@ -584,7 +587,7 @@ const KeywordOverviewTool = ({
             )}
           </div>
           <div className="grid grid-cols-1 items-stretch md:grid-cols-6 xl:grid-cols-5">
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:col-span-2 md:border-r-2 xl:col-span-1 xl:border-b-0">
+            <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:col-span-2 md:border-r-2 xl:col-span-1 xl:border-b-0">
               <div className="flex items-center gap-2">
                 <TrendingUpIcon size={18} />
                 Volume
@@ -610,7 +613,7 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:col-span-2 md:border-r-2 xl:col-span-1 xl:border-b-0">
+            <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:col-span-2 md:border-r-2 xl:col-span-1 xl:border-b-0">
               <div className="flex items-center gap-2">
                 <BadgeQuestionMarkIcon size={18} />
                 Intent
@@ -686,7 +689,7 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:col-span-2 xl:col-span-1 xl:border-r-2 xl:border-b-0">
+            <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:col-span-2 xl:col-span-1 xl:border-r-2 xl:border-b-0">
               <div className="flex items-center gap-2">
                 <BadgeDollarSignIcon size={18} />
                 CPC
@@ -732,7 +735,7 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 md:col-span-3 md:border-r-2 md:border-b-0 xl:col-span-1">
+            <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 md:col-span-3 md:border-r-2 md:border-b-0 xl:col-span-1">
               <div className="flex items-center gap-2">
                 <TargetIcon size={18} />
                 PPC
@@ -752,7 +755,7 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col justify-between border-slate-200 p-4 md:col-span-3 xl:col-span-1">
+            <div className="flex flex-col justify-between border-sky-950/40 p-4 md:col-span-3 xl:col-span-1">
               <div className="flex items-center gap-2">
                 <GaugeIcon size={18} />
                 SEO Difficulty
@@ -774,8 +777,8 @@ const KeywordOverviewTool = ({
               )}
             </div>
           </div>
-          <div className="grid grid-cols-1 items-stretch border-t-2 border-slate-200">
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 pb-1">
+          <div className="grid grid-cols-1 items-stretch border-t-2 border-sky-950/40">
+            <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 pb-1">
               <div className="flex items-center gap-2">
                 <ChartNoAxesCombinedIcon size={18} />
                 Search Volume Trend
@@ -792,7 +795,7 @@ const KeywordOverviewTool = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col border-slate-200 p-4">
+            <div className="flex flex-col border-sky-950/40 p-4">
               <div className="flex items-center gap-2">
                 <LinkIcon size={18} />
                 SERP Backlinks Data
@@ -895,8 +898,8 @@ const KeywordOverviewTool = ({
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 items-stretch border-t-2 border-slate-200 lg:grid-cols-2">
-            <div className="flex flex-col justify-between border-b-2 border-slate-200 p-4 lg:border-r-2 lg:border-b-0">
+          <div className="grid grid-cols-1 items-stretch border-t-2 border-sky-950/40 lg:grid-cols-2">
+            <div className="flex flex-col justify-between border-b-2 border-sky-950/40 p-4 lg:border-r-2 lg:border-b-0">
               <div className="flex items-center gap-2">
                 <Image
                   src="/assets/icons/demography.svg"
@@ -913,7 +916,7 @@ const KeywordOverviewTool = ({
                 </div>
               )}
             </div>
-            <div className="border-slate-200 p-4">
+            <div className="border-sky-950/40 p-4">
               <div className="flex items-center gap-2">
                 <UsersIcon size={18} />
                 Age Distribution

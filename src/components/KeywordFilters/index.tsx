@@ -50,9 +50,9 @@ const KeywordFilters = ({
   const [initialValuesState, setInitialValuesState] =
     useState<KeywordFiltersInitialValues>(initialValues);
   return (
-    <div className="keyword-filters flex flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200">
+    <div className="keyword-filters flex flex-col items-start justify-start rounded-md border border-b-2 border-sky-950/40">
       <div
-        className={`flex w-full items-center justify-between gap-1 rounded-t-md border-slate-200 py-2 pr-2 pl-4 text-base ${filtersVisible ? "border-b-2" : ""}`}
+        className={`flex w-full items-center justify-between gap-1 rounded-t-md border-sky-950/40 py-2 pr-2 pl-4 text-base ${filtersVisible ? "border-b" : ""}`}
       >
         <button
           type="button"
@@ -63,7 +63,7 @@ const KeywordFilters = ({
           <FunnelIcon size={16} />
           <span>Filters</span>
           {typeof activeFiltersCount === "number" && activeFiltersCount > 0 && (
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-xs font-medium">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-sky-950/10 text-xs font-medium">
               {activeFiltersCount}
             </div>
           )}
@@ -97,9 +97,10 @@ const KeywordFilters = ({
                 <NumberInput
                   name="searchVolume-min"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Min."
                   size="sm"
@@ -116,9 +117,10 @@ const KeywordFilters = ({
                 <NumberInput
                   name="searchVolume-max"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Max."
                   size="sm"
@@ -142,9 +144,10 @@ const KeywordFilters = ({
                 <NumberInput
                   name="kd-min"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Min."
                   size="sm"
@@ -161,9 +164,10 @@ const KeywordFilters = ({
                 <NumberInput
                   name="kd-max"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Max."
                   size="sm"
@@ -197,7 +201,7 @@ const KeywordFilters = ({
                 </Tooltip>
                 <Tooltip content="Easy">
                   <Button
-                    className="border border-b-2 border-[#AADA2B] bg-transparent px-2 text-xs font-semibold text-[#AADA2B] lg:h-auto lg:min-w-auto lg:py-1"
+                    className="border border-b-2 border-[#81ae09] bg-transparent px-2 text-xs font-semibold text-[#81ae09] lg:h-auto lg:min-w-auto lg:py-1"
                     size="sm"
                     variant="flat"
                     onPress={() => {
@@ -213,7 +217,7 @@ const KeywordFilters = ({
                 </Tooltip>
                 <Tooltip content="Medium">
                   <Button
-                    className="border border-b-2 border-[#ffbe02] bg-transparent px-2 text-xs font-semibold text-[#ffbe02] lg:h-auto lg:min-w-auto lg:py-1"
+                    className="border border-b-2 border-[#bb8b00] bg-transparent px-2 text-xs font-semibold text-[#bb8b00] lg:h-auto lg:min-w-auto lg:py-1"
                     size="sm"
                     variant="flat"
                     onPress={() => {
@@ -288,14 +292,15 @@ const KeywordFilters = ({
                 <NumberInput
                   name="cpc-min"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-600 text-small">$</span>
                     </div>
                   }
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Min."
                   size="sm"
@@ -312,14 +317,15 @@ const KeywordFilters = ({
                 <NumberInput
                   name="cpc-max"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-600 text-small">$</span>
                     </div>
                   }
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Max."
                   size="sm"
@@ -343,9 +349,10 @@ const KeywordFilters = ({
                 <NumberInput
                   name="ppc-min"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Min."
                   size="sm"
@@ -362,9 +369,10 @@ const KeywordFilters = ({
                 <NumberInput
                   name="ppc-max"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Max."
                   size="sm"
@@ -390,9 +398,10 @@ const KeywordFilters = ({
               <div className="mt-2">
                 <Input
                   name="includeKeyword"
-                  variant="bordered"
+                  variant="flat"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   radius="sm"
                   type="text"
@@ -415,9 +424,10 @@ const KeywordFilters = ({
               <div className="mt-2">
                 <Input
                   name="excludeKeyword"
-                  variant="bordered"
+                  variant="flat"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   radius="sm"
                   type="text"
@@ -452,16 +462,40 @@ const KeywordFilters = ({
                   })
                 }
               >
-                <Checkbox value="informational" size="sm">
+                <Checkbox
+                  value="informational"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Informational
                 </Checkbox>
-                <Checkbox value="navigational" size="sm">
+                <Checkbox
+                  value="navigational"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Navigational
                 </Checkbox>
-                <Checkbox value="commercial" size="sm">
+                <Checkbox
+                  value="commercial"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Commercial
                 </Checkbox>
-                <Checkbox value="transactional" size="sm">
+                <Checkbox
+                  value="transactional"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Transactional
                 </Checkbox>
               </CheckboxGroup>

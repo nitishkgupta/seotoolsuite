@@ -22,7 +22,7 @@ body {
 body:has(.seotoolsuite-tool),
 body:has(.seotoolsuite-account),
 body:has(.seotoolsuite-tools) {
-  @apply bg-gray-100;
+  @apply bg-[#cdd5db];
 }
 
 /* Scrollbar */
@@ -31,32 +31,37 @@ body * {
   scrollbar-color: #052f4a transparent;
 }
 
-/* DataGrid styles */
+/* DataGrid */
 .datagrid-cell-p0 {
   padding: 0 !important;
 }
 
-/* HeroUI Tooltip */
-div[role="tooltip"] > div {
-  border-radius: 6px !important;
+.tool-results-table-container .MuiDataGrid-root,
+.tool-results-table-container .MuiDataGrid-toolbar,
+.tool-results-table-container .MuiDataGrid-columnHeader,
+.tool-results-table-container .MuiDataGrid-footerContainer {
+  background: #e7eaed !important;
+  @apply border-sky-950/40!;
+  --DataGrid-rowBorderColor: color-mix(
+    in oklab,
+    var(--color-sky-950) 40%,
+    transparent
+  ) !important;
 }
 
-/* DataGrid */
 .tool-results-table-container .MuiDataGrid-toolbarContainer {
   padding: 8px;
   border-bottom: 1px solid rgba(224, 224, 224, 1);
 }
 
+.tool-results-table-container
+  .MuiDataGrid-columnHeader
+  .MuiDataGrid-sortButton {
+  @apply bg-sky-950/10!;
+}
+
 .tool-results-table-container .MuiDataGrid-root .MuiDataGrid-cell:focus-within {
   outline: none !important;
-}
-
-.tool-results-table-container .Mui-selected .search-intent-badge {
-  background-color: #fff;
-}
-
-.tool-results-table-container .MuiDataGrid-row:hover .search-intent-badge {
-  background-color: #fff;
 }
 
 /* Custom Animations */
@@ -77,7 +82,14 @@ div[role="tooltip"] > div {
 /* HeroUI */
 .autocomplete-input div[data-slot="input-wrapper"] {
   box-shadow: none !important;
+  @apply border border-b-2 border-sky-950/40 bg-sky-950/10;
 }
+
 .select-input button[data-slot="trigger"] {
   box-shadow: none !important;
+  @apply border border-b-2 border-sky-950/40 bg-sky-950/10;
+}
+
+div[role="tooltip"] > div[data-slot="content"] {
+  @apply rounded-md border border-b-2 border-sky-950/40 bg-[#e7eaed] text-black;
 }

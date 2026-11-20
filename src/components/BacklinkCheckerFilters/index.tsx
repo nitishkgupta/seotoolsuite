@@ -43,9 +43,9 @@ const BacklinkCheckerFilters = ({
     useState<BacklinkCheckerFiltersInitialValues>(initialValues);
 
   return (
-    <div className="backlink-checker-filters flex flex-col items-start justify-start rounded-md border-2 border-b-3 border-slate-200">
+    <div className="backlink-checker-filters flex flex-col items-start justify-start rounded-md border border-b-2 border-sky-950/40">
       <div
-        className={`flex w-full items-center justify-between gap-1 rounded-t-md border-slate-200 py-2 pr-2 pl-4 text-base ${filtersVisible ? "border-b-2" : ""}`}
+        className={`flex w-full items-center justify-between gap-1 rounded-t-md border-sky-950/40 py-2 pr-2 pl-4 text-base ${filtersVisible ? "border-b" : ""}`}
       >
         <button
           type="button"
@@ -56,7 +56,7 @@ const BacklinkCheckerFilters = ({
           <FunnelIcon size={16} />
           <span>Filters</span>
           {typeof activeFiltersCount === "number" && activeFiltersCount > 0 && (
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-100 text-xs font-medium">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-sky-950/10 text-xs font-medium">
               {activeFiltersCount}
             </div>
           )}
@@ -89,9 +89,10 @@ const BacklinkCheckerFilters = ({
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <Input
                   name="includeSource"
-                  variant="bordered"
+                  variant="flat"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   radius="sm"
                   type="text"
@@ -107,9 +108,10 @@ const BacklinkCheckerFilters = ({
                 />
                 <Input
                   name="excludeSource"
-                  variant="bordered"
+                  variant="flat"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   radius="sm"
                   type="text"
@@ -133,9 +135,10 @@ const BacklinkCheckerFilters = ({
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <Input
                   name="includeTarget"
-                  variant="bordered"
+                  variant="flat"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   radius="sm"
                   type="text"
@@ -151,9 +154,10 @@ const BacklinkCheckerFilters = ({
                 />
                 <Input
                   name="excludeTarget"
-                  variant="bordered"
+                  variant="flat"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
                   radius="sm"
                   type="text"
@@ -180,9 +184,10 @@ const BacklinkCheckerFilters = ({
                 <NumberInput
                   name="source-dr-min"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Min."
                   size="sm"
@@ -199,9 +204,10 @@ const BacklinkCheckerFilters = ({
                 <NumberInput
                   name="source-dr-max"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Max."
                   size="sm"
@@ -226,9 +232,10 @@ const BacklinkCheckerFilters = ({
                 <NumberInput
                   name="source-pr-min"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Min."
                   size="sm"
@@ -245,9 +252,10 @@ const BacklinkCheckerFilters = ({
                 <NumberInput
                   name="source-pr-max"
                   classNames={{
-                    inputWrapper: "shadow-none border-b-3",
+                    inputWrapper:
+                      "shadow-none border border-sky-950/40 border-b-2 bg-sky-950/10",
                   }}
-                  variant="bordered"
+                  variant="flat"
                   type="number"
                   label="Max."
                   size="sm"
@@ -283,22 +291,58 @@ const BacklinkCheckerFilters = ({
                   })
                 }
               >
-                <Checkbox value="anchor" size="sm">
+                <Checkbox
+                  value="anchor"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Anchor
                 </Checkbox>
-                <Checkbox value="image" size="sm">
+                <Checkbox
+                  value="image"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Image
                 </Checkbox>
-                <Checkbox value="redirect" size="sm">
+                <Checkbox
+                  value="redirect"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Redirect
                 </Checkbox>
-                <Checkbox value="meta" size="sm">
+                <Checkbox
+                  value="meta"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Meta
                 </Checkbox>
-                <Checkbox value="canonical" size="sm">
+                <Checkbox
+                  value="canonical"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Canonical
                 </Checkbox>
-                <Checkbox value="alternate" size="sm">
+                <Checkbox
+                  value="alternate"
+                  size="sm"
+                  classNames={{
+                    wrapper: "before:border-sky-950/40",
+                  }}
+                >
                   Alternate
                 </Checkbox>
               </CheckboxGroup>

@@ -62,18 +62,56 @@ const HistoricalRankTrendChart = ({
         >
           {sourceType === "organic" && (
             <>
-              <Radio value="metrics.organic.etv">Monthly Traffic</Radio>
-              <Radio value="metrics.organic.count">Keywords</Radio>
-              <Radio value="metrics.organic.estimated_paid_traffic_cost">
+              <Radio
+                value="metrics.organic.etv"
+                classNames={{
+                  wrapper: "border-sky-950/40",
+                }}
+              >
+                Monthly Traffic
+              </Radio>
+              <Radio
+                value="metrics.organic.count"
+                classNames={{
+                  wrapper: "border-sky-950/40",
+                }}
+              >
+                Keywords
+              </Radio>
+              <Radio
+                value="metrics.organic.estimated_paid_traffic_cost"
+                classNames={{
+                  wrapper: "border-sky-950/40",
+                }}
+              >
                 Traffic Cost
               </Radio>
             </>
           )}
           {sourceType === "paid" && (
             <>
-              <Radio value="metrics.paid.etv">Monthly Traffic</Radio>
-              <Radio value="metrics.paid.count">Keywords</Radio>
-              <Radio value="metrics.paid.estimated_paid_traffic_cost">
+              <Radio
+                value="metrics.paid.etv"
+                classNames={{
+                  wrapper: "border-sky-950/40",
+                }}
+              >
+                Monthly Traffic
+              </Radio>
+              <Radio
+                value="metrics.paid.count"
+                classNames={{
+                  wrapper: "border-sky-950/40",
+                }}
+              >
+                Keywords
+              </Radio>
+              <Radio
+                value="metrics.paid.estimated_paid_traffic_cost"
+                classNames={{
+                  wrapper: "border-sky-950/40",
+                }}
+              >
                 Traffic Cost
               </Radio>
             </>
@@ -109,6 +147,9 @@ const HistoricalRankTrendChart = ({
             }}
             contentStyle={{
               borderRadius: "8px",
+              backgroundColor: "#e7eaed",
+              borderBottomWidth: "2px",
+              borderColor: "#8d9fac",
             }}
             wrapperStyle={{
               zIndex: 9999,

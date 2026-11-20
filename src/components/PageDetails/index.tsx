@@ -63,13 +63,13 @@ type MetricSectionProps = {
 };
 
 const MetricsSection = ({ title, icon, metrics, type }: MetricSectionProps) => (
-  <div className="rounded-md border-2 border-b-3 border-slate-200 bg-white">
-    <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+  <div className="rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
+    <div className="flex flex-row items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
       {icon}
       <span className="text-base md:text-lg">{title}</span>
     </div>
     <div className="grid grid-cols-2 md:grid-cols-4">
-      <div className="flex flex-col justify-between gap-2 border-r-2 border-b-2 border-slate-200 p-4 md:border-b-0">
+      <div className="flex flex-col justify-between gap-2 border-r-2 border-b-2 border-sky-950/40 p-4 md:border-b-0">
         <div className="flex items-center gap-1 text-base">
           <TrendingUpIcon size={16} />
           Monthly Traffic
@@ -82,7 +82,7 @@ const MetricsSection = ({ title, icon, metrics, type }: MetricSectionProps) => (
             : "N/A"}
         </div>
       </div>
-      <div className="flex flex-col justify-between gap-2 border-b-2 border-slate-200 p-4 md:border-r-2 md:border-b-0">
+      <div className="flex flex-col justify-between gap-2 border-b-2 border-sky-950/40 p-4 md:border-r-2 md:border-b-0">
         <div className="flex items-center gap-1 text-base">
           <TextSearchIcon size={16} />
           Keywords
@@ -93,7 +93,7 @@ const MetricsSection = ({ title, icon, metrics, type }: MetricSectionProps) => (
             : "N/A"}
         </div>
       </div>
-      <div className="flex flex-col justify-between gap-2 border-r-2 border-slate-200 p-4">
+      <div className="flex flex-col justify-between gap-2 border-r-2 border-sky-950/40 p-4">
         <div className="flex items-center gap-1 text-base">
           <BadgeDollarSignIcon size={16} />
           Traffic Cost
@@ -168,16 +168,16 @@ const PageDetails = ({
 
   return (
     <>
-      <div className="flex w-full flex-wrap items-center gap-2 border-b-2 border-slate-200 bg-white p-4">
-        <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-base font-normal break-all">
+      <div className="flex w-full flex-wrap items-center gap-2 border-b-2 border-sky-950/40 bg-[#e7eaed] p-4">
+        <div className="flex w-fit items-center gap-1 rounded-md bg-sky-950/10 px-2 py-1 text-base font-normal break-all">
           <FileIcon size={14} className="shrink-0" />
           {pageItem.page_address.replace("https://", "").replace("http://", "")}
         </div>
-        <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-base font-normal">
+        <div className="flex w-fit items-center gap-1 rounded-md bg-sky-950/10 px-2 py-1 text-base font-normal">
           <MapPinIcon size={14} />
           {getDataForSEOLocationFromCode(Number(locationCode))?.location_name}
         </div>
-        <div className="flex w-fit items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-base font-normal">
+        <div className="flex w-fit items-center gap-1 rounded-md bg-sky-950/10 px-2 py-1 text-base font-normal">
           <LanguagesIcon size={14} />
           {getDataForSEOLanguageFromCode(languageCode)?.language_name}
         </div>
@@ -192,8 +192,8 @@ const PageDetails = ({
           />
         )}
         {organic && (
-          <div className="rounded-md border-2 border-b-3 border-slate-200 bg-white">
-            <div className="flex flex-row items-center gap-2 border-b-2 border-slate-200 px-4 py-3">
+          <div className="rounded-md border-2 border-b-3 border-sky-950/40 bg-[#e7eaed]">
+            <div className="flex flex-row items-center gap-2 border-b-2 border-sky-950/40 px-4 py-3">
               <CircleStarIcon size={20} />
               <span className="text-base md:text-lg">
                 Ranking Position Distribution

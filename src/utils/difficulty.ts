@@ -3,8 +3,8 @@
  */
 export function getDifficultyColor(score: number): string {
   if (score <= 14) return "#1ba005";
-  if (score <= 29) return "#AADA2B";
-  if (score <= 49) return "#ffbe02";
+  if (score <= 29) return "#81ae09";
+  if (score <= 49) return "#bb8b00";
   if (score <= 69) return "#ef7a24";
   if (score <= 84) return "#bd462e";
   return "red";

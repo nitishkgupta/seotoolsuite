@@ -14,7 +14,7 @@ const ReportTabs = memo(
     return (
       <div className={`report-tabs ${className}`}>
         <div className="text-sm font-medium text-black/80">Reports:</div>
-        <div className="bg-default-50 mt-1 flex w-fit flex-row flex-wrap gap-2 rounded-md border border-b-2 border-slate-200 p-2">
+        <div className="mt-1 flex w-fit flex-row flex-wrap gap-2 rounded-md border border-b-2 border-sky-950/40 bg-[#e7eaed] p-2">
           {children}
         </div>
       </div>
@@ -42,13 +42,13 @@ const ReportTabsItem = memo(
           <Link
             prefetch={false}
             href={href}
-            className={`flex min-h-9 items-center gap-1 rounded-md px-2 py-1.5 text-sm transition hover:bg-black/4 ${active ? "border border-b-2 border-slate-200 bg-white!" : ""}`}
+            className={`flex min-h-9 items-center gap-1 rounded-md px-2 py-1.5 text-sm transition hover:bg-sky-950/10 ${active ? "border-sky-950/40 bg-sky-950/10!" : ""}`}
           >
             {startContent} {children}
           </Link>
         ) : (
           <div
-            className={`flex min-h-9 cursor-default items-center gap-1 rounded-md px-2 py-1.5 text-sm transition hover:bg-black/4 ${active ? "border border-b-2 border-slate-200 bg-white!" : ""}`}
+            className={`flex min-h-9 cursor-default items-center gap-1 rounded-md px-2 py-1.5 text-sm transition hover:bg-sky-950/10 ${active ? "border-sky-950/40 bg-sky-950/10!" : ""}`}
           >
             {startContent} {children}
           </div>

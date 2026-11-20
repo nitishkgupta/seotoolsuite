@@ -1,5 +1,11 @@
 # SEOToolSuite Changelog
 
+## v10.0.0
+
+- Major design update for better user experience.
+- Other minor changes.
+- Updated packages.
+
 ## v9.1.0
 
 - Improved the design and animations of **AgeDistributionChart** and **GenderDistributionChart**.
